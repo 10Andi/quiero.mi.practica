@@ -43,9 +43,14 @@ export const AuthContextProvider = ({children}) => {
                         setUser({
                             uid: user.uid,
                             email: user.email,
-                            displayName: userDataFirestore.nombre,
-                            image: userDataFirestore.imagen,
-                            type: userDataFirestore.tipo
+                            displayName: `${userDataFirestore.nombres} ${userDataFirestore.apellidoPaterno} ${userDataFirestore.apellidoMaterno}`,
+                            names: userDataFirestore.nombres,
+                            lastName: userDataFirestore.apellidoPaterno,
+                            secondSurename: userDataFirestore.apellidoMaterno,
+                            avatar: userDataFirestore.avatar,
+                            type: userDataFirestore.tipo,
+                            uid_empresa: userDataFirestore.uid_empresa,
+                            nombre_empresa: userDataFirestore.nombre_empresa,
                         })
                     }
                     // console.log(userDataFirestore.tipo)

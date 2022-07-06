@@ -113,7 +113,6 @@ export default function Usuario() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Rut</span>
-                            {/* <label className="card-postulacion-info-subtitulo">Informacion sobre su instancia en el instituto o universidad</label> */}
                         </div>
                         <div className="card-postulacion-inputs">
                             <input type="text" {...register('rut', {
@@ -129,7 +128,6 @@ export default function Usuario() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Comuna</span>
-                            {/* <label className="card-postulacion-info-subtitulo">Con este e-mail podrás iniciar sesión una vez que te hayas registrado</label> */}
                         </div>
                         <div className="card-postulacion-componets">
                             <Controller
@@ -165,7 +163,7 @@ export default function Usuario() {
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Contraseña</span>
                             <label className="card-postulacion-info-subtitulo">Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
-                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos</label>
+                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos:</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos un numero</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos una letra en mayuscula</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>

@@ -1,23 +1,33 @@
-import Footer from "../../componets/footer";
+import Footer from "../../componets/footer"
 import NavRegister from "../../componets/nav/navregister"
 import { useState } from 'react'
+
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
+import { auth, firestore, storage } from "../../firebase/client"
+import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage"
+
 import { useRouter } from "next/router"
 import { useForm, Controller } from "react-hook-form"
 import { cleanRut , validateRut, formatRut } from 'rutlib'
 import Select from 'react-select'
 import comunas from '../../helper/comunas'
-import { FilePond, registerPlugin } from 'react-filepond';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import 'filepond/dist/filepond.min.css';
+import { FilePond, registerPlugin } from 'react-filepond'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { Ring } from '@uiball/loaders'
 
-registerPlugin(FilePondPluginFileValidateType)
+registerPlugin(FilePondPluginFileValidateType, FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 
 export default function Empresa() {
     const userType = 'empresa'
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+    const [logoUrl, setLogoUrl] = useState(null);
     const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
 
     async function submitHandler(data) {
@@ -27,46 +37,174 @@ export default function Empresa() {
         const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
 
         const uid = newUser.user.uid
+        const uidEmpresa = Math.random().toString(36).slice(2)
         const avatar = `https://ui-avatars.com/api/?name=${data.nombres}+${data.apellidoPaterno}&size=128`
-        const fechaCreacion = undefined // obtener de user.metadata.creationTime.millisecondsSinceEpoch o hacer TIMESTAMP
-        
-        const docRef = doc(firestore, `USUARIO/${uid}`)
-        const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+        const fechaCreacion = new Date() // TIMESTAMP
 
-        await setDoc(docRef, {
+        const docRefUser = doc(firestore, `USUARIO/${uid}`)
+        const docRefCompany = doc(firestore, `EMPRESA/${uidEmpresa}`)
+        const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
+
+
+
+        // const storageRef = ref(storage, `logo/${data.logo[0].filename}`);
+        
+        
+        // await uploadBytes(fileRef, data.logo[0].file)
+        // .then(response => getDownloadURL(response.ref)
+        // .then(url => {
+        //     setLogoUrl(url)
+        // }))
+
+        uploadBytes(fileRef, data.logo[0].file).then( (snapshot) => {
+            console.log('uploaded');
+            getDownloadURL(snapshot.ref).then( url => setLogoUrl(url));
+          });
+          
+        // uploadBytes(fileRef, data.logo[0].file).then((snapshot) => {
+        //     getDownloadURL(fileRef).then((url) => {
+        //         setLogoUrl(url)
+        //     })
+        // })
+
+
+
+
+        // await uploadBytes(fileRef, data.logo[0].file)
+        // .then(getDownloadURL(ref(storage, fileRef))
+        // .then(async (url) => {
+        //     setLogoUrl(url)
+        // }))
+        
+        
+        
+        // const gsRef = ref(storage, `gs://quieromipractica.appspot.com/${fileRef}`)
+        // uploadBytesResumable(fileRef, data.logo[0].file).then(
+        //     () =>{
+        //       getDownloadURL(gsRef).then(async function(url){
+        //         setLogoUrl(url)
+                
+              
+        //         await setDoc(docRefUser, {
+        //             nombres: data.nombres,
+        //             apellidoPaterno: data.apellidoPaterno,
+        //             apellidoMaterno: data.apellidoMaterno,
+        //             rut: formatRut(data.rut),
+        //             comuna: data.comuna_usuario.value,
+        //             region: data.comuna_usuario.region,
+        //             email: data.email,
+        //             password: data.password,
+        //             uid_empresa: uidEmpresa,
+        //             nombre_empresa: data.nombre_empresa,
+        //             tipo: userType,
+        //             avatar: avatar
+        //         })
+        //         await setDoc(docRefCompany, {
+        //             uid_empresa: uidEmpresa,
+        //             nombre_empresa: data.nombre_empresa,
+        //             logo: logoUrl,
+        //             rut_empresa: formatRut(data.rut_empresa),
+        //             comuna_empresa: data.comuna_empresa.value,
+        //             region_empresa: data.comuna_empresa.region,
+        //             fecha_creacion_empresa: fechaCreacion,
+        //             uid_admin: uid,
+        //             email_admin: data.email,
+        //             nombres_admin: data.nombres,
+        //             apellidoPaterno_admin: data.apellidoPaterno,
+        //             apellidoMaterno_admin: data.apellidoMaterno,
+        //             avatar_admin: avatar,
+        //         })
+        //     }
+        //   );
+        //   })
+        
+        // const uploadTask = uploadBytesResumable(fileRef)
+        // uploadTask.on('state_changed',
+        // (snapshot) => {
+        //     () => {
+        //         // Upload completed successfully, now we can get the download URL
+        //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        //             console.log('File available at', downloadURL)
+        //             setLogoUrl(downloadURL)
+        //         })
+        //     }
+        // })
+
+        
+        // const uploadTask = uploadBytesResumable(fileRef, data.logo[0].file);
+
+        // uploadTask.on("state_changed",
+        // (snapshot) => {
+        //     const progress =
+        //     Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        //     setProgresspercent(progress);
+        // },
+        // (error) => {
+        //     alert(error);
+        // },
+        // () => {
+        //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        //     setLogoUrl(downloadURL)
+        //     });
+        // }
+        // );
+
+
+        await setDoc(docRefUser, {
             nombres: data.nombres,
             apellidoPaterno: data.apellidoPaterno,
             apellidoMaterno: data.apellidoMaterno,
             rut: formatRut(data.rut),
-            comuna: data.comuna.value,
-            region: data.comuna.region,
+            comuna: data.comuna_usuario.value,
+            region: data.comuna_usuario.region,
             email: data.email,
-            password: data.password, // MINIMO 6 CARACTERES
-            nom_institucion: data.nom_institucion,
-            certificadoAlumnoRegular: data.certificadoAlumnoRegular[0].filename,
+            password: data.password,
+            uid_empresa: uidEmpresa,
+            nombre_empresa: data.nombre_empresa,
             tipo: userType,
-            avatar: avatar,
-            // fechaCreacion: fechaCreacion // ( ? ) -> sera necesario; teniendo esta info en FirebaseAuth 
+            avatar: avatar
         })
-        .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
+        await setDoc(docRefCompany, {
+            uid_empresa: uidEmpresa,
+            nombre_empresa: data.nombre_empresa,
+            logo: logoUrl,
+            rut_empresa: formatRut(data.rut_empresa),
+            comuna_empresa: data.comuna_empresa.value,
+            region_empresa: data.comuna_empresa.region,
+            fecha_creacion_empresa: fechaCreacion,
+            uid_admin: uid,
+            email_admin: data.email,
+            nombres_admin: data.nombres,
+            apellidoPaterno_admin: data.apellidoPaterno,
+            apellidoMaterno_admin: data.apellidoMaterno,
+            avatar_admin: avatar,
+        })
+        // .then(await uploadBytes(fileRef, data.logo[0].file))
         .finally(() => {
             setLoading(false)
+            console.log(logoUrl)
             router.push('/login')
         })
         console.log(newUser)
         // console.log(user)
     }
     
-    const onSubmit = (data) => {
-        console.log(data.certificadoAlumnoRegular[0])
-        const fileRef = ref(storage, `certificadosAlumnoRegular/01/${data.certificadoAlumnoRegular[0].filename}`)
-        uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file).then(() => {
-            alert('PDF SUBIDO!')
-        })
-
-
-        // console.log(data.comuna)
+    const onSubmit = async (data) => {
+        // console.log(data.logo[0])
+        // const fileRef = ref(storage, `logo/01/${data.logo[0].filename}`)
+        // uploadBytes(fileRef, data.logo[0].file).then(() => {
+        //     alert('PDF SUBIDO!')
+        // })
+        const uidEmpresa = Math.random().toString(36).slice(2)
         
+        const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
+        await uploadBytes(fileRef, data.logo[0].file)
+        .then(getDownloadURL(ref(storage, fileRef))
+        .then(async (url) => {
+            setLogoUrl(url)
+        }))
+    
+        console.log(logoUrl)
         // {errors.nombres?.type === 'required' && accion a mostrar -> toast}
     }
 
@@ -76,7 +214,7 @@ export default function Empresa() {
         <section className="container">
             <NavRegister />
             <h1>Registrate para reclutar y ayudar a estudiantes <span>practicantes emergentes</span></h1>
-                <form className="from-postulacion" onSubmit={handleSubmit(onSubmit)}>
+                <form className="from-postulacion" onSubmit={handleSubmit(submitHandler)}>
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Nombre de la empresa</span>
@@ -108,10 +246,12 @@ export default function Empresa() {
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Logo de la empresa</span>
                             <label className="card-postulacion-info-subtitulo">Mínimo 200x200 px, en formato cuadrado (por ejemplo, el logo que usas para Twitter o Facebook)</label>
+                            <label className="card-postulacion-info-subtitulo">* El formato debe ser PNG o JPG/JPEG</label>
+                            
                         </div>
                         <div className="card-postulacion-componets">
                             <Controller
-                                name="certificadoAlumnoRegular"
+                                name="logo"
                                 control={control}
                                 rules={{required: true}}
                                 render={({ field:{onChange, value} }) => (
@@ -121,9 +261,10 @@ export default function Empresa() {
                                     onupdatefiles={onChange}
                                     required
                                     allowFileTypeValidation={true}
-                                    acceptedFileTypes={['application/pdf']}
+                                    acceptedFileTypes={['image/png', 'image/jpeg']}
                                     labelFileTypeNotAllowed={'El tipo de archivo es inválido'}
-                                    fileValidateTypeLabelExpectedTypes={'Debe ser PDF'}
+                                    fileValidateTypeLabelExpectedTypes={'Debe ser PNG o JPG/JPEG'}
+                                    fileValidateTypeLabelExpectedTypesMap={{ 'image/jpeg': '.jpg' }}
                                     labelIdle='Arrastra y suelta tu archivo o <span class="filepond--label-action">Búscalo</span>'
                                 />
                                 )}
@@ -133,12 +274,12 @@ export default function Empresa() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Comuna</span>
-                            <label className="card-postulacion-info-subtitulo">Comunaen en donde se encuentra la empresa</label>
+                            <label className="card-postulacion-info-subtitulo">Comuna en donde se encuentra la empresa</label>
                         </div>
                         <div className="card-postulacion-componets">
                             <Controller
                                 control={control}
-                                name="comuna"
+                                name="comuna_empresa"
                                 rules={{required: true}}
                                 render={({ field }) => (
                                     <Select
@@ -155,7 +296,7 @@ export default function Empresa() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">E-mail de la cuenta de administrador</span>
-                            <label className="card-postulacion-info-subtitulo">Con esta cuenta tendrás acceso completo de administrador de la empresa y podrás agregar nuevos miembros al equipo.</label>
+                            <label className="card-postulacion-info-subtitulo">Con esta cuenta tendrás acceso completo de administrador de la empresa y podrás agregar nuevos miembros al equipo</label>
                         </div>
                         <div className="card-postulacion-inputs">
                             <input type="email" {...register('email', {
@@ -168,7 +309,7 @@ export default function Empresa() {
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Contraseña</span>
                             <label className="card-postulacion-info-subtitulo">Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
-                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos</label>
+                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos:</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos un numero</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos una letra en mayuscula</label>
                             <label className="card-postulacion-info-subtitulo">* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
@@ -183,6 +324,7 @@ export default function Empresa() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Nombres</span>
+                            <label className="card-postulacion-info-subtitulo">Este campo debe contener <strong>tu información personal</strong></label>
                         </div>
                         <div className="card-postulacion-inputs">
                             <input type="text" {...register('nombres', {
@@ -193,6 +335,7 @@ export default function Empresa() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Apellido paterno</span>
+                            <label className="card-postulacion-info-subtitulo">Este campo debe contener <strong>tu información personal</strong></label>
                         </div>
                         <div className="card-postulacion-inputs">
                             <input type="text" {...register('apellidoPaterno', {
@@ -203,6 +346,7 @@ export default function Empresa() {
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Apellido materno</span>
+                            <label className="card-postulacion-info-subtitulo">Este campo debe contener <strong>tu información personal</strong></label>
                         </div>
                         <div className="card-postulacion-inputs">
                             <input type="text" {...register('apellidoMaterno', {
@@ -210,34 +354,31 @@ export default function Empresa() {
                             })}/>
                         </div>
                     </div>
-                    
-                    
-                    
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Contraseña</span>
-                            <label className="card-postulacion-info-subtitulo">Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
-                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos un numero</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos una letra en mayuscula</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
+                            <span className="card-postulacion-info-titulo">Rut</span>
+                            <label className="card-postulacion-info-subtitulo">Este campo debe contener <strong>tu información personal</strong></label>
                         </div>
                         <div className="card-postulacion-inputs">
-                            <input type="password" {...register('password', {
+                            <input type="text" {...register('rut', {
                                 required: true,
-                                minLength: 6
+                                validate: () => {
+                                    const valueRut = watch('rut')
+                                    const cleanedRut = cleanRut(valueRut)
+                                    return validateRut(cleanedRut)
+                                }
                             })}/>
                         </div>
                     </div>
                     <div className="card-postulacion">
                         <div className="card-postulacion-info">
                             <span className="card-postulacion-info-titulo">Comuna</span>
-                            {/* <label className="card-postulacion-info-subtitulo">Con este e-mail podrás iniciar sesión una vez que te hayas registrado</label> */}
+                            <label className="card-postulacion-info-subtitulo">Este campo debe contener <strong>tu información personal</strong></label>
                         </div>
                         <div className="card-postulacion-componets">
                             <Controller
                                 control={control}
-                                name="comuna"
+                                name="comuna_usuario"
                                 rules={{required: true}}
                                 render={({ field }) => (
                                     <Select
@@ -251,18 +392,6 @@ export default function Empresa() {
                             />
                         </div>
                     </div>
-                    {/* <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Nombre de la Institución</span>
-                            <label className="card-postulacion-info-subtitulo">Ingresa el nombre de tu institución educacional (universidad, instituto profecional, CFT, escuela tecnica , etc)</label>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('nom_institucion', {
-                                required: true
-                            })}/>
-                        </div>
-                    </div> */}
-                    
 
                     <div className="registro-btn">
                         {/* <button type="submit" className="disable">Anterior</button> */}
@@ -273,6 +402,17 @@ export default function Empresa() {
 
         </section>
         <Footer />
+        {
+        loading ?
+        <div className="loading">
+            <Ring
+                size={100}
+                lineWeight={5}
+                speed={2} 
+                color="#473198"
+            />
+        </div> 
+        : null}
             <style jsx>{`
                 .test {
                     display: block;
@@ -302,12 +442,12 @@ export default function Empresa() {
                     min-height: calc(100vh - 71.813px);
                 }
                 .card-postulacion {
-                display: flex;
-                margin-bottom: 50px;
-                padding: 0 100px;
-                padding: 29px 0 !important;
-                border-bottom: 1px solid rgb(239, 243, 244);
-                }
+                    display: flex;
+                    margin-bottom: 50px;
+                    padding: 0 100px;
+                    padding: 29px 0 !important;
+                    border-bottom: 1px solid rgb(239, 243, 244);
+                    }
                 .card-postulacion .card-postulacion-info {
                     display: flex;
                     flex-direction: column;

@@ -62,7 +62,10 @@ export default function MenuCompany() {
                 </ul>
                 <div className="user">
                         <img loading="lazy" src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt="" draggable="false" />
-                        <span>{user?.displayName}</span>
+                        <div className="text">
+                            <span>{user?.displayName}</span>
+                            <span className="company">de {user?.nombre_empresa}</span>
+                        </div>
                         {/* <span>{user?.displayName}</span> */}
                 </div>
             </aside>
@@ -96,12 +99,19 @@ export default function MenuCompany() {
                     border-radius: 100px;
 
                 }
-                div span {
+                span {
                     font-size: 18px;
                     font-weight: bold;
                     color: #4A0D67;
                     margin-right: 10px;
                     margin-top: 10px;
+                }
+                .text {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .company {
+                    color: #473198;
                 }
             `}</style>
         </>

@@ -30,6 +30,7 @@ export default function Dashboard() {
                     display: grid;
                     //grid-template-columns: 1fr 3fr;
                     grid-template-columns: 1fr 4fr;
+                    //grid-template-columns: .6fr 2fr .9fr;
                 }
                 {/* rgb(247, 249, 249) */}
             `}</style>
