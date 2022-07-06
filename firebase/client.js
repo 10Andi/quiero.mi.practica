@@ -15,13 +15,27 @@ const firebaseConfig = {
     measurementId: "G-H1X3SPW9P1"
 }
 
+
 const firebaseApp = initializeApp(firebaseConfig)
 
 export const auth = getAuth(firebaseApp)
 export const firestore = getFirestore(firebaseApp)
 export const storage = getStorage(firebaseApp)
-export const analytics = getAnalytics(firebaseApp)
-export const perf = getPerformance(firebaseApp)
-
+// export const analytics = getAnalytics(firebaseApp)
+// export const perf = getPerformance(firebaseApp)
+export const perf = () => {
+    if (typeof window !== "undefined") {
+      return getPerformance(firebaseApp)
+    } else {
+      return null
+    }
+  }
+export const analytics = () => {
+    if (typeof window !== "undefined") {
+      return getAnalytics(firebaseApp)
+    } else {
+      return null
+    }
+  }
 // const db = getFirestore(app)
 // export default firebaseApp
