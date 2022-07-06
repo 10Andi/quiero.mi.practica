@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { Ring } from '@uiball/loaders'
 import { firestore } from "../../firebase/client"
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where, documentId } from "firebase/firestore";
 import SavedOffertCard from "../offertcard/savedoffertcard";
 import { useAuth } from "../../context/AuthContext";
-// import { useAuth } from "../../context/AuthContext";
+import { useOffert } from "../../context/offertContext";
 
 
 export default function SavedShowOfferts() {
     const {user} = useAuth()
     const [offerList, setOfferList] = useState(null)
+    // const [offerStatus, setOfferStatus] = useState(null)
+    const {offertSelected, setOffertSelected, offerStatus, setOfferStatus} = useOffert()
+
     // const [selectedOffert, setSelectedOffert] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -27,14 +30,37 @@ export default function SavedShowOfferts() {
         async function getOfferts() {
             setLoading(true)
 
-            // const querySnapshot = await getDocs(collection(firestore, 'test'))
-            const querySnapshot = await getDocs(query(collection(firestore, 'test'), orderBy("fecha_creacion", 'desc')))
+            const bookmark = user.bookmark
+            const postulado = user.postulado
+            let ofertas = undefined
+            
+            if(bookmark && postulado) {
+                ofertas = [...bookmark, ...postulado].reduce( (accArr, valor) => {
+                
+                    if (accArr.indexOf(valor) < 0) {
+                      accArr.push(valor)
+                    }
+    
+                    return accArr
+                }, [])
+            }
+            if(bookmark && !postulado) {
+                ofertas = bookmark
+            }
+            if(!bookmark && postulado) {
+                ofertas = postulado
+            }
 
+
+            // const querySnapshot = await getDocs(collection(firestore, 'test'))
+            const querySnapshot = await getDocs(query(collection(firestore, 'test'), where(documentId(), 'in', ofertas)))
+            // , orderBy("fecha_creacion", 'desc')
 
             return querySnapshot.docs.map(doc => {
                 const data = doc.data()
                 const id = doc.id
                 const {fecha_creacion} = data
+                // console.log(data)
                 
                 // const date = new Date(fecha_creacion.seconds * 1000)
                 // const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL').format(date)
@@ -46,9 +72,35 @@ export default function SavedShowOfferts() {
                 }
             })
         }
+
+        async function getSubColection() {
+            // console.log(user.uid)
+            // const qSnap = await getDocs(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`), where(documentId(), 'in', ofertas)))
+            const querySnapshot = await getDocs(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`))
+            // return console.log(qSnap.docs.map(d => ({id: d.id, ...d.data()})))
+            return querySnapshot.docs.map(doc => {
+                const data = doc.data()
+                const id = doc.id
+                const {fecha_postulacion} = data
+                console.log(data)
+        
+                const format = (date, locale, options) =>
+                    new Intl.DateTimeFormat(locale, options).format(date)
+                
+                const date = new Date(fecha_postulacion.seconds * 1000)
+                const formatDate = format(date, 'es', { dateStyle: 'long'})
+        
+                return {
+                    ...data,
+                    id,
+                    fecha_postulacion: formatDate
+                }
+            })
+        }
         // user && getOfferts().then(setOfferList).finally(setLoading(false))
+        getSubColection().then(setOfferStatus)
         getOfferts().then(setOfferList).finally(setLoading(false))
-    }, [])
+    }, [setOfferStatus, user])
     
 
 
@@ -63,7 +115,7 @@ export default function SavedShowOfferts() {
                 <section>
                     {offerList && offerList.map(({
                         id, beneficios, cargo, categoria, ciudad, comuna, condicion , cupos, descripcion, ejercer, fecha_creacion, horario, 
-                        logo, nombre_empresa, poloticas_trabajo, requerimiento, vistas
+                        logo, nombre_empresa, politica_trabajo, requerimiento, vistas
                     }) => (
                         <SavedOffertCard
                             key={id}
@@ -82,11 +134,12 @@ export default function SavedShowOfferts() {
                             categoria={categoria}
                             condicion={condicion}
                             descripcion={descripcion}
-                            poloticas_trabajo={poloticas_trabajo}
+                            politica_trabajo={politica_trabajo}
                             requerimiento={requerimiento}
 
                         />
                     ))}
+                    {!offerList && 'Aun no has postulado a alguna oferta o agregado alguna oferta a tu bookmark'}
                 </section>
             }
             

@@ -35,7 +35,8 @@ export default function Home() {
                     padding: 0 42px;
                     padding: 0 200px;
                     display: grid;
-                    grid-template-columns: 1fr 2fr 1.3fr;
+                    grid-template-columns: .7fr 2fr 1.1fr;
+                    //grid-template-columns: 1fr 2fr 1.3fr;
                 }
                 {/* rgb(247, 249, 249) */}
 

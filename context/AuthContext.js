@@ -36,7 +36,8 @@ export const AuthContextProvider = ({children}) => {
                             lastName: userDataFirestore.apellidoPaterno,
                             secondSurename: userDataFirestore.apellidoMaterno,
                             type: userDataFirestore.tipo,
-                            bookmark: userDataFirestore.bookmark
+                            bookmark: userDataFirestore.bookmark,
+                            postulado: userDataFirestore.postulado
                         })
                     } else {
                         setUser({

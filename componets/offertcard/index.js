@@ -30,7 +30,7 @@ export default function OffertCard(props) {
             bookmark: arrayUnion(id)
         })
         // .then()
-        .finally(setIsBookmark(true))
+        // .finally(setIsBookmark(true))
         // setIsBookmark(true)
         // alert('AGREGAR')
         
@@ -44,7 +44,7 @@ export default function OffertCard(props) {
             bookmark: arrayRemove(id)
         })
         // .then()
-        .finally(setIsBookmark(true))
+        // .finally(setIsBookmark(true))
     }
 
     const handleClick = (props) => {

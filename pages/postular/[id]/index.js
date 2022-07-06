@@ -72,19 +72,19 @@ export default function Postular (props) {
 
     const onSubmit = async (data) => {
         // console.log(user)
-        console.log(data)
+        // console.log(data)
         setLoading(true)
 
         // const docRef = doc(firestore, 'USUARIO', user.uid);
         const querySnapshot = await getDoc(doc(firestore, 'USUARIO', user.uid))
         const dataUser = querySnapshot.data()
-        console.log(dataUser)
+        // console.log(dataUser)
 
         const now = new Date()
-        const format = (date, locale, options) =>
-            new Intl.DateTimeFormat(locale, options).format(date)
+        // const format = (date, locale, options) =>
+        //     new Intl.DateTimeFormat(locale, options).format(date)
 
-        const formatDate = format(now, 'es', { dateStyle: 'long'})
+        // const formatDate = format(now, 'es', { dateStyle: 'long'})
 
         const uidUser = user.uid
         
@@ -105,14 +105,20 @@ export default function Postular (props) {
                 avatar: dataUser.avatar,
                 infoPersonal: data.info_personal,
                 infoEstudio: data.info_estudio,
-                fechaPostulacion: formatDate,
+                fechaPostulacion: now,
                 estado: 'En espera'
             // }
         })
-        // .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
         .then(
             updateDoc(doc(firestore, 'USUARIO', user.uid), {
                 postulado: arrayUnion(id)
+            })
+        )
+        .then(
+            setDoc(doc(firestore, `USUARIO/${uidUser}/POSTULACIONES/${id}`), {
+                id: id, 
+                fecha_postulacion: now,
+                estado: 'En espera',
             })
         )
         .finally(() => {
