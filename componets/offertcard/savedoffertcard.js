@@ -12,8 +12,6 @@ import { useAuth } from "../../context/AuthContext";
 export default function SavedOffertCard(props) {
     const {user} = useAuth()
 
-    // { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer,}
-    // const offert = {id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer}
     const {id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer} = props
     const {offertSelected, setOffertSelected, offerStatus, setOfferStatus} = useOffert()
 
@@ -22,6 +20,7 @@ export default function SavedOffertCard(props) {
     const handleClickBookmark = (e) => {
         e.preventDefault()
         e.stopPropagation()
+
         const docRef = doc(firestore, 'USUARIO', user.uid)
         updateDoc(docRef, {
             bookmark: arrayUnion(id)
@@ -29,13 +28,11 @@ export default function SavedOffertCard(props) {
         // .then()
         // .finally(setIsBookmark(true))
         // setIsBookmark(true)
-        // alert('AGREGAR')
-        
     }
     const handleClickUnbookmark = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        // alert('QUITAR')
+
         const docRef = doc(firestore, 'USUARIO', user.uid)
         updateDoc(docRef, {
             bookmark: arrayRemove(id)
@@ -61,7 +58,7 @@ export default function SavedOffertCard(props) {
     
             // 👇️ your logic here
             setOffertSelected(null)
-            btnFocus.blur()
+            btnFocus?.blur()
           }
         };
     
@@ -118,43 +115,12 @@ export default function SavedOffertCard(props) {
                         
                         <div className="estado">
                             <p>Estado: 
-                                {/* {console.log(offerStatus)} */}
                                 {offerStatus.map(ele => {
-                                    {console.log(ele.estado)}
-                                    {if(ele.estado === 'Aporbado') return (<label key={ele.id} style={{background: '#adfc92'}}>Aporbado</label>)}
-                                    {if(ele.estado === 'Rechazado') return (<label key={ele.id} style={{background: '#FC9292'}}>Rechazado</label>)}
-                                    {if(ele.estado === 'En espera') return (<label key={ele.id} style={{background: '#e6e6e6'}}>En espera</label>)}
+                                    {if(ele.id === id && ele.estado === 'Aprobado') return (<label style={{background: '#adfc92'}}>Aprobado</label>)}
+                                    {if(ele.id === id && ele.estado === 'Rechazado') return (<label style={{background: '#FC9292'}}>Rechazado</label>)}
+                                    {if(ele.id === id && ele.estado === 'En espera') return (<label style={{background: '#e6e6e6'}}>En espera</label>)}
                                 })}
                             </p>
-                            {/*
-                                {offerStatus.find(ele => {
-                                return (console.log(ele.estado))
-                                // ele.estado === 'Aporbado' && <label style={{background: '#adfc92'}}>En espera</label>
-                                // ele.estado === 'Rechazado' && <label style={{background: '#FC9292'}}>En espera</label>
-                                // ele.estado === 'En espera' && <label style={{background: '#e6e6e6'}}>En espera</label>
-                            })}
-
-                            if(estado === 'Aporbado') <label style={{background: '#adfc92'}}>Aporbado</label>
-                            if(estado === 'Rechazado') <label style={{background: '#FC9292'}}>Rechazado</label>
-                            if(estado === 'En espera') <label style={{background: '#e6e6e6'}}>En espera</label>
-
-                            if(ele.estado === 'Aporbado') return (<label style={{background: '#adfc92'}}>Aporbado</label>)
-                            if(ele.estado === 'Rechazado') return (<label style={{background: '#FC9292'}}>Rechazado</label>)
-                            if(ele.estado === 'En espera') return (<label style={{background: '#e6e6e6'}}>En espera</label>)
-                            
-                            offerStatus.estado === 'Aporbado' && <label style={{background: '#adfc92'}}>En espera</label>
-                            offerStatus.estado === 'Rechazado' && <label style={{background: '#FC9292'}}>En espera</label>
-                            offerStatus.estado === 'En espera' && <label style={{background: '#e6e6e6'}}>En espera</label>
-
-                            {ele.estado === 'Aporbado' && <label key={ele.id} style={{background: '#adfc92'}}>Aporbado</label>}
-                            {ele.estado === 'Rechazado' && <label key={ele.id} style={{background: '#FC9292'}}>Rechazado</label>}
-                            {ele.estado === 'En espera' && <label key={ele.id} style={{background: '#e6e6e6'}}>En espera</label>}
-
-                            colores
-                            aporbado: #adfc92
-                            en espera: #e6e6e6
-                            rechazado: #FC9292
-                            */}
                         </div>
                     :
                         null
@@ -163,9 +129,15 @@ export default function SavedOffertCard(props) {
                 {user.postulado?.includes(id) ?
                     <div className="selfInfo">
                         <div className="fecha">
-                                {offerStatus.map(ele => {
-                                    return <p key={id}>Fecha de postulación: {ele.fecha_postulacion}</p>
-                                })}
+                            {offerStatus.map(ele => {
+                                {if(ele.id === id && ele.fecha_postulacion) return (<p key={Math.random()}>Fecha de postulación: {ele.fecha_postulacion}</p>)}
+                            })}
+                            {offerStatus.map(ele => {
+                                {if(ele.id === id && ele.fecha_aprobacion) return (<p key={Math.random()}>Fecha de aprobación: {ele.fecha_aprobacion}</p>)}
+                            })}
+                            {offerStatus.map(ele => {
+                                {if(ele.id === id && ele.fecha_rechazo) return (<p key={Math.random()}>Fecha de rechazo: {ele.fecha_rechazo}</p>)}
+                            })}
                         </div>
                     </div>
                 :
@@ -174,11 +146,14 @@ export default function SavedOffertCard(props) {
             </div>
             <div className="right-col-end">
                 {/* <Bookmark width={27} height={27} /> */}
+                {/* <div style={{ padding: '8px', border-radius: '50%', background-color: 'rgba(0, 0, 0, 0.04)', background: 'radial-gradient(circle, rgb(230, 230, 230) 0%, transparent 100%)', backgroundPosition: 'center' }} > */}
+
                 {user.bookmark?.includes(id) ?
                     <Bookmark width={27} height={27} fill={'#473198'} stroke={'#473198'} onClick={handleClickUnbookmark} />
-                :
+                    :
                     <Bookmark width={27} height={27} onClick={handleClickBookmark} />
                 }
+                {/* </div> */}
             </div>
         </button>
 
@@ -235,7 +210,7 @@ export default function SavedOffertCard(props) {
             }
             button:hover {
                 border: 1px thin #4A0D67;
-                background: rgb(239, 243, 244);
+                background: red;
             }
             .offer .offerLogo img {
                 height: 77px;

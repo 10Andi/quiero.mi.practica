@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { auth, firestore, storage } from "../../firebase/client"
-import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage"
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage"
 
 import { useRouter } from "next/router"
 import { useForm, Controller } from "react-hook-form"
@@ -19,6 +19,8 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { Ring } from '@uiball/loaders'
+import Tooltip from '@mui/material/Tooltip'
+import { useAuth } from "../../context/AuthContext"
 
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
@@ -27,8 +29,15 @@ export default function Empresa() {
     const userType = 'empresa'
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [logoUrl, setLogoUrl] = useState(null);
     const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
+    const { logOut } = useAuth()
+
+    async function uploadFileAndURL(uidEmpresa, file, fileName) {
+        const fileRef = ref(storage, `logo/${uidEmpresa}/${fileName}`)
+        await uploadBytes(fileRef, file)
+        const url = await getDownloadURL(fileRef)
+        return url
+    }
 
     async function submitHandler(data) {
         // e.preventDefault()
@@ -43,7 +52,7 @@ export default function Empresa() {
 
         const docRefUser = doc(firestore, `USUARIO/${uid}`)
         const docRefCompany = doc(firestore, `EMPRESA/${uidEmpresa}`)
-        const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
+        // const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
 
 
 
@@ -56,10 +65,15 @@ export default function Empresa() {
         //     setLogoUrl(url)
         // }))
 
-        uploadBytes(fileRef, data.logo[0].file).then( (snapshot) => {
-            console.log('uploaded');
-            getDownloadURL(snapshot.ref).then( url => setLogoUrl(url));
-          });
+        
+
+        // uploadBytes(fileRef, data.logo[0].file).then( (snapshot) => {
+        //     if (snapshot.exists) {
+        //         const blob = snapshot.val()
+        //         const url = URL.createObjectURL(blob)
+        //         setLogoUrl(url)
+        //     }
+        //   })
           
         // uploadBytes(fileRef, data.logo[0].file).then((snapshot) => {
         //     getDownloadURL(fileRef).then((url) => {
@@ -118,38 +132,10 @@ export default function Empresa() {
         //   );
         //   })
         
-        // const uploadTask = uploadBytesResumable(fileRef)
-        // uploadTask.on('state_changed',
-        // (snapshot) => {
-        //     () => {
-        //         // Upload completed successfully, now we can get the download URL
-        //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        //             console.log('File available at', downloadURL)
-        //             setLogoUrl(downloadURL)
-        //         })
-        //     }
-        // })
-
         
-        // const uploadTask = uploadBytesResumable(fileRef, data.logo[0].file);
 
-        // uploadTask.on("state_changed",
-        // (snapshot) => {
-        //     const progress =
-        //     Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        //     setProgresspercent(progress);
-        // },
-        // (error) => {
-        //     alert(error);
-        // },
-        // () => {
-        //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        //     setLogoUrl(downloadURL)
-        //     });
-        // }
-        // );
-
-
+        const URL = await uploadFileAndURL(uidEmpresa, data.logo[0].file, data.logo[0].filename)
+        console.log(URL)
         await setDoc(docRefUser, {
             nombres: data.nombres,
             apellidoPaterno: data.apellidoPaterno,
@@ -162,12 +148,13 @@ export default function Empresa() {
             uid_empresa: uidEmpresa,
             nombre_empresa: data.nombre_empresa,
             tipo: userType,
-            avatar: avatar
+            avatar: avatar,
+            logo_empresa: URL,
         })
         await setDoc(docRefCompany, {
             uid_empresa: uidEmpresa,
             nombre_empresa: data.nombre_empresa,
-            logo: logoUrl,
+            logo: URL,
             rut_empresa: formatRut(data.rut_empresa),
             comuna_empresa: data.comuna_empresa.value,
             region_empresa: data.comuna_empresa.region,
@@ -179,34 +166,34 @@ export default function Empresa() {
             apellidoMaterno_admin: data.apellidoMaterno,
             avatar_admin: avatar,
         })
+        // .then(logOut())
         // .then(await uploadBytes(fileRef, data.logo[0].file))
         .finally(() => {
             setLoading(false)
-            console.log(logoUrl)
             router.push('/login')
         })
-        console.log(newUser)
+        // console.log(newUser)
         // console.log(user)
     }
     
-    const onSubmit = async (data) => {
-        // console.log(data.logo[0])
-        // const fileRef = ref(storage, `logo/01/${data.logo[0].filename}`)
-        // uploadBytes(fileRef, data.logo[0].file).then(() => {
-        //     alert('PDF SUBIDO!')
-        // })
-        const uidEmpresa = Math.random().toString(36).slice(2)
+    // const onSubmit = async (data) => {
+    //     // console.log(data.logo[0])
+    //     // const fileRef = ref(storage, `logo/01/${data.logo[0].filename}`)
+    //     // uploadBytes(fileRef, data.logo[0].file).then(() => {
+    //     //     alert('PDF SUBIDO!')
+    //     // })
+    //     const uidEmpresa = Math.random().toString(36).slice(2)
         
-        const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
-        await uploadBytes(fileRef, data.logo[0].file)
-        .then(getDownloadURL(ref(storage, fileRef))
-        .then(async (url) => {
-            setLogoUrl(url)
-        }))
+    //     const fileRef = ref(storage, `logo/${uidEmpresa}/${data.logo[0].filename}`)
+    //     await uploadBytes(fileRef, data.logo[0].file)
+    //     .then(getDownloadURL(ref(storage, fileRef))
+    //     .then(async (url) => {
+    //         setLogoUrl(url)
+    //     }))
     
-        console.log(logoUrl)
-        // {errors.nombres?.type === 'required' && accion a mostrar -> toast}
-    }
+    //     console.log(logoUrl)
+    //     // {errors.nombres?.type === 'required' && accion a mostrar -> toast}
+    // }
 
 
     return (
@@ -223,7 +210,9 @@ export default function Empresa() {
                             <input type="text" {...register('nombre_empresa', {
                                 required: true
                             })}/>
-                            <label className="test">¿Tu empresa ya existe en QUIERO MI PRACTICA? No crees un duplicado.</label>
+                            <Tooltip title="Debes ponerte en contacto con tu administrador de tu cuenta para que seas agregado como miembro del equipo. Si no conoces al administrador o necesitas recuperar acceso a una cuenta de empresa que ya existe, contáctanos." arrow>
+                                <label className="test">¿Tu empresa ya existe en QUIERO MI PRACTICA? No crees un duplicado.</label>
+                            </Tooltip>
                         </div>
                     </div>
                     <div className="card-postulacion">
@@ -418,6 +407,7 @@ export default function Empresa() {
                     display: block;
                     font-size: 16px;
                     color: #473198;
+                    width: fit-content;
                     // text-decoration-line: underline;
                     // text-decoration-style: dotted;
                 }
@@ -447,7 +437,7 @@ export default function Empresa() {
                     padding: 0 100px;
                     padding: 29px 0 !important;
                     border-bottom: 1px solid rgb(239, 243, 244);
-                    }
+                }
                 .card-postulacion .card-postulacion-info {
                     display: flex;
                     flex-direction: column;

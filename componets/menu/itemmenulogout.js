@@ -1,11 +1,8 @@
 import LogoutIcon from "../icons/logouticon"
-// import { getAuth, signOut } from 'firebase/auth'
-import firebaseApp from '../../firebase/client'
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/AuthContext";
 
 
-// const auth = getAuth(firebaseApp)
 
 export default function ItemMenuLogout() {
     const router = useRouter()
@@ -43,6 +40,10 @@ export default function ItemMenuLogout() {
                 }
                 span {
                     margin-left: 37px;
+                }
+                a {
+                    display: flex;
+                    align-items: center;
                 }
                 .link-active {
                     .link-active{

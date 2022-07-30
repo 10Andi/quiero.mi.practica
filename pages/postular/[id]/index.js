@@ -145,7 +145,7 @@ export default function Postular (props) {
                             </header>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="textarea">
-                                    <strong>Cuéntanos sobre tu experiencia y perfil profesional</strong>
+                                    <strong>Cuéntanos sobre tu experiencia y perfil profesional.</strong>
                                     <textarea cols="30" rows="10" {...register("info_personal", {
                                         required:true
                                     })}/>
@@ -221,6 +221,7 @@ export default function Postular (props) {
                         background-color: rgb(247, 249, 249);
                         border-radius: 10px;
                         padding: 18px;
+                        height: max-content;
                     }
                     aside span {
                         font-size: 14px;
@@ -232,6 +233,7 @@ export default function Postular (props) {
                         color: #444444;
                         margin-top: 20px;
                         margin-bottom: 30px;
+                        white-space: pre-line;
                     }
 
                     main {

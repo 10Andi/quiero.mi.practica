@@ -3,25 +3,42 @@ import sortOptions from '../../helper/sortOfferts'
 
 
 export default function SortOfferts() {
+    const styles = {
+        menuList: (base) => ({
+          ...base,
+      
+          "::-webkit-scrollbar": {
+            width: "8px",
+            height: "0px",
+          },
+          "::-webkit-scrollbar-track": {
+            background: "#f1f1f1"
+          },
+          "::-webkit-scrollbar-thumb": {
+            background: '#ccc',
+            borderRadius: '4px'
+          },
+          "::-webkit-scrollbar-thumb:hover": {
+            background: '#b3b3b3'
+          },
+          "::-webkit-scrollbar-thumb:active": {
+            background: '#999999'
+          }
+        })
+      }
+
     return (
         
         <>
         <section>
             <span>Prácticas para ti</span>
             <div>
-                {/*<span>Mostrar por:</span>
-                <select name="sort" id="sort" className="round">
-                    <option value="nuevos">Nuevos</option>
-                    <option value="visitas">Visitas</option>
-                    <option value="calificacion">Calificación</option>
-                    <option value="cupos">Cupos</option>
-                </select> */}
+                {/*<span>Mostrar por:</span>*/}
                 <Select
-                    isClearable
-                    isMulti
+                    styles={styles}
                     defaultOptions
                     defaultValue={sortOptions[0].options[0]}
-                    // placeholder={[0]}
+                    placeholder={'Mostrar por:'}
                     options={sortOptions}
                     onChange={(e) => {
                         console.log(e)

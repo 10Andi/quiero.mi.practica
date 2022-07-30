@@ -2,12 +2,12 @@ import { useAuth } from "../../context/AuthContext";
 import HelpIcon from "../icons/helpicon";
 import HomeIcon from "../icons/homeicon";
 import Logo from "../icons/logo";
-// import LogoutIcon from "../Icons/LogoutIcon";
-import PostulationsIcon from "../icons/postulationsicon";
-import SearchIcon from "../icons/searchicon";
 import ItemMenu from "./itemmenu";
 import ItemMenuLogout from "./itemmenulogout";
 import { useRouter } from "next/router";
+
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
 
 
 const MENU_ITEMS_CONTENTS = {
@@ -18,14 +18,14 @@ const MENU_ITEMS_CONTENTS = {
             img: <HomeIcon />
         },
         {
-            name: 'Buscar práctica',
-            href: '/home',
-            img: <SearchIcon />
+            name: 'Publicaciones',
+            href: '/',
+            img: <FeaturedPlayListIcon style={{ color: "#9E9EA7" }} />
         },
         {
-            name: 'Mis postulaciones',
-            href: '/mispostulaciones',
-            img: <PostulationsIcon />
+            name: 'Mi equipo',
+            href: '/miequipo',
+            img: <SupervisedUserCircleIcon style={{ color: "#9E9EA7" }} />
         },
         {
             name: 'Ayuda',
@@ -104,7 +104,6 @@ export default function MenuCompany() {
                     font-weight: bold;
                     color: #4A0D67;
                     margin-right: 10px;
-                    margin-top: 10px;
                 }
                 .text {
                     display: flex;
@@ -112,6 +111,7 @@ export default function MenuCompany() {
                 }
                 .company {
                     color: #473198;
+                    font-size: 16px;
                 }
             `}</style>
         </>

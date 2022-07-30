@@ -27,7 +27,7 @@ export const AuthContextProvider = ({children}) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 getUserType(user.uid).then((userDataFirestore) => {
-                    if(userDataFirestore.tipo === 'estudiante') {
+                    if(userDataFirestore && userDataFirestore.tipo === 'estudiante') {
                         setUser({
                             uid: user.uid,
                             email: user.email,
@@ -39,7 +39,7 @@ export const AuthContextProvider = ({children}) => {
                             bookmark: userDataFirestore.bookmark,
                             postulado: userDataFirestore.postulado
                         })
-                    } else {
+                    } else if (userDataFirestore && userDataFirestore.tipo === 'empresa') {
                         setUser({
                             uid: user.uid,
                             email: user.email,
@@ -51,6 +51,9 @@ export const AuthContextProvider = ({children}) => {
                             type: userDataFirestore.tipo,
                             uid_empresa: userDataFirestore.uid_empresa,
                             nombre_empresa: userDataFirestore.nombre_empresa,
+                            logo_empresa: userDataFirestore.logo_empresa,
+                            comuna_empresa: userDataFirestore.comuna_empresa,
+                            region_empresa: userDataFirestore.region_empresa
                         })
                     }
                     // console.log(userDataFirestore.tipo)

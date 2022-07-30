@@ -4,27 +4,25 @@ import useTimeAgo from "../../hooks/useTimeAgo";
 import Dot from "../icons/dot";
 import Locate from "../icons/locate";
 import Views from "../icons/views";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"
+import { doc, updateDoc, arrayUnion, arrayRemove, increment } from "firebase/firestore"
 import { firestore } from "../../firebase/client";
 import Bookmark from "../icons/bookmark";
 import { useAuth } from "../../context/AuthContext";
+import { IconButton } from "@mui/material";
 
 export default function OffertCard(props) {
     const {user} = useAuth()
 
-    // { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer,}
-    // const offert = {id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer}
     const {id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer} = props
     const {offertSelected, setOffertSelected} = useOffert()
     const {isBookmark, setIsBookmark} = useOffert()
 
-
     const timeAgo = useTimeAgo(fecha_creacion)
-    // const newVisits = vistas
 
     const handleClickBookmark = (e) => {
         e.preventDefault()
         e.stopPropagation()
+        
         const docRef = doc(firestore, 'USUARIO', user.uid)
         updateDoc(docRef, {
             bookmark: arrayUnion(id)
@@ -32,13 +30,11 @@ export default function OffertCard(props) {
         // .then()
         // .finally(setIsBookmark(true))
         // setIsBookmark(true)
-        // alert('AGREGAR')
-        
     }
     const handleClickUnbookmark = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        // alert('QUITAR')
+
         const docRef = doc(firestore, 'USUARIO', user.uid)
         updateDoc(docRef, {
             bookmark: arrayRemove(id)
@@ -47,14 +43,19 @@ export default function OffertCard(props) {
         // .finally(setIsBookmark(true))
     }
 
-    const handleClick = (props) => {
+    const handleClick = async (props) => {
         setOffertSelected(props)
+        // console.log(props)
+        // console.log(user)
 
-        const newVisits = vistas + 1
+        // const newVisits = vistas + 1
 
         const docRef = doc(firestore, 'test', id)
-        updateDoc(docRef, {
-            vistas: newVisits
+        // updateDoc(docRef, {
+        //     vistas: newVisits
+        // })
+        await updateDoc(docRef, {
+            vistas: increment(1)
         })
     }
 
@@ -68,7 +69,7 @@ export default function OffertCard(props) {
     
             // 👇️ your logic here
             setOffertSelected(null)
-            btnFocus.blur()
+            btnFocus?.blur()
           }
         };
     
@@ -83,7 +84,7 @@ export default function OffertCard(props) {
 
     return (
         <>
-        <button className="offer" key={id} id={id} style={{backgroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white'}} onClick={() => handleClick(props)}>
+        <button className="offer" key={id} id={id} style={{backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white'}} onClick={() => handleClick(props)}>
             <div className="offerLogo">
                 <img loading="lazy" src={logo} alt={nombre_empresa} draggable="false" />
             </div>
@@ -123,11 +124,13 @@ export default function OffertCard(props) {
                 </div>
             </div>
             <div className="right-col-end">
+                <IconButton>
                 {user.bookmark?.includes(id) ?
                     <Bookmark width={27} height={27} fill={'#473198'} stroke={'#473198'} onClick={handleClickUnbookmark} />
                 :
                     <Bookmark width={27} height={27} onClick={handleClickBookmark} />
                 }
+                </IconButton>
             </div>
         </button>
 

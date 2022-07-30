@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { auth, firestore, storage } from "../../firebase/client"
-import { ref, uploadBytes } from "firebase/storage"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form"
 import { cleanRut , validateRut, formatRut } from 'rutlib'
@@ -23,6 +23,14 @@ export default function Usuario() {
     const [loading, setLoading] = useState(false)
     const { register, handleSubmit, formState: { errors }, watch, control } = useForm()
 
+    async function uploadFileAndURL(uidUsuario, file, fileName) {
+        const fileRef = ref(storage, `certificadosAlumnoRegular/${uidUsuario}/${fileName}`)
+        // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+        await uploadBytes(fileRef, file)
+        const url = await getDownloadURL(fileRef)
+        return url
+    }
+
     async function submitHandler(data) {
         // e.preventDefault()
         setLoading(true)
@@ -34,7 +42,11 @@ export default function Usuario() {
         const fechaCreacion = undefined // obtener de user.metadata.creationTime.millisecondsSinceEpoch o hacer TIMESTAMP
         
         const docRef = doc(firestore, `USUARIO/${uid}`)
-        const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+
+        // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+
+        const URL = await uploadFileAndURL(uid, data.certificadoAlumnoRegular[0].file, data.certificadoAlumnoRegular[0].filename)
+        console.log(URL)
 
         await setDoc(docRef, {
             nombres: data.nombres,
@@ -46,17 +58,17 @@ export default function Usuario() {
             email: data.email,
             password: data.password, // MINIMO 6 CARACTERES
             nom_institucion: data.nom_institucion,
-            certificadoAlumnoRegular: data.certificadoAlumnoRegular[0].filename,
+            certificadoAlumnoRegular: URL,
             tipo: userType,
             avatar: avatar,
             // fechaCreacion: fechaCreacion // ( ? ) -> sera necesario; teniendo esta info en FirebaseAuth 
         })
-        .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
+        // .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
         .finally(() => {
             setLoading(false)
             router.push('/login')
         })
-        console.log(newUser)
+        // console.log(newUser)
         // console.log(user)
     }
     
@@ -228,7 +240,7 @@ export default function Usuario() {
             <Ring
                 size={100}
                 lineWeight={5}
-                speed={2} 
+                speed={2}
                 color="#473198"
             />
         </div> 

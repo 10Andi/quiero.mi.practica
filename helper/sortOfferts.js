@@ -2,9 +2,9 @@ const sortOptions = [
     {
       label: 'Ordernar por',
       options: [
-        { label: 'Más nuevos', value: 'Más nuevos', x: 'x' },
-        { label: 'Más vistos', value: 'Más vistos', x: 'x' },
-        { label: 'Más cupos disponibles', value: 'Más cupos disponibles', x: 'x' },
+        { label: 'Más nuevos', value: 'Más nuevos', categorias: false },
+        { label: 'Más vistos', value: 'Más vistos', categorias: false },
+        { label: 'Más cupos disponibles', value: 'Más cupos disponibles', categorias: false },
       ]
     },
     {

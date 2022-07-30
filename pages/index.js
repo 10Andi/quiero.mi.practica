@@ -13,7 +13,7 @@ export default function Landing() {
         <>
             <section className="container">
                 <Nav />
-                <button onClick={logOut}>CERRAR SESION</button>
+                {/* <button onClick={logOut}>CERRAR SESION</button> */}
                 <Hero />
                 <Searchbar />
                 <ShowCompanies />
@@ -25,6 +25,7 @@ export default function Landing() {
             <style jsx>{`
                 .container {
                     padding: 0 42px;
+                    margin-bottom: 100px;
                 }
             `}</style>
         </>
