@@ -39,6 +39,7 @@ export default function useTimeAgo (timestamp) {
     style: 'long'
   })
   const { value, unit } = timeAgo
+  const formatTimeAgo = rtf.format(value, unit)
 
-  return rtf.format(value, unit)
+  return formatTimeAgo.charAt(0).toUpperCase() + formatTimeAgo.slice(1)
 }

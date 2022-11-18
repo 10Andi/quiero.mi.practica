@@ -56,16 +56,16 @@ export default function PreguntasFrecuentes () {
       <Footer />
 
       <style jsx>{`
-            .container {
-                padding: 0 42px;
-            }
-            .card-request-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 120px;
-            }
-            `}
+          .container {
+            padding: 0 42px;
+          }
+          .card-request-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 120px;
+          }
+        `}
       </style>
     </>
   )

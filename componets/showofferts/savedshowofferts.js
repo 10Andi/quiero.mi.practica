@@ -122,37 +122,41 @@ export default function SavedShowOfferts () {
   return (
     <>
       {loading
-        ? <div>
-          <Ring size={40} lineWeight={5} speed={2} color='#473198' />
-        </div>
-        : <section>
-          {offerList && offerList.map(({
-            id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
-            logo, nombre_empresa, politica_trabajo, requerimiento, vistas
-          }) => (
-            <SavedOffertCard
-              key={id}
-              id={id}
-              logo={logo}
-              nombre_empresa={nombre_empresa}
-              cargo={cargo}
-              ejercer={ejercer}
-              comuna={comuna}
-              ciudad={ciudad}
-              vistas={vistas}
-              fecha_creacion={fecha_creacion}
-              horario={horario}
-              cupos={cupos}
-              beneficios={beneficios} //
-              categoria={categoria}
-              condicion={condicion}
-              descripcion={descripcion}
-              politica_trabajo={politica_trabajo}
-              requerimiento={requerimiento}
-            />
-          ))}
-          {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta o agregado alguna oferta a tu bookmark</p></article>}
-        </section>}
+        ? (
+          <div>
+            <Ring size={40} lineWeight={5} speed={2} color='#473198' />
+          </div>
+          )
+        : (
+          <section>
+            {offerList && offerList.map(({
+              id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+              logo, nombre_empresa, politica_trabajo, requerimiento, vistas
+            }) => (
+              <SavedOffertCard
+                key={id}
+                id={id}
+                logo={logo}
+                nombre_empresa={nombre_empresa}
+                cargo={cargo}
+                ejercer={ejercer}
+                comuna={comuna}
+                ciudad={ciudad}
+                vistas={vistas}
+                fecha_creacion={fecha_creacion}
+                horario={horario}
+                cupos={cupos}
+                beneficios={beneficios} //
+                categoria={categoria}
+                condicion={condicion}
+                descripcion={descripcion}
+                politica_trabajo={politica_trabajo}
+                requerimiento={requerimiento}
+              />
+            ))}
+            {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta o agregado alguna oferta a tu bookmark</p></article>}
+          </section>
+          )}
 
       <style jsx>{`
                 div {

@@ -45,15 +45,8 @@ export default function OffertCard (props) {
 
   const handleClick = async (props) => {
     setOffertSelected(props)
-    // console.log(props)
-    // console.log(user)
-
-    // const newVisits = vistas + 1
 
     const docRef = doc(firestore, 'test', id)
-    // updateDoc(docRef, {
-    //     vistas: newVisits
-    // })
     await updateDoc(docRef, {
       vistas: increment(1)
     })
@@ -127,84 +120,83 @@ export default function OffertCard (props) {
       </button>
 
       <style jsx>{`    
-    button {
-        width: 100%;
-        padding: 21px;
-        display: flex;
-        cursor: pointer;
+          button {
+            width: 100%;
+            padding: 21px;
+            display: flex;
+            cursor: pointer;
 
-        background: none;
-        border: none;
-        border-radius: 10px;
-        text-align: start;
+            background: none;
+            border: none;
+            border-radius: 10px;
+            text-align: start;
 
 
-        margin: 16px 0;
-    }
-    
-    button:focus {
-        outline: 1px solid #9BF3F0;
-        outline: 1px solid rgb(239, 243, 244);
-        outline: none;
-        background-color: rgb(247, 249, 249);
-    }
-    button:hover {
-        border: 1px thin #4A0D67;
-        background: rgb(239, 243, 244);
-    }
-    .offer .offerLogo img {
-        height: 77px;
-        width: 77px;
-        margin-right: 21px;
-        border-radius: 10px;
-    }
-    .offer .offerInfo h4 {
-        font-size: 24px;
-        //margin-bottom: 7px;
-        margin: 0 0 7px 0;
-    }
-    .offer .offerInfo span {
-        font-size: 16px;
-        color: #444444;
-        
-    }
-    .offer .offerInfo .infoItemsTop {
-        display: flex;
-    }
-    .offer .offerInfo .infoItemsTop .infoItem {
-        margin: 12px 0 7px 0;
-    }
-    .offer .offerInfo .infoItemsTop .infoItem span {
-        font-size: 12px;
-        margin: 0 10px;
-    }
-    .offer .offerInfo .infoItemsTop .infoItem img {
-        margin-right: 10px;
-    }
-    .offer .offerInfo .infoItemsBottom {
-        display: flex;
-    }
-    .offer .offerInfo .infoItemsBottom .infoItem span {
-        font-size: 12px;
-    }
-    .offer .offerInfo .infoItemsBottom .infoItem img {
-        margin-right: 12px;
-    }
-    .offer .offerTools {
-        flex-grow: 1
-    }
-    .offer .offerTools .options {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .offer .offerTools .options img {
-        margin-left: 14px;
-    }
-    .right-col-end {
-        margin-left: auto;
-        {/* z-index: 10; */}
-    }
-`}
+            margin: 16px 0;
+          }
+          
+          button:focus {
+            outline: 1px solid #9BF3F0;
+            outline: 1px solid rgb(239, 243, 244);
+            outline: none;
+            background-color: rgb(247, 249, 249);
+          }
+          button:hover {
+            border: 1px thin #4A0D67;
+            background: rgb(239, 243, 244);
+          }
+          .offer .offerLogo img {
+            height: 77px;
+            width: 77px;
+            margin-right: 21px;
+            border-radius: 10px;
+          }
+          .offer .offerInfo h4 {
+            font-size: 24px;
+            //margin-bottom: 7px;
+            margin: 0 0 7px 0;
+          }
+          .offer .offerInfo span {
+            font-size: 16px;
+            color: #444444;
+          }
+          .offer .offerInfo .infoItemsTop {
+            display: flex;
+          }
+          .offer .offerInfo .infoItemsTop .infoItem {
+            margin: 12px 0 7px 0;
+          }
+          .offer .offerInfo .infoItemsTop .infoItem span {
+            font-size: 12px;
+            margin: 0 10px;
+          }
+          .offer .offerInfo .infoItemsTop .infoItem img {
+            margin-right: 10px;
+          }
+          .offer .offerInfo .infoItemsBottom {
+            display: flex;
+          }
+          .offer .offerInfo .infoItemsBottom .infoItem span {
+            font-size: 12px;
+          }
+          .offer .offerInfo .infoItemsBottom .infoItem img {
+            margin-right: 12px;
+          }
+          .offer .offerTools {
+            flex-grow: 1
+          }
+          .offer .offerTools .options {
+            display: flex;
+            justify-content: flex-end;
+          }
+          .offer .offerTools .options img {
+            margin-left: 14px;
+          }
+          .right-col-end {
+            margin-left: auto;
+            {/* z-index: 10; */}
+          }
+        `}
       </style>
     </>
   )

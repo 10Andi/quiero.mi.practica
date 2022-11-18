@@ -212,31 +212,31 @@ export default function ShowOfferts () {
             )}
 
       <style jsx>{`
-                div {
-                    padding: 50px;
-                    display: grid;
-                    place-content: center;
-                }
-                section: {
-                    height: 100%;
-                    overflow-y: auto;
-                }
-                section::-webkit-scrollbar {
-                    width: 8px;
-                    height: 8px;
-                }
-                section::-webkit-scrollbar-thumb {
-                    background: #ccc;
-                    border-radius: 4px;
-                }
-                section::-webkit-scrollbar-thumb:hover {
-                    background: #b3b3b3;
-                }
-                section::-webkit-scrollbar-thumb:active {
-                    background-color: #999999;
-                }
-                
-            `}
+          div {
+            padding: 50px;
+            display: grid;
+            place-content: center;
+          }
+          section: {
+            height: 100%;
+            overflow-y: auto;
+          }
+          section::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          section::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+          }
+          section::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+          }
+          section::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+          }
+            
+        `}
       </style>
     </>
   )

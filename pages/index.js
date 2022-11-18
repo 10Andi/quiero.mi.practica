@@ -23,11 +23,11 @@ export default function Landing () {
       <Footer />
 
       <style jsx>{`
-                .container {
-                    padding: 0 42px;
-                    margin-bottom: 100px;
-                }
-            `}
+          .container {
+            padding: 0 42px;
+            margin-bottom: 100px;
+          }
+        `}
       </style>
     </>
   )
