@@ -1,253 +1,266 @@
-import { useAuth } from "../../../context/AuthContext"
-import { useRouter } from "next/router"
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+// import { addDoc, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { updateDoc, addDoc, doc, setDoc, collection, getDoc } from "firebase/firestore"
-import { firestore } from "../../../firebase/client"
+import { useAuth } from '../../../context/AuthContext'
+import { firestore } from '../../../firebase/client'
 
-import NavRegister from "../../../componets/nav/navregister"
-import { useForm, Controller } from "react-hook-form"
-import Select from 'react-select'
 import { Ring } from '@uiball/loaders'
-import categorias from "../../../helper/categorias"
-import horarios from "../../../helper/horarios"
+import { Controller, useForm } from 'react-hook-form'
+import Select from 'react-select'
+import NavRegister from '../../../componets/nav/navregister'
+import categorias from '../../../helper/categorias'
+import horarios from '../../../helper/horarios'
 
-export default function EditarPublicacion({row}) {
-    const {user} = useAuth()
-    const [offer, setOffer] = useState(null)
-    const router = useRouter()
-    const { id } = router.query
-    // const data = router.query
-    // console.log(id)
+export default function EditarPublicacion ({ row }) {
+  const { user } = useAuth()
+  const [offer, setOffer] = useState(null)
+  const router = useRouter()
+  const { id } = router.query
+  // const data = router.query
+  // console.log(id)
 
-    // console.log(row)
+  // console.log(row)
 
-    const [loading, setLoading] = useState(false)
-    
-    const { register, handleSubmit, formState: { errors }, watch, control, trigger, setValue } = useForm()
+  const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        setLoading(true)
-        async function getOffer() {
-            const docRef = doc(firestore, `test/${id}`)
-            const docSnap = await getDoc(docRef)
-            const userDataFirestore = docSnap.data()
-            // console.log(userDataFirestore)
-            return userDataFirestore
-        }
-        
-        function setUseForm (data) {
-            console.log(data)
-            Object.entries(data).map(entry => {
-                const [key, value] = entry
-                setValue(key, value, {shouldTouch: true})
-                // console.log(key,'->' , value)
-            })
-            return data
-        }
+  const { register, handleSubmit, control, setValue } = useForm()
+  // const { register, handleSubmit, formState: { errors }, watch, control, trigger, setValue } = useForm()
 
-        getOffer().then(setUseForm).then(setOffer).finally(setLoading(false))
-    }, [id, setValue])
-    
-    if (user === null) {
-        router.push('/login')
-        return
-    }
-    if (user && user.type !== 'empresa') {
-        router.push('/login')
-        return
-    }
-    
-    const cupos = 15
-    const visitas = 0
-
-
-    async function onSubmit(data) {
-        // console.log(data)
-        // console.log(user)
-        setLoading(true)
-        
-        const fechaModificacion = new Date()
-        user.uid
-        user.displayName
-        // posiblemente guardar valor antiguo y valor nuevo
-        // user.uid_empresa
-        // user.nombre_empresa
-        // user.logo_empresa
-        // user.comuna_empresa
-        // user.region_empresa
-
-        // const docRefOffer = doc(firestore, `test`)
-        //const docRefInternalInfo = doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`)
-        const docRef = doc(firestore, 'test', id)
-
-        // const { id } = await addDoc(collection(firestore, 'test'), {
-        await updateDoc(docRef, {
-            beneficios: data.beneficios,
-            categoria: data.categoria.value,
-            cargo: data.cargo,
-            // ciudad: user.region_empresa,
-            // comuna: user.comuna_empresa,
-            condicion: data.condicion,
-            // cupos: cupos,
-            descripcion: data.descripcion,
-            ejercer: data.ejercer,
-            // fecha_creacion: fechaCreacion,
-            horario: data.horario.value,
-            // logo: user.logo_empresa,
-            // nombre_empresa: user.nombre_empresa,
-            politica_trabajo: data.politica_trabajo,
-            requerimiento: data.requerimiento,
-            // vistas: visitas
-        })
-        .finally(() => {
-            setLoading(false)
-            router.push('/dashboard')
-        })
+  useEffect(() => {
+    setLoading(true)
+    async function getOffer () {
+      const docRef = doc(firestore, `test/${id}`)
+      const docSnap = await getDoc(docRef)
+      const userDataFirestore = docSnap.data()
+      // console.log(userDataFirestore)
+      return userDataFirestore
     }
 
-    return (
-        <>
-            <section>
-                <NavRegister />
-                <div className="layout">
-                    <main>
-                        <header>
-                            <img loading="lazy" src={'https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png'} alt={''} />
-                            <div>
-                                <h1>Estas editando la oferta <span>{offer?.cargo}, {offer?.ejercer}</span></h1>
-                                <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
-                            </div>
-                        </header>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+    function setUseForm (data) {
+      console.log(data)
+      Object.entries(data).forEach(entry => {
+        const [key, value] = entry
+        setValue(key, value, { shouldTouch: true })
+        // console.log(key,'->' , value)
+      })
+      return data
+    }
 
-                            <div className="textarea">
-                                <strong>Cargo: </strong>
-                                <input type="text"  {...register('cargo', {
-                                    required: true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Ejerce: </strong>
-                                <input type="text"  {...register('ejercer', {
-                                    required: true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Elige una categoria:</strong>
-                                <Controller
-                                    control={control}
-                                    name="categoria"
-                                    rules={{required: true}}
-                                    render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                                        <Select
+    getOffer().then(setUseForm).then(setOffer).finally(setLoading(false))
+  }, [id, setValue])
+
+  if (user === null) {
+    router.push('/login')
+    return
+  }
+  if (user && user.type !== 'empresa') {
+    router.push('/login')
+    return
+  }
+
+  // const cupos = 15
+  // const visitas = 0
+
+  async function onSubmit (data) {
+    // console.log(data)
+    // console.log(user)
+    setLoading(true)
+
+    // const fechaModificacion = new Date()
+    // user.uid
+    // user.displayName
+
+    // posiblemente guardar valor antiguo y valor nuevo
+    // user.uid_empresa
+    // user.nombre_empresa
+    // user.logo_empresa
+    // user.comuna_empresa
+    // user.region_empresa
+
+    // const docRefOffer = doc(firestore, `test`)
+    // const docRefInternalInfo = doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`)
+    const docRef = doc(firestore, 'test', id)
+
+    // const { id } = await addDoc(collection(firestore, 'test'), {
+    await updateDoc(docRef, {
+      beneficios: data.beneficios,
+      categoria: data.categoria.value,
+      cargo: data.cargo,
+      // ciudad: user.region_empresa,
+      // comuna: user.comuna_empresa,
+      condicion: data.condicion,
+      // cupos: cupos,
+      descripcion: data.descripcion,
+      ejercer: data.ejercer,
+      // fecha_creacion: fechaCreacion,
+      horario: data.horario.value,
+      // logo: user.logo_empresa,
+      // nombre_empresa: user.nombre_empresa,
+      politica_trabajo: data.politica_trabajo,
+      requerimiento: data.requerimiento
+      // vistas: visitas
+    })
+      .finally(() => {
+        setLoading(false)
+        router.push('/dashboard')
+      })
+  }
+
+  return (
+    <>
+      <section>
+        <NavRegister />
+        <div className='layout'>
+          <main>
+            <header>
+              <img loading='lazy' src='https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png' alt='' />
+              <div>
+                <h1>Estas editando la oferta <span>{offer?.cargo}, {offer?.ejercer}</span></h1>
+                <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
+              </div>
+            </header>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+              <div className='textarea'>
+                <strong>Cargo: </strong>
+                <input
+                  type='text' {...register('cargo', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Ejerce: </strong>
+                <input
+                  type='text' {...register('ejercer', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Elige una categoria:</strong>
+                <Controller
+                  control={control}
+                  name='categoria'
+                  rules={{ required: true }}
+                  render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                    <Select
                                             // {...field}
-                                            isClearable
+                      isClearable
                                             // defaultOptions
-                                            placeholder={"Busca la categoría ..."}
-                                            options={categorias}
-                                            value={categorias.find((c) => c.value === value)}
-                                            onChange={(val) => onChange(val.value)}
-                                            // value={value}
-                                            // onChange={(val) => onChange(val)}
-                                            // defaultValue={setValue}
-                                            // defaultValue={field}
-                                        />
-                                    )}
-                                />
-                            </div>
-                            <div className="textarea">
-                                <strong>Elige un tipo de horario:</strong>
-                                <Controller
-                                    control={control}
-                                    name="horario"
-                                    rules={{required: true}}
-                                    render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                                        <Select
+                      placeholder='Busca la categoría ...'
+                      options={categorias}
+                      value={categorias.find((c) => c.value === value)}
+                      onChange={(val) => onChange(val.value)}
+                    />
+                  )}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Elige un tipo de horario:</strong>
+                <Controller
+                  control={control}
+                  name='horario'
+                  rules={{ required: true }}
+                  render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                    <Select
                                             // {...field}
-                                            isClearable
+                      isClearable
                                             // defaultOptions
-                                            placeholder={"Busca el horario ..."}
-                                            options={horarios}
-                                            value={horarios.find((h) => h.value === value)}
-                                            onChange={(val) => onChange(val.value)}
-                                            // defaultValue={field.value.horario}
-                                            // setValue={setValue}
-                                        />
-                                    )}
-                                />
-                            </div>
-                            <div className="textarea">
-                                <strong>Requerimientos:</strong>
-                                <textarea cols="30" rows="10"  {...register("requerimiento", {
-                                    required:true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Sobre el trabajo:</strong>
-                                <textarea cols="30" rows="10"  {...register("descripcion", {
-                                    required:true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Conocimientos:</strong>
-                                <textarea cols="30" rows="10"  {...register("condicion", {
-                                    required:true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Beneficios:</strong>
-                                <textarea cols="30" rows="10"  {...register("beneficios", {
-                                    required:true
-                                })}/>
-                            </div>
-                            <div className="textarea">
-                                <strong>Policas de trabajo:</strong>
-                                <textarea cols="30" rows="10"  {...register("politica_trabajo", {
-                                    required:true
-                                })}/>
-                            </div>
-                            
-                            <div className="registro-btn">
-                                <button type="submit">Editar oferta</button>
-                            </div>
-                        </form>
-                        
-                    </main>
-                    {/* 
+                      placeholder='Busca el horario ...'
+                      options={horarios}
+                      value={horarios.find((h) => h.value === value)}
+                      onChange={(val) => onChange(val.value)}
+                    />
+                  )}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Requerimientos:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('requerimiento', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Sobre el trabajo:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('descripcion', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Conocimientos:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('condicion', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Beneficios:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('beneficios', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Policas de trabajo:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('politica_trabajo', {
+                    required: true
+                  })}
+                />
+              </div>
+
+              <div className='registro-btn'>
+                <button type='submit'>Editar oferta</button>
+              </div>
+            </form>
+
+          </main>
+          {/*
                     cupos
                     vistas
-                    
+
                     <aside>
-                        
-                    </aside>*/}
-                    <aside>
-                            <span>Lugar:</span>
-                            <p>{offer?.comuna}, {offer?.ciudad}.</p>
-                            <span>Requerimientos:</span>
-                            <p>{offer?.requerimiento}</p>
-                            <span>Sobre el trabajo:</span>
-                            <p>{offer?.descripcion}</p>
-                            <span>Conocimientos:</span>
-                            <p>{offer?.condicion}</p>
-                            <span>Beneficios:</span>
-                            <p>{offer?.beneficios}</p>
-                            <span>Policas de trabajo:</span>
-                            <p>{offer?.politica_trabajo}</p>
-                        </aside> 
-                </div>
-            </section>
-            {
-            loading ?
-            <div className="loading">
-                <Ring
+
+                    </aside> */}
+          <aside>
+            <span>Lugar:</span>
+            <p>{offer?.comuna}, {offer?.ciudad}.</p>
+            <span>Requerimientos:</span>
+            <p>{offer?.requerimiento}</p>
+            <span>Sobre el trabajo:</span>
+            <p>{offer?.descripcion}</p>
+            <span>Conocimientos:</span>
+            <p>{offer?.condicion}</p>
+            <span>Beneficios:</span>
+            <p>{offer?.beneficios}</p>
+            <span>Policas de trabajo:</span>
+            <p>{offer?.politica_trabajo}</p>
+          </aside>
+        </div>
+      </section>
+      {
+            loading
+              ? (
+                <div className='loading'>
+                  <Ring
                     size={100}
                     lineWeight={5}
-                    speed={2} 
-                    color="#473198"
-                />
-            </div> 
-            : null}
-            <style jsx>{`
+                    speed={2}
+                    color='#473198'
+                  />
+                </div>
+                )
+              : null
+}
+      <style jsx>{`
                 .loading {
                     display: grid;
                     place-content: center;
@@ -404,7 +417,8 @@ export default function EditarPublicacion({row}) {
                 textarea::-webkit-scrollbar-thumb:active {
                     background: #999999;
                 }
-            `}</style>
-        </>
-    )
+            `}
+      </style>
+    </>
+  )
 }

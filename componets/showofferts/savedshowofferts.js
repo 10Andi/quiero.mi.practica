@@ -1,174 +1,160 @@
-import { useState, useEffect } from "react";
-import { Ring } from '@uiball/loaders'
-import { firestore } from "../../firebase/client"
-import { collection, getDocs, orderBy, query, where, documentId } from "firebase/firestore";
-import SavedOffertCard from "../offertcard/savedoffertcard";
-import { useAuth } from "../../context/AuthContext";
-import { useOffert } from "../../context/offertContext";
 import { Warning } from '@mui/icons-material'
+import { Ring } from '@uiball/loaders'
+import { collection, documentId, getDocs, orderBy, query, where } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { useOffert } from '../../context/offertContext'
+import { firestore } from '../../firebase/client'
+import SavedOffertCard from '../offertcard/savedoffertcard'
 
+export default function SavedShowOfferts () {
+  const { user } = useAuth()
+  const [offerList, setOfferList] = useState(null)
+  // const [ofertas, setOfertas] = useState(undefined)
+  // const [offerStatus, setOfferStatus] = useState(null)
+  const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
 
-export default function SavedShowOfferts() {
-    const {user} = useAuth()
-    const [offerList, setOfferList] = useState(null)
-    // const [ofertas, setOfertas] = useState(undefined)
-    // const [offerStatus, setOfferStatus] = useState(null)
-    const {offertSelected, setOffertSelected, offerStatus, setOfferStatus} = useOffert()
+  // const [selectedOffert, setSelectedOffert] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-    // const [selectedOffert, setSelectedOffert] = useState(null)
-    const [loading, setLoading] = useState(false)
+  // Extraer de user.ofertasGuardadas la fecha_postulacion para ordenar 'desc' y ver si bookmark esta en true
+  // Schema de ofertasGuardadas:
+  //  uid -> para buscar las ofertas
+  //  fecha_postulacion -> para ordernar
+  //  bookmark -> para marcar si está en favoritos
 
+  useEffect(() => {
+    async function getOfferts () {
+      setLoading(true)
 
+      const bookmark = user.bookmark
+      const postulado = user.postulado
+      let ofertas
 
-    // Extraer de user.ofertasGuardadas la fecha_postulacion para ordenar 'desc' y ver si bookmark esta en true
-    // Schema de ofertasGuardadas:
-    //  uid -> para buscar las ofertas
-    //  fecha_postulacion -> para ordernar
-    //  bookmark -> para marcar si está en favoritos
+      if (bookmark && postulado) {
+        ofertas = [...bookmark, ...postulado].reduce((accArr, valor) => {
+          if (accArr.indexOf(valor) < 0) {
+            accArr.push(valor)
+          }
 
-    
+          return accArr
+        }, [])
+      }
+      if (bookmark && !postulado) {
+        ofertas = bookmark
+      }
+      if (!bookmark && postulado) {
+        ofertas = postulado
+      }
 
-    useEffect(() => {
-        async function getOfferts() {
-            setLoading(true)
+      // const querySnapshot = await getDocs(collection(firestore, 'test'))
+      if (!ofertas) {
+        return
+      }
+      const querySnapshot = await getDocs(query(collection(firestore, 'test'), where(documentId(), 'in', ofertas)))
+      // , orderBy("fecha_creacion", 'desc')
 
-            const bookmark = user.bookmark
-            const postulado = user.postulado
-            let ofertas = undefined
-            
-            if(bookmark && postulado) {
-                ofertas = [...bookmark, ...postulado].reduce( (accArr, valor) => {
-                
-                    if (accArr.indexOf(valor) < 0) {
-                      accArr.push(valor)
-                    }
-    
-                    return accArr
-                }, [])
-            }
-            if(bookmark && !postulado) {
-                ofertas = bookmark
-            }
-            if(!bookmark && postulado) {
-                ofertas = postulado
-            }
+      return querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        const { fecha_creacion } = data
+        // console.log(data)
 
+        // const date = new Date(fecha_creacion.seconds * 1000)
+        // const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL').format(date)
 
-            // const querySnapshot = await getDocs(collection(firestore, 'test'))
-            if (!ofertas) {
-                return
-            }
-            const querySnapshot = await getDocs(query(collection(firestore, 'test'), where(documentId(), 'in', ofertas)))
-            // , orderBy("fecha_creacion", 'desc')
+        return {
+          ...data,
+          id,
+          fecha_creacion: +fecha_creacion.toDate()
+        }
+      })
+    }
 
-            return querySnapshot.docs.map(doc => {
-                const data = doc.data()
-                const id = doc.id
-                const {fecha_creacion} = data
-                // console.log(data)
-                
-                // const date = new Date(fecha_creacion.seconds * 1000)
-                // const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL').format(date)
+    async function getSubColection () {
+      setLoading(true)
+      // console.log(user.uid)
+      // const qSnap = await getDocs(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`), where(documentId(), 'in', ofertas)))
+      const querySnapshot = await getDocs(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`))
+      // return console.log(qSnap.docs.map(d => ({id: d.id, ...d.data()})))
+      return querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false } = data
+        console.log(data)
 
-                return {
-                    ...data,
-                    id,
-                    fecha_creacion: +fecha_creacion.toDate()
-                }
-            })
+        const format = (date, locale, options) =>
+          new Intl.DateTimeFormat(locale, options).format(date)
+
+        // const date = new Date(fecha_postulacion.seconds * 1000)
+        // const formatDate = format(date, 'es', { dateStyle: 'long'})
+
+        function formatDate (dateFromData) {
+          const date = new Date(dateFromData.seconds * 1000)
+          return format(date, 'es', { dateStyle: 'long' })
+        }
+        const format_fecha_postulacion = formatDate(fecha_postulacion)
+        let format_fecha_aprobacion = false
+        let format_fecha_rechazo = false
+        if (fecha_aprobacion) {
+          format_fecha_aprobacion = formatDate(fecha_aprobacion)
+        }
+        if (fecha_rechazo) {
+          format_fecha_rechazo = formatDate(fecha_rechazo)
         }
 
-        async function getSubColection() {
-            setLoading(true)
-            // console.log(user.uid)
-            // const qSnap = await getDocs(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`), where(documentId(), 'in', ofertas)))
-            const querySnapshot = await getDocs(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`))
-            // return console.log(qSnap.docs.map(d => ({id: d.id, ...d.data()})))
-            return querySnapshot.docs.map(doc => {
-                const data = doc.data()
-                const id = doc.id
-                const {fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false} = data
-                console.log(data)
-        
-                const format = (date, locale, options) =>
-                    new Intl.DateTimeFormat(locale, options).format(date)
-                
-                // const date = new Date(fecha_postulacion.seconds * 1000)
-                // const formatDate = format(date, 'es', { dateStyle: 'long'})
-                
-                function formatDate(dateFromData) {
-                    const date = new Date(dateFromData.seconds * 1000)
-                    return format(date, 'es', { dateStyle: 'long'})
-                }
-                const format_fecha_postulacion = formatDate(fecha_postulacion)
-                let format_fecha_aprobacion = false
-                let format_fecha_rechazo = false
-                if (fecha_aprobacion) {
-                    format_fecha_aprobacion = formatDate(fecha_aprobacion)
-                }
-                if (fecha_rechazo) {
-                    format_fecha_rechazo = formatDate(fecha_rechazo)
-                }
+        return {
+          ...data,
+          id,
+          fecha_postulacion: format_fecha_postulacion,
+          fecha_aprobacion: format_fecha_aprobacion,
+          fecha_rechazo: format_fecha_rechazo
+          // fecha_aprobacion: 123
 
-                return {
-                    ...data,
-                    id,
-                    fecha_postulacion: format_fecha_postulacion,
-                    fecha_aprobacion: format_fecha_aprobacion,
-                    fecha_rechazo: format_fecha_rechazo
-                    // fecha_aprobacion: 123
-
-                }
-            })
         }
-        // user && getOfferts().then(setOfferList).finally(setLoading(false))
-        getSubColection().then(setOfferStatus)
-        getOfferts().then(setOfferList).finally(setLoading(false))
-    }, [setOfferStatus, user])
-    
+      })
+    }
+    // user && getOfferts().then(setOfferList).finally(setLoading(false))
+    getSubColection().then(setOfferStatus)
+    getOfferts().then(setOfferList).finally(setLoading(false))
+  }, [setOfferStatus, user])
 
+  return (
+    <>
+      {loading
+        ? <div>
+          <Ring size={40} lineWeight={5} speed={2} color='#473198' />
+        </div>
+        : <section>
+          {offerList && offerList.map(({
+            id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+            logo, nombre_empresa, politica_trabajo, requerimiento, vistas
+          }) => (
+            <SavedOffertCard
+              key={id}
+              id={id}
+              logo={logo}
+              nombre_empresa={nombre_empresa}
+              cargo={cargo}
+              ejercer={ejercer}
+              comuna={comuna}
+              ciudad={ciudad}
+              vistas={vistas}
+              fecha_creacion={fecha_creacion}
+              horario={horario}
+              cupos={cupos}
+              beneficios={beneficios} //
+              categoria={categoria}
+              condicion={condicion}
+              descripcion={descripcion}
+              politica_trabajo={politica_trabajo}
+              requerimiento={requerimiento}
+            />
+          ))}
+          {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta o agregado alguna oferta a tu bookmark</p></article>}
+        </section>}
 
-
-    return (
-        <>
-            {loading ?
-                <div>
-                    <Ring size={40} lineWeight={5} speed={2} color="#473198"/>
-                </div>
-            : 
-                <section>
-                    {offerList && offerList.map(({
-                        id, beneficios, cargo, categoria, ciudad, comuna, condicion , cupos, descripcion, ejercer, fecha_creacion, horario, 
-                        logo, nombre_empresa, politica_trabajo, requerimiento, vistas
-                    }) => (
-                        <SavedOffertCard
-                            key={id}
-                            id={id}
-                            logo={logo}
-                            nombre_empresa={nombre_empresa}
-                            cargo={cargo}
-                            ejercer={ejercer}
-                            comuna={comuna}
-                            ciudad={ciudad}
-                            vistas={vistas}
-                            fecha_creacion={fecha_creacion}
-                            horario={horario}
-                            cupos={cupos}
-                            beneficios={beneficios} //
-                            categoria={categoria}
-                            condicion={condicion}
-                            descripcion={descripcion}
-                            politica_trabajo={politica_trabajo}
-                            requerimiento={requerimiento}
-
-                        />
-                    ))}
-                    {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta o agregado alguna oferta a tu bookmark</p></article>}
-                </section>
-            }
-            
-
-            <style jsx>{`
+      <style jsx>{`
                 div {
                     padding: 50px;
                     display: grid;
@@ -205,7 +191,8 @@ export default function SavedShowOfferts() {
                     background-color: #999999;
                 }
                 
-            `}</style>
-        </>
-    )
+            `}
+      </style>
+    </>
+  )
 }

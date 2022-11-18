@@ -1,56 +1,57 @@
-import { useState } from 'react';
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../firebase/client";
-import Footer from "../componets/footer";
-import Nav from "../componets/nav";
-import ResetPassImg from "../componets/icons/resetpassimg"
+import { sendPasswordResetEmail } from 'firebase/auth'
 import Link from 'next/link'
+import { useState } from 'react'
+import Footer from '../componets/footer'
+import ResetPassImg from '../componets/icons/resetpassimg'
+import Nav from '../componets/nav'
+import { auth } from '../firebase/client'
 
-export default function Recuperarclave() {
-    const [email, setEmail] = useState('')
+export default function Recuperarclave () {
+  const [email, setEmail] = useState('')
 
-    const handleChangeEmail = event => {
-        setEmail(event.target.value)
-    }
+  const handleChangeEmail = event => {
+    setEmail(event.target.value)
+  }
 
-    async function submitHandler(e) {
-        e.preventDefault()
+  async function submitHandler (e) {
+    e.preventDefault()
 
-        sendPasswordResetEmail(auth, email)
-        .then(() => {
-            // Password reset email sent!
-            alert('Se ha enviado ')
-            // ..
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-        });
-    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        alert('Se ha enviado ')
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.error(errorMessage, errorCode)
+      })
+  }
 
-    return (
-        <>
-        <section className="container">
-            <Nav />
-            <div className="logIn">
-                <ResetPassImg />
-                <div className="formContainer">
-                    <h1>Recupera tu contraseña</h1>
-                    <form method="POST">
-                        <input name="email" type="email" required placeholder="Email" onChange={handleChangeEmail}
-                        onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "Email"} />
-                        <p>Te enviaremos un correo electronico con el que podras recuperar tu contraseña</p>
-                        <button type="submit" onClick={submitHandler}>Recuperar</button>
-                        <span className="register">¿Aún no eres miembro? <br /> <Link href={"/registro"}><a>Haz click aquí</a></Link></span>
-                    </form>
-                </div>
-            </div>
+  return (
+    <>
+      <section className='container'>
+        <Nav />
+        <div className='logIn'>
+          <ResetPassImg />
+          <div className='formContainer'>
+            <h1>Recupera tu contraseña</h1>
+            <form method='POST'>
+              <input
+                name='email' type='email' required placeholder='Email' onChange={handleChangeEmail}
+                onFocus={(e) => { e.target.placeholder = '' }} onBlur={(e) => { e.target.placeholder = 'Email' }}
+              />
+              <p>Te enviaremos un correo electronico con el que podras recuperar tu contraseña</p>
+              <button type='submit' onClick={submitHandler}>Recuperar</button>
+              <span className='register'>¿Aún no eres miembro? <br /> <Link href='/registro'><a>Haz click aquí</a></Link></span>
+            </form>
+          </div>
+        </div>
 
-
-        </section>
-        <Footer />
-            <style jsx>{`
+      </section>
+      <Footer />
+      <style jsx>{`
                 .container {
                     padding: 0 42px;
                     position: relative;
@@ -125,8 +126,9 @@ export default function Recuperarclave() {
                 font-weight: bold;
                 text-decoration: none;
             }
-            `}</style>
+            `}
+      </style>
 
-        </>
-    )
+    </>
+  )
 }

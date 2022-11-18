@@ -1,140 +1,132 @@
-import { useEffect, useState } from "react";
-import { useOffert } from "../../context/offertContext";
-import useTimeAgo from "../../hooks/useTimeAgo";
-import Dot from "../icons/dot";
-import Locate from "../icons/locate";
-import Views from "../icons/views";
-import { doc, updateDoc, arrayUnion, arrayRemove, increment } from "firebase/firestore"
-import { firestore } from "../../firebase/client";
-import Bookmark from "../icons/bookmark";
-import { useAuth } from "../../context/AuthContext";
-import { IconButton } from "@mui/material";
+import { IconButton } from '@mui/material'
+import { arrayRemove, arrayUnion, doc, increment, updateDoc } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { useOffert } from '../../context/offertContext'
+import { firestore } from '../../firebase/client'
+import useTimeAgo from '../../hooks/useTimeAgo'
+import Bookmark from '../icons/bookmark'
+import Dot from '../icons/dot'
+import Locate from '../icons/locate'
+import Views from '../icons/views'
 
-export default function OffertCard(props) {
-    const {user} = useAuth()
+export default function OffertCard (props) {
+  const { user } = useAuth()
 
-    const {id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer} = props
-    const {offertSelected, setOffertSelected} = useOffert()
-    const {isBookmark, setIsBookmark} = useOffert()
+  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer } = props
+  const { offertSelected, setOffertSelected } = useOffert()
+  const { isBookmark, setIsBookmark } = useOffert()
 
-    const timeAgo = useTimeAgo(fecha_creacion)
+  const timeAgo = useTimeAgo(fecha_creacion)
 
-    const handleClickBookmark = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        const docRef = doc(firestore, 'USUARIO', user.uid)
-        updateDoc(docRef, {
-            bookmark: arrayUnion(id)
-        })
-        // .then()
-        // .finally(setIsBookmark(true))
-        // setIsBookmark(true)
+  const handleClickBookmark = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const docRef = doc(firestore, 'USUARIO', user.uid)
+    updateDoc(docRef, {
+      bookmark: arrayUnion(id)
+    })
+    // .then()
+    // .finally(setIsBookmark(true))
+    // setIsBookmark(true)
+  }
+  const handleClickUnbookmark = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const docRef = doc(firestore, 'USUARIO', user.uid)
+    updateDoc(docRef, {
+      bookmark: arrayRemove(id)
+    })
+    // .then()
+    // .finally(setIsBookmark(true))
+  }
+
+  const handleClick = async (props) => {
+    setOffertSelected(props)
+    // console.log(props)
+    // console.log(user)
+
+    // const newVisits = vistas + 1
+
+    const docRef = doc(firestore, 'test', id)
+    // updateDoc(docRef, {
+    //     vistas: newVisits
+    // })
+    await updateDoc(docRef, {
+      vistas: increment(1)
+    })
+  }
+
+  useEffect(() => {
+    const btnFocus = document.getElementById(id)
+
+    const keyDownHandler = event => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+
+        // 👇️ your logic here
+        setOffertSelected(null)
+        btnFocus?.blur()
+      }
     }
-    const handleClickUnbookmark = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
 
-        const docRef = doc(firestore, 'USUARIO', user.uid)
-        updateDoc(docRef, {
-            bookmark: arrayRemove(id)
-        })
-        // .then()
-        // .finally(setIsBookmark(true))
+    document.addEventListener('keydown', keyDownHandler)
+
+    // 👇️ clean up event listener
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler)
     }
+  }, [id, setOffertSelected])
 
-    const handleClick = async (props) => {
-        setOffertSelected(props)
-        // console.log(props)
-        // console.log(user)
-
-        // const newVisits = vistas + 1
-
-        const docRef = doc(firestore, 'test', id)
-        // updateDoc(docRef, {
-        //     vistas: newVisits
-        // })
-        await updateDoc(docRef, {
-            vistas: increment(1)
-        })
-    }
-
-    useEffect(() => {
-        const btnFocus = document.getElementById(id)
-
-        const keyDownHandler = event => {
-    
-          if (event.key === 'Escape') {
-            event.preventDefault();
-    
-            // 👇️ your logic here
-            setOffertSelected(null)
-            btnFocus?.blur()
-          }
-        };
-    
-        document.addEventListener('keydown', keyDownHandler);
-    
-        // 👇️ clean up event listener
-        return () => {
-          document.removeEventListener('keydown', keyDownHandler);
-        };
-      }, [id, setOffertSelected]);
-
-
-    return (
-        <>
-        <button className="offer" key={id} id={id} style={{backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white'}} onClick={() => handleClick(props)}>
-            <div className="offerLogo">
-                <img loading="lazy" src={logo} alt={nombre_empresa} draggable="false" />
+  return (
+    <>
+      <button className='offer' key={id} id={id} style={{ backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white' }} onClick={() => handleClick(props)}>
+        <div className='offerLogo'>
+          <img loading='lazy' src={logo} alt={nombre_empresa} draggable='false' />
+        </div>
+        <div className='offerInfo'>
+          <h4>{nombre_empresa}</h4>
+          <span>{cargo}, {ejercer}</span>
+          <div className='infoItemsTop'>
+            <div className='infoItem'>
+              <Locate />
+              <span>{comuna}, {ciudad}</span>
             </div>
-            <div className="offerInfo">
-                <h4>{nombre_empresa}</h4>
-                <span>{cargo}, {ejercer}</span>
-                <div className="infoItemsTop">
-                    <div className="infoItem">
-                        <Locate />
-                        <span>{comuna}, {ciudad}</span>
-                    </div>
-                    <div className="infoItem">
-                        <Views />
-                        {vistas === 1 ?
-                            <span>{vistas} visita</span>
-                        :
-                            <span>{vistas} visitas</span>
-                        }
-                    </div>
-                </div>
-                <div className="infoItemsBottom">
-                    <div className="infoItem">
-                        <span>{timeAgo}</span>
-                        <Dot/>
-                    </div>
-                    <div className="infoItem">
-                        <span>{horario}</span>
-                        <Dot/>
-                    </div>
-                    <div className="infoItem">
-                        {cupos === 1 ?
-                            <span>{cupos} cupo restante</span>
-                        :
-                            <span>{cupos} cupos restantes</span>
-                        }
-                    </div>
-                </div>
+            <div className='infoItem'>
+              <Views />
+              {vistas === 1
+                ? <span>{vistas} visita</span>
+                : <span>{vistas} visitas</span>}
             </div>
-            <div className="right-col-end">
-                <IconButton>
-                {user.bookmark?.includes(id) ?
-                    <Bookmark width={27} height={27} fill={'#473198'} stroke={'#473198'} onClick={handleClickUnbookmark} />
-                :
-                    <Bookmark width={27} height={27} onClick={handleClickBookmark} />
-                }
-                </IconButton>
+          </div>
+          <div className='infoItemsBottom'>
+            <div className='infoItem'>
+              <span>{timeAgo}</span>
+              <Dot />
             </div>
-        </button>
+            <div className='infoItem'>
+              <span>{horario}</span>
+              <Dot />
+            </div>
+            <div className='infoItem'>
+              {cupos === 1
+                ? <span>{cupos} cupo restante</span>
+                : <span>{cupos} cupos restantes</span>}
+            </div>
+          </div>
+        </div>
+        <div className='right-col-end'>
+          <IconButton>
+            {user.bookmark?.includes(id)
+              ? <Bookmark width={27} height={27} fill='#473198' stroke='#473198' onClick={handleClickUnbookmark} />
+              : <Bookmark width={27} height={27} onClick={handleClickBookmark} />}
+          </IconButton>
+        </div>
+      </button>
 
-    <style jsx>{`    
+      <style jsx>{`    
     button {
         width: 100%;
         padding: 21px;
@@ -212,7 +204,8 @@ export default function OffertCard(props) {
         margin-left: auto;
         {/* z-index: 10; */}
     }
-`}</style>
-</>
-    )
+`}
+      </style>
+    </>
+  )
 }

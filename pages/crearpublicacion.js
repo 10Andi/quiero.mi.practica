@@ -1,207 +1,222 @@
-import { useAuth } from "../context/AuthContext"
-import { useRouter } from "next/router"
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { addDoc, doc, setDoc, collection } from "firebase/firestore"
-import { firestore } from "../firebase/client"
+import { useAuth } from '../context/AuthContext'
+import { firestore } from '../firebase/client'
 
-import NavRegister from "../componets/nav/navregister"
-import { useForm, Controller } from "react-hook-form"
-import Select from 'react-select'
 import { Ring } from '@uiball/loaders'
-import categorias from "../helper/categorias"
-import horarios from "../helper/horarios"
+import { Controller, useForm } from 'react-hook-form'
+import Select from 'react-select'
+import NavRegister from '../componets/nav/navregister'
+import categorias from '../helper/categorias'
+import horarios from '../helper/horarios'
 
+export default function CrearPublicacion () {
+  const { user } = useAuth()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const { register, handleSubmit, control } = useForm()
+  // const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
 
+  if (user === null) {
+    router.push('/login')
+    return
+  }
+  if (user && user.type !== 'empresa') {
+    router.push('/login')
+    return
+  }
 
-export default function CrearPublicacion() {
-    const {user} = useAuth()
-    const router = useRouter()
-    const [loading, setLoading] = useState(false)
-    const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
+  const cupos = 15
+  const visitas = 0
 
-    if (user === null) {
-        router.push('/login')
-        return
-    }
-    if (user && user.type !== 'empresa') {
-        router.push('/login')
-        return
-    }
-    
-    const cupos = 15
-    const visitas = 0
+  async function onSubmit (data) {
+    // console.log(data)
+    // console.log(user)
+    setLoading(true)
 
+    const fechaCreacion = new Date()
+    /*
+    user.uid
+    user.uid_empresa
+    user.nombre_empresa
+    user.logo_empresa // agregarlo en el authcontext
+    user.comuna_empresa // agregarlo en el authcontext
+    user.region_empresa // agregarlo en el authcontext
+    */
 
-    async function onSubmit(data) {
-        // console.log(data)
-        // console.log(user)
-        setLoading(true)
-        
-        const fechaCreacion = new Date()
-        user.uid
-        user.uid_empresa
-        user.nombre_empresa
-        user.logo_empresa // agregarlo en el authcontext
-        user.comuna_empresa // agregarlo en el authcontext
-        user.region_empresa // agregarlo en el authcontext
+    // const docRefOffer = doc(firestore, `test`)
+    // const docRefInternalInfo = doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`)
 
-        // const docRefOffer = doc(firestore, `test`)
-        //const docRefInternalInfo = doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`)
+    const { id } = await addDoc(collection(firestore, 'test'), {
+      beneficios: data.beneficios,
+      categoria: data.categoria.value,
+      cargo: data.cargo,
+      ciudad: user.region_empresa,
+      comuna: user.comuna_empresa,
+      condicion: data.conocimientos,
+      cupos,
+      descripcion: data.sobre_trabajo,
+      ejercer: data.ejercer,
+      fecha_creacion: fechaCreacion,
+      horario: data.horario.value,
+      logo: user.logo_empresa,
+      nombre_empresa: user.nombre_empresa,
+      politica_trabajo: data.politica_trabajo,
+      requerimiento: data.requerimiento,
+      vistas: visitas
+    })
+    // get the id of the document saved setDoc() method
+    await setDoc(doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`), {
+      fecha_creacion: fechaCreacion,
+      creada_por: user.displayName,
+      id_creada_por: user.uid,
+      id_oferta: id
 
-        const { id } = await addDoc(collection(firestore, 'test'), {
-            beneficios: data.beneficios,
-            categoria: data.categoria.value,
-            cargo: data.cargo,
-            ciudad: user.region_empresa,
-            comuna: user.comuna_empresa,
-            condicion: data.conocimientos,
-            cupos: cupos,
-            descripcion: data.sobre_trabajo,
-            ejercer: data.ejercer,
-            fecha_creacion: fechaCreacion,
-            horario: data.horario.value,
-            logo: user.logo_empresa,
-            nombre_empresa: user.nombre_empresa,
-            politica_trabajo: data.politica_trabajo,
-            requerimiento: data.requerimiento,
-            vistas: visitas
-        })
-        // get the id of the document saved setDoc() method
-        await setDoc(doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`), {
-            fecha_creacion: fechaCreacion,
-            creada_por: user.displayName,
-            id_creada_por: user.uid,
-            id_oferta: id,
+    })
 
-        })
+      .finally(() => {
+        setLoading(false)
+        router.push('/dashboard')
+      })
+  }
 
-        
+  return (
+    <>
+      <section>
+        <NavRegister />
+        <div className='layout'>
+          <main>
+            <header>
+              <img loading='lazy' src='https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png' alt='' />
+              <div>
+                <h1>Crea una nueva oferta de práctica</h1>
+                <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
+              </div>
+            </header>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-        .finally(() => {
-            setLoading(false)
-            router.push('/dashboard')
-        })
-    }
+              <div className='textarea'>
+                <strong>Cargo: </strong>
+                <input
+                  type='text' {...register('cargo', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Ejerce: </strong>
+                <input
+                  type='text' {...register('ejercer', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Elige una categoria:</strong>
+                <Controller
+                  control={control}
+                  name='categoria'
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      defaultOptions
+                      placeholder='Busca la categoría ...'
+                      options={categorias}
+                    />
+                  )}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Elige un tipo de horario:</strong>
+                <Controller
+                  control={control}
+                  name='horario'
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      defaultOptions
+                      placeholder='Busca el horario ...'
+                      options={horarios}
+                    />
+                  )}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Requerimientos:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('requerimiento', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Sobre el trabajo:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('sobre_trabajo', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Conocimientos:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('conocimientos', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Beneficios:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('beneficios', {
+                    required: true
+                  })}
+                />
+              </div>
+              <div className='textarea'>
+                <strong>Policas de trabajo:</strong>
+                <textarea
+                  cols='30' rows='10' {...register('politica_trabajo', {
+                    required: true
+                  })}
+                />
+              </div>
 
-    return (
-        <>
-                <section>
-                    <NavRegister />
-                    <div className="layout">
-                        <main>
-                            <header>
-                                <img loading="lazy" src={'https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png'} alt={''} />
-                                <div>
-                                    <h1>Crea una nueva oferta de práctica</h1>
-                                    <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
-                                </div>
-                            </header>
-                            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className='registro-btn'>
+                <button type='submit'>Publicar oferta</button>
+              </div>
+            </form>
 
-                                <div className="textarea">
-                                    <strong>Cargo: </strong>
-                                    <input type="text" {...register('cargo', {
-                                        required: true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Ejerce: </strong>
-                                    <input type="text" {...register('ejercer', {
-                                        required: true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Elige una categoria:</strong>
-                                    <Controller
-                                        control={control}
-                                        name="categoria"
-                                        rules={{required: true}}
-                                        render={({ field }) => (
-                                            <Select
-                                                {...field}
-                                                isClearable
-                                                defaultOptions
-                                                placeholder={"Busca la categoría ..."}
-                                                options={categorias}
-                                            />
-                                        )}
-                                    />
-                                </div>
-                                <div className="textarea">
-                                    <strong>Elige un tipo de horario:</strong>
-                                    <Controller
-                                        control={control}
-                                        name="horario"
-                                        rules={{required: true}}
-                                        render={({ field }) => (
-                                            <Select
-                                                {...field}
-                                                isClearable
-                                                defaultOptions
-                                                placeholder={"Busca el horario ..."}
-                                                options={horarios}
-                                            />
-                                        )}
-                                    />
-                                </div>
-                                <div className="textarea">
-                                    <strong>Requerimientos:</strong>
-                                    <textarea cols="30" rows="10" {...register("requerimiento", {
-                                        required:true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Sobre el trabajo:</strong>
-                                    <textarea cols="30" rows="10" {...register("sobre_trabajo", {
-                                        required:true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Conocimientos:</strong>
-                                    <textarea cols="30" rows="10" {...register("conocimientos", {
-                                        required:true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Beneficios:</strong>
-                                    <textarea cols="30" rows="10" {...register("beneficios", {
-                                        required:true
-                                    })}/>
-                                </div>
-                                <div className="textarea">
-                                    <strong>Policas de trabajo:</strong>
-                                    <textarea cols="30" rows="10" {...register("politica_trabajo", {
-                                        required:true
-                                    })}/>
-                                </div>
-                                
-                                <div className="registro-btn">
-                                    <button type="submit">Publicar oferta</button>
-                                </div>
-                            </form>
-                            
-                        </main>
-                        {/* 
+          </main>
+          {/*
                         cupos
                         vistas
-                        
+
                         <aside>
-                            
-                        </aside>*/}
-                    </div>
-                </section>
-                {
-                loading ?
-                <div className="loading">
-                    <Ring
-                        size={100}
-                        lineWeight={5}
-                        speed={2} 
-                        color="#473198"
-                    />
-                </div> 
-                : null}
-                <style jsx>{`
+
+                        </aside> */}
+        </div>
+      </section>
+      {
+      loading
+        ? (
+          <div className='loading'>
+            <Ring
+              size={100}
+              lineWeight={5}
+              speed={2}
+              color='#473198'
+            />
+          </div>
+          )
+        : null
+      }
+      <style jsx>{`
                     .loading {
                         display: grid;
                         place-content: center;
@@ -336,7 +351,8 @@ export default function CrearPublicacion() {
                     textarea:-webkit-autofill:active{
                         -webkit-box-shadow: 0 0 0 30px white inset !important;
                     }
-                `}</style>
-        </>
-    )
+                `}
+      </style>
+    </>
+  )
 }

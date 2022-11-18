@@ -1,33 +1,33 @@
-import Footer from "../../componets/footer";
-import Nav from "../../componets/nav";
 import Link from 'next/link'
-import User from "../../componets/icons/user";
-import Company from "../../componets/icons/company";
+import Footer from '../../componets/footer'
+import Company from '../../componets/icons/company'
+import User from '../../componets/icons/user'
+import Nav from '../../componets/nav'
 
-export default function Registro() {
-    return (
-        <>
-        <section className="container">
-            <Nav />
-                <div className="cards">
-                    <div className="student-card">
-                        <h3>Estudiante</h3>
-                        <User />
-                        <Link href={"/registro/usuario"}>
-                            <a>Regisrarse</a>
-                        </Link>
-                    </div>
-                    <div className="company-card">
-                        <h3>Empresa</h3>
-                        <Company />
-                        <Link href={"/registro/empresa"}>
-                                <a>Regisrarse</a>
-                            </Link>
-                    </div>
-                </div>
-        </section>
-        <Footer />
-            <style jsx>{`
+export default function Registro () {
+  return (
+    <>
+      <section className='container'>
+        <Nav />
+        <div className='cards'>
+          <div className='student-card'>
+            <h3>Estudiante</h3>
+            <User />
+            <Link href='/registro/usuario'>
+              <a>Regisrarse</a>
+            </Link>
+          </div>
+          <div className='company-card'>
+            <h3>Empresa</h3>
+            <Company />
+            <Link href='/registro/empresa'>
+              <a>Regisrarse</a>
+            </Link>
+          </div>
+        </div>
+      </section>
+      <Footer />
+      <style jsx>{`
                 {/* .logIn {
                     min-height: 74vh;
                     display: flex;
@@ -90,8 +90,9 @@ export default function Registro() {
                     cursor: pointer;
                     text-align: center;
                 }
-            `}</style>
+            `}
+      </style>
 
-        </>
-    )
+    </>
+  )
 }

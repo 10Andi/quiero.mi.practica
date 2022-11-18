@@ -1,251 +1,268 @@
-import Footer from "../../componets/footer"
-import NavRegister from "../../componets/nav/navregister"
-import { useState } from 'react'
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { doc, setDoc } from "firebase/firestore"
-import { auth, firestore, storage } from "../../firebase/client"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
-import { useRouter } from "next/router";
-import { useForm, Controller } from "react-hook-form"
-import { cleanRut , validateRut, formatRut } from 'rutlib'
-import Select from 'react-select'
-import comunas from '../../helper/comunas'
-import { FilePond, registerPlugin } from 'react-filepond';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import 'filepond/dist/filepond.min.css';
 import { Ring } from '@uiball/loaders'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import 'filepond/dist/filepond.min.css'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { FilePond, registerPlugin } from 'react-filepond'
+import { Controller, useForm } from 'react-hook-form'
+import Select from 'react-select'
+import { cleanRut, formatRut, validateRut } from 'rutlib'
+import Footer from '../../componets/footer'
+import NavRegister from '../../componets/nav/navregister'
+import { auth, firestore, storage } from '../../firebase/client'
+import comunas from '../../helper/comunas'
 
 registerPlugin(FilePondPluginFileValidateType)
 
-export default function Usuario() {
-    const userType = 'estudiante'
-    const router = useRouter()
-    const [loading, setLoading] = useState(false)
-    const { register, handleSubmit, formState: { errors }, watch, control } = useForm()
+export default function Usuario () {
+  const userType = 'estudiante'
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const { register, handleSubmit, watch, control } = useForm()
+  // const { register, handleSubmit, formState: { errors }, watch, control } = useForm()
 
-    async function uploadFileAndURL(uidUsuario, file, fileName) {
-        const fileRef = ref(storage, `certificadosAlumnoRegular/${uidUsuario}/${fileName}`)
-        // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
-        await uploadBytes(fileRef, file)
-        const url = await getDownloadURL(fileRef)
-        return url
-    }
+  async function uploadFileAndURL (uidUsuario, file, fileName) {
+    const fileRef = ref(storage, `certificadosAlumnoRegular/${uidUsuario}/${fileName}`)
+    // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+    await uploadBytes(fileRef, file)
+    const url = await getDownloadURL(fileRef)
+    return url
+  }
 
-    async function submitHandler(data) {
-        // e.preventDefault()
-        setLoading(true)
+  async function submitHandler (data) {
+    // e.preventDefault()
+    setLoading(true)
 
-        const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
+    const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
 
-        const uid = newUser.user.uid
-        const avatar = `https://ui-avatars.com/api/?name=${data.nombres}+${data.apellidoPaterno}&size=128`
-        const fechaCreacion = undefined // obtener de user.metadata.creationTime.millisecondsSinceEpoch o hacer TIMESTAMP
-        
-        const docRef = doc(firestore, `USUARIO/${uid}`)
+    const uid = newUser.user.uid
+    const avatar = `https://ui-avatars.com/api/?name=${data.nombres}+${data.apellidoPaterno}&size=128`
+    // const fechaCreacion = undefined // obtener de user.metadata.creationTime.millisecondsSinceEpoch o hacer TIMESTAMP
 
-        // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
+    const docRef = doc(firestore, `USUARIO/${uid}`)
 
-        const URL = await uploadFileAndURL(uid, data.certificadoAlumnoRegular[0].file, data.certificadoAlumnoRegular[0].filename)
-        console.log(URL)
+    // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
 
-        await setDoc(docRef, {
-            nombres: data.nombres,
-            apellidoPaterno: data.apellidoPaterno,
-            apellidoMaterno: data.apellidoMaterno,
-            rut: formatRut(data.rut),
-            comuna: data.comuna.value,
-            region: data.comuna.region,
-            email: data.email,
-            password: data.password, // MINIMO 6 CARACTERES
-            nom_institucion: data.nom_institucion,
-            certificadoAlumnoRegular: URL,
-            tipo: userType,
-            avatar: avatar,
-            // fechaCreacion: fechaCreacion // ( ? ) -> sera necesario; teniendo esta info en FirebaseAuth 
-        })
-        // .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
-        .finally(() => {
-            setLoading(false)
-            router.push('/login')
-        })
-        // console.log(newUser)
-        // console.log(user)
-    }
-    
-    // const onSubmit = (data) => {
-    //     console.log(data.certificadoAlumnoRegular[0])
-    //     const fileRef = ref(storage, `certificadosAlumnoRegular/01/${data.certificadoAlumnoRegular[0].filename}`)
-    //     uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file).then(() => {
-    //         alert('PDF SUBIDO!')
-    //     })
+    const URL = await uploadFileAndURL(uid, data.certificadoAlumnoRegular[0].file, data.certificadoAlumnoRegular[0].filename)
+    console.log(URL)
 
+    await setDoc(docRef, {
+      nombres: data.nombres,
+      apellidoPaterno: data.apellidoPaterno,
+      apellidoMaterno: data.apellidoMaterno,
+      rut: formatRut(data.rut),
+      comuna: data.comuna.value,
+      region: data.comuna.region,
+      email: data.email,
+      password: data.password, // MINIMO 6 CARACTERES
+      nom_institucion: data.nom_institucion,
+      certificadoAlumnoRegular: URL,
+      tipo: userType,
+      avatar
+      // fechaCreacion: fechaCreacion // ( ? ) -> sera necesario; teniendo esta info en FirebaseAuth
+    })
+    // .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
+      .finally(() => {
+        setLoading(false)
+        router.push('/login')
+      })
+    // console.log(newUser)
+    // console.log(user)
+  }
 
-    //     // console.log(data.comuna)
-        
-    //     // {errors.nombres?.type === 'required' && accion a mostrar -> toast}
-    // } 
+  // const onSubmit = (data) => {
+  //     console.log(data.certificadoAlumnoRegular[0])
+  //     const fileRef = ref(storage, `certificadosAlumnoRegular/01/${data.certificadoAlumnoRegular[0].filename}`)
+  //     uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file).then(() => {
+  //         alert('PDF SUBIDO!')
+  //     })
 
-    return (
-        <>
-        <section className="container">
-            <NavRegister />
-            <div className="logIn">
-                <h1>Ingresa tu información y encuentra <span>tu futura práctica</span></h1>
-                <form className="from-postulacion" onSubmit={handleSubmit(submitHandler)}>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Nombres</span>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('nombres', {
-                                required: true
-                            })}/>
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Apellido paterno</span>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('apellidoPaterno', {
-                                required: true
-                            })}/>
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Apellido materno</span>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('apellidoMaterno', {
-                                required: true
-                            })}/>
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Rut</span>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('rut', {
-                                required: true,
-                                validate: () => {
-                                    const valueRut = watch('rut')
-                                    const cleanedRut = cleanRut(valueRut)
-                                    return validateRut(cleanedRut)
-                                }
-                            })}/>
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Comuna</span>
-                        </div>
-                        <div className="card-postulacion-componets">
-                            <Controller
-                                control={control}
-                                name="comuna"
-                                rules={{required: true}}
-                                render={({ field }) => (
-                                    <Select
-                                        {...field}
-                                        isClearable
-                                        defaultOptions
-                                        placeholder={"Busca tu comuna ..."}
-                                        options={comunas}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">E-mail</span>
-                            <label className="card-postulacion-info-subtitulo">Con este e-mail podrás iniciar sesión una vez que te hayas registrado</label>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="email" {...register('email', {
-                                required: true,
-                                pattern:  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
-                            })}/>
-                        </div>
-                    </div>
-                    
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Contraseña</span>
-                            <label className="card-postulacion-info-subtitulo">Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
-                            <label className="card-postulacion-info-subtitulo">Por tu seguiridad te recomendamos:</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos un numero</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos una letra en mayuscula</label>
-                            <label className="card-postulacion-info-subtitulo">* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="password" {...register('password', {
-                                required: true,
-                                minLength: 6
-                            })}/>
-                        </div>
-                    </div>
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Nombre de la Institución</span>
-                            <label className="card-postulacion-info-subtitulo">Ingresa el nombre de tu institución educacional (universidad, instituto profecional, CFT, escuela tecnica , etc)</label>
-                        </div>
-                        <div className="card-postulacion-inputs">
-                            <input type="text" {...register('nom_institucion', {
-                                required: true
-                            })}/>
-                        </div>
-                    </div>
-                    
-                    <div className="card-postulacion">
-                        <div className="card-postulacion-info">
-                            <span className="card-postulacion-info-titulo">Certificado de alumno regular</span>
-                            <label className="card-postulacion-info-subtitulo">Se necesita certificado de alumno regular para acreditar tu institución educacional y virificar estado academico</label>
-                            <label className="card-postulacion-info-subtitulo">* El formato debe ser PDF</label>
-                        </div>
-                        <div className="card-postulacion-componets">
-                            <Controller
-                                name="certificadoAlumnoRegular"
-                                control={control}
-                                rules={{required: true}}
-                                render={({ field:{onChange, value} }) => (
-                                <FilePond
-                                    files={value}
-                                    allowMultiple={false}
-                                    onupdatefiles={onChange}
-                                    required
-                                    allowFileTypeValidation={true}
-                                    acceptedFileTypes={['application/pdf']}
-                                    labelFileTypeNotAllowed={'El tipo de archivo es inválido'}
-                                    fileValidateTypeLabelExpectedTypes={'Debe ser PDF'}
-                                    labelIdle='Arrastra y suelta tu archivo o <span class="filepond--label-action">Búscalo</span>'
-                                />
-                                )}
-                            />
-                        </div>
-                    </div>
+  //     // console.log(data.comuna)
 
-                    <div className="registro-btn">
-                        <button type="submit">Regristrarse</button>
-                    </div>
-                </form> 
+  //     // {errors.nombres?.type === 'required' && accion a mostrar -> toast}
+  // }
+
+  return (
+    <>
+      <section className='container'>
+        <NavRegister />
+        <div className='logIn'>
+          <h1>Ingresa tu información y encuentra <span>tu futura práctica</span></h1>
+          <form className='from-postulacion' onSubmit={handleSubmit(submitHandler)}>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Nombres</span>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='text' {...register('nombres', {
+                    required: true
+                  })}
+                />
+              </div>
             </div>
-        </section>
-        <Footer />
-        {
-        loading ?
-        <div className="loading">
-            <Ring
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Apellido paterno</span>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='text' {...register('apellidoPaterno', {
+                    required: true
+                  })}
+                />
+              </div>
+            </div>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Apellido materno</span>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='text' {...register('apellidoMaterno', {
+                    required: true
+                  })}
+                />
+              </div>
+            </div>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Rut</span>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='text' {...register('rut', {
+                    required: true,
+                    validate: () => {
+                      const valueRut = watch('rut')
+                      const cleanedRut = cleanRut(valueRut)
+                      return validateRut(cleanedRut)
+                    }
+                  })}
+                />
+              </div>
+            </div>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Comuna</span>
+              </div>
+              <div className='card-postulacion-componets'>
+                <Controller
+                  control={control}
+                  name='comuna'
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      defaultOptions
+                      placeholder='Busca tu comuna ...'
+                      options={comunas}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>E-mail</span>
+                <label className='card-postulacion-info-subtitulo'>Con este e-mail podrás iniciar sesión una vez que te hayas registrado</label>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='email' {...register('email', {
+                    required: true,
+                    pattern: /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
+                  })}
+                />
+              </div>
+            </div>
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Contraseña</span>
+                <label className='card-postulacion-info-subtitulo'>Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
+                <label className='card-postulacion-info-subtitulo'>Por tu seguiridad te recomendamos:</label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un numero</label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos una letra en mayuscula</label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='password' {...register('password', {
+                    required: true,
+                    minLength: 6
+                  })}
+                />
+              </div>
+            </div>
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Nombre de la Institución</span>
+                <label className='card-postulacion-info-subtitulo'>Ingresa el nombre de tu institución educacional (universidad, instituto profecional, CFT, escuela tecnica , etc)</label>
+              </div>
+              <div className='card-postulacion-inputs'>
+                <input
+                  type='text' {...register('nom_institucion', {
+                    required: true
+                  })}
+                />
+              </div>
+            </div>
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Certificado de alumno regular</span>
+                <label className='card-postulacion-info-subtitulo'>Se necesita certificado de alumno regular para acreditar tu institución educacional y virificar estado academico</label>
+                <label className='card-postulacion-info-subtitulo'>* El formato debe ser PDF</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                <Controller
+                  name='certificadoAlumnoRegular'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value } }) => (
+                    <FilePond
+                      files={value}
+                      allowMultiple={false}
+                      onupdatefiles={onChange}
+                      required
+                      allowFileTypeValidation
+                      acceptedFileTypes={['application/pdf']}
+                      labelFileTypeNotAllowed='El tipo de archivo es inválido'
+                      fileValidateTypeLabelExpectedTypes='Debe ser PDF'
+                      labelIdle='Arrastra y suelta tu archivo o <span class="filepond--label-action">Búscalo</span>'
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className='registro-btn'>
+              <button type='submit'>Regristrarse</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <Footer />
+      {
+        loading
+          ? (
+            <div className='loading'>
+              <Ring
                 size={100}
                 lineWeight={5}
                 speed={2}
-                color="#473198"
-            />
-        </div> 
-        : null}
-        <style jsx>{`
+                color='#473198'
+              />
+            </div>
+            )
+          : null
+}
+      <style jsx>{`
             .loading {
                 display: grid;
                 place-content: center;
@@ -363,7 +380,8 @@ export default function Usuario() {
                 font-weight: bold;
                 cursor: pointer;
             }
-        `}</style>
-        </>
-    )
+        `}
+      </style>
+    </>
+  )
 }

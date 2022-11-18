@@ -1,84 +1,90 @@
-import Footer from "../componets/footer";
-import LoginImg from "../componets/icons/loginimg";
-import Nav from "../componets/nav";
-import { useState, useEffect } from 'react';
-import { useRouter } from "next/router";
-import { useAuth } from "../context/AuthContext";
+import { Ring } from '@uiball/loaders'
 import Link from 'next/link'
-import { Ring } from "@uiball/loaders";
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import Footer from '../componets/footer'
+import LoginImg from '../componets/icons/loginimg'
+import Nav from '../componets/nav'
+import { useAuth } from '../context/AuthContext'
 
-export default function Login() {
-    const { user, signIn } = useAuth()
-    const router = useRouter()
-    const [loading, setLoading] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+export default function Login () {
+  const { user, signIn } = useAuth()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-    const handleChangeEmail = event => {
-        setEmail(event.target.value)
+  const handleChangeEmail = event => {
+    setEmail(event.target.value)
+  }
+
+  const handleChangePassword = event => {
+    setPassword(event.target.value)
+  }
+
+  async function submitHandler (e) {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      await signIn(email, password)
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-    const handleChangePassword = event => {
-        setPassword(event.target.value)
+  useEffect(() => {
+    if ((user && user.type === 'estudiante')) {
+      router.push('/home').finally(() => setLoading(false))
     }
-
-    async function submitHandler(e) {
-        e.preventDefault()
-        setLoading(true)
-
-        try {
-            await signIn(email, password)
-        } catch (error) {
-            console.log(error)
-        } 
+    if ((user && user.type === 'empresa')) {
+      router.push('/dashboard').finally(() => setLoading(false))
     }
-    
-    useEffect(() => {
-        if ((user && user.type === 'estudiante')) {
-            router.push('/home').finally(() => setLoading(false))
-        }
-        if ((user && user.type === 'empresa')) {
-            router.push('/dashboard').finally(() => setLoading(false))
-        }
-      }, [router, user])
+  }, [router, user])
 
-    return (
-        <>
-        { loading ? 
-              <div className='loading'>
-                  <Ring 
-                      size={100}
-                      lineWeight={5}
-                      speed={2} 
-                      color="#473198"
-                  />
+  return (
+    <>
+      {loading
+        ? (
+          <div className='loading'>
+            <Ring
+              size={100}
+              lineWeight={5}
+              speed={2}
+              color='#473198'
+            />
+          </div>
+          )
+        : (
+          <>
+            <section className='container'>
+              <Nav />
+              <div className='logIn'>
+                <LoginImg />
+                <div className='formContainer'>
+                  <h1>¡Qué bueno que volviste!</h1>
+                  <form method='POST'>
+                    <input
+                      name='email' type='email' required placeholder='Email' onChange={handleChangeEmail}
+                      onFocus={(e) => { e.target.placeholder = '' }} onBlur={(e) => { e.target.placeholder = 'Email' }}
+                    />
+                    <input
+                      name='password' type='password' placeholder='Contraseña' onChange={handleChangePassword} require='true'
+                      onFocus={(e) => { e.target.placeholder = '' }} onBlur={(e) => { e.target.placeholder = 'Contraseña' }}
+                    />
+                    <Link href='/recuperarclave'>
+                      <a className='forgot'>¿Olvidaste tu contraseña?</a>
+                    </Link>
+                    <button type='submit' onClick={submitHandler}>Iniciar sesión</button>
+                    <span className='register'>¿Aún no eres miembro? <br /> <a href='registro'>Haz click aquí</a></span>
+                  </form>
+                </div>
               </div>
-            : 
-                <>
-                    <section className="container">
-                    <Nav />
-                        <div className="logIn">
-                            <LoginImg />
-                            <div className="formContainer">
-                                <h1>¡Qué bueno que volviste!</h1>
-                                <form method="POST">
-                                    <input name="email" type="email" required placeholder="Email" onChange={handleChangeEmail}
-                                    onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "Email"} />
-                                    <input name="password" type="password" placeholder="Contraseña" onChange={handleChangePassword} require="true"
-                                    onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "Contraseña"} />
-                                    <Link href="/recuperarclave">
-                                        <a className="forgot">¿Olvidaste tu contraseña?</a>
-                                    </Link> 
-                                    <button type="submit" onClick={submitHandler}>Iniciar sesión</button>
-                                    <span className="register">¿Aún no eres miembro? <br /> <a href="registro">Haz click aquí</a></span>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-                    <Footer />
-                </>
-        }
-        {/* <>
+            </section>
+            <Footer />
+          </>
+          )}
+      {/* <>
         <section className="container">
             <Nav />
             <div className="logIn">
@@ -92,7 +98,7 @@ export default function Login() {
                         onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "Contraseña"} />
                         <Link href="/recuperarclave">
                             <a className="forgot">¿Olvidaste tu contraseña?</a>
-                        </Link> 
+                        </Link>
                         <button type="submit" onClick={submitHandler}>Iniciar sesión</button>
                         <span className="register">¿Aún no eres miembro? <br /> <a href="registro">Haz click aquí</a></span>
                     </form>
@@ -100,8 +106,8 @@ export default function Login() {
             </div>
         </section>
         <Footer /> */}
-        
-        <style jsx>{`
+
+      <style jsx>{`
             .loading {
                 display: grid;
                 place-content: center;
@@ -182,7 +188,8 @@ export default function Login() {
                 font-weight: bold;
                 text-decoration: none;
             }
-        `}</style>
-        </>
-    )
+        `}
+      </style>
+    </>
+  )
 }
