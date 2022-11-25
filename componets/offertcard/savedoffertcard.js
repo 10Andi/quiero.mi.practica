@@ -117,15 +117,15 @@ export default function SavedOffertCard (props) {
             ? (
               <div className='selfInfo'>
                 <div className='fecha'>
-                  {offerStatus.map(ele => {
+                  {offerStatus && offerStatus.map(ele => {
                     if (ele.id === id && ele.fecha_postulacion) return (<small key={Math.random()}>Fecha de postulación: {ele.fecha_postulacion}</small>)
                     return null
                   })}
-                  {offerStatus.map(ele => {
+                  {offerStatus && offerStatus.map(ele => {
                     if (ele.id === id && ele.fecha_aprobacion) return (<small key={Math.random()}>Fecha de aprobación: {ele.fecha_aprobacion}</small>)
                     return null
                   })}
-                  {offerStatus.map(ele => {
+                  {offerStatus && offerStatus.map(ele => {
                     if (ele.id === id && ele.fecha_rechazo) return (<small key={Math.random()}>Fecha de rechazo: {ele.fecha_rechazo}</small>)
                     return null
                   })}

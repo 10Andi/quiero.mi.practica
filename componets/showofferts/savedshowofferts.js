@@ -9,7 +9,7 @@ import SavedOffertCard from '../offertcard/savedoffertcard'
 
 export default function SavedShowOfferts () {
   const { user } = useAuth()
-  const [offerList, setOfferList] = useState(null)
+  const [offerList, setOfferList] = useState([])
   // const [ofertas, setOfertas] = useState(undefined)
   // const [offerStatus, setOfferStatus] = useState(null)
   const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
