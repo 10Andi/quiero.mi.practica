@@ -1,7 +1,10 @@
 import Select from 'react-select'
+// import { useOffert } from '../../context/offertContext'
 import sortOptions from '../../helper/sortOfferts'
 
 export default function SortOfferts () {
+  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
+
   const styles = {
     menuList: (base) => ({
       ...base,
@@ -31,7 +34,7 @@ export default function SortOfferts () {
       <section>
         <span>Prácticas para ti</span>
         <div>
-          {/* <span>Mostrar por:</span> */}
+          {/* <small>Mostrar por:</small> */}
           <Select
             styles={styles}
             defaultOptions

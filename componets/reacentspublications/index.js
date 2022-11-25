@@ -5,7 +5,6 @@ import CardReacentPublication from './cardreacentpublication'
 
 export default function ReacentsPublications () {
   const [offerList, setOfferList] = useState(null)
-  console.log('🚀 ~ file: index.js ~ line 10 ~ ReacentsPublications ~ offerList', offerList)
 
   useEffect(() => {
     const onGetOfferts = async () => {

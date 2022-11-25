@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material'
 import { arrayRemove, arrayUnion, doc, increment, updateDoc } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
 import { firestore } from '../../firebase/client'
@@ -15,32 +15,26 @@ export default function OffertCard (props) {
 
   const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer } = props
   const { offertSelected, setOffertSelected } = useOffert()
-  const { isBookmark, setIsBookmark } = useOffert()
 
   const timeAgo = useTimeAgo(fecha_creacion)
 
-  const handleClickBookmark = (e) => {
+  const handleClickBookmark = (e, userId, offertId) => {
     e.preventDefault()
     e.stopPropagation()
 
-    const docRef = doc(firestore, 'USUARIO', user.uid)
+    const docRef = doc(firestore, 'test', offertId)
     updateDoc(docRef, {
-      bookmark: arrayUnion(id)
+      bookmark: arrayUnion(userId)
     })
-    // .then()
-    // .finally(setIsBookmark(true))
-    // setIsBookmark(true)
   }
-  const handleClickUnbookmark = (e) => {
+  const handleClickUnbookmark = (e, userId, offertId) => {
     e.preventDefault()
     e.stopPropagation()
 
-    const docRef = doc(firestore, 'USUARIO', user.uid)
+    const docRef = doc(firestore, 'test', offertId)
     updateDoc(docRef, {
-      bookmark: arrayRemove(id)
+      bookmark: arrayRemove(userId)
     })
-    // .then()
-    // .finally(setIsBookmark(true))
   }
 
   const handleClick = async (props) => {
@@ -75,7 +69,7 @@ export default function OffertCard (props) {
 
   return (
     <>
-      <button className='offer' key={id} id={id} style={{ backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white' }} onClick={() => handleClick(props)}>
+      <article className='offer' key={id} id={id} style={{ backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white' }} onClick={() => handleClick(props)}>
         <div className='offerLogo'>
           <img loading='lazy' src={logo} alt={nombre_empresa} draggable='false' />
         </div>
@@ -111,16 +105,19 @@ export default function OffertCard (props) {
           </div>
         </div>
         <div className='right-col-end'>
-          <IconButton>
+          {/* <IconButton>
             {user.bookmark?.includes(id)
               ? <Bookmark width={27} height={27} fill='#473198' stroke='#473198' onClick={handleClickUnbookmark} />
               : <Bookmark width={27} height={27} onClick={handleClickBookmark} />}
-          </IconButton>
+          </IconButton> */}
+          {props.bookmark?.includes(user.uid)
+            ? <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
+            : <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>}
         </div>
-      </button>
+      </article>
 
       <style jsx>{`    
-          button {
+          article {
             width: 100%;
             padding: 21px;
             display: flex;
@@ -135,13 +132,13 @@ export default function OffertCard (props) {
             margin: 16px 0;
           }
           
-          button:focus {
+          article:focus {
             outline: 1px solid #9BF3F0;
             outline: 1px solid rgb(239, 243, 244);
             outline: none;
             background-color: rgb(247, 249, 249);
           }
-          button:hover {
+          article:hover {
             border: 1px thin #4A0D67;
             background: rgb(239, 243, 244);
           }
@@ -154,7 +151,7 @@ export default function OffertCard (props) {
           .offer .offerInfo h4 {
             font-size: 24px;
             //margin-bottom: 7px;
-            margin: 0 0 7px 0;
+            margin: 0 0 2px 0;
           }
           .offer .offerInfo span {
             font-size: 16px;
@@ -164,7 +161,7 @@ export default function OffertCard (props) {
             display: flex;
           }
           .offer .offerInfo .infoItemsTop .infoItem {
-            margin: 12px 0 7px 0;
+            margin: 8px 0 0;
           }
           .offer .offerInfo .infoItemsTop .infoItem span {
             font-size: 12px;

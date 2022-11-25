@@ -10,7 +10,7 @@ export default function CardRequest ({ title, paragraph }) {
           .card-request {
             border-radius: 10px;
             background: #F8F1FF;
-            padding: 12px, 40px, 40px, 40px;
+            padding: 12px 40px 40px 40px;
             width: 80%;
             margin-bottom: 60px;
           }
