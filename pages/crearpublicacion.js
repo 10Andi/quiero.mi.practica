@@ -216,142 +216,143 @@ export default function CrearPublicacion () {
           )
         : null
       }
-      <style jsx>{`
-                    .loading {
-                        display: grid;
-                        place-content: center;
-                        align-items: center;
-                        position:fixed;
-                        top:0;
-                        left:0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(255,255,255,0.5);
-                        backdrop-filter: blur(1px);
-                    }
-                    
-                    section {
-                        padding: 0 42px;
-                        padding: 0 200px;
-                        position: relative;
-                        min-height: calc(100vh - 71.813px);
-                    }
-                    .layout {
-                        display: grid;
-                        grid-template-columns: 2.4fr 1fr;
-                        column-gap: 18px;
-                        margin-bottom: 60px;
-                    }
+      <style jsx>
+        {`
+          .loading {
+              display: grid;
+              place-content: center;
+              align-items: center;
+              position:fixed;
+              top:0;
+              left:0;
+              width: 100%;
+              height: 100%;
+              background: rgba(255,255,255,0.5);
+              backdrop-filter: blur(1px);
+          }
+          
+          section {
+              padding: 0 42px;
+              padding: 0 200px;
+              position: relative;
+              min-height: calc(100vh - 71.813px);
+          }
+          .layout {
+              display: grid;
+              grid-template-columns: 2.4fr 1fr;
+              column-gap: 18px;
+              margin-bottom: 60px;
+          }
 
-                    aside {
-                        background-color: rgb(247, 249, 249);
-                        border-radius: 10px;
-                        padding: 18px;
-                    }
-                    aside span {
-                        font-size: 14px;
-                        font-weight: bold;
-                        margin-bottom: 20px;
-                    }
-                    aside p {
-                        font-size: 14px;
-                        color: #444444;
-                        margin-top: 20px;
-                        margin-bottom: 30px;
-                    }
+          aside {
+              background-color: rgb(247, 249, 249);
+              border-radius: 10px;
+              padding: 18px;
+          }
+          aside span {
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 20px;
+          }
+          aside p {
+              font-size: 14px;
+              color: #444444;
+              margin-top: 20px;
+              margin-bottom: 30px;
+          }
 
-                    main {
-                        //border-right: 1px solid rgb(239, 243, 244);
-                        //padding-right: 18px;
-                    }
+          main {
+              //border-right: 1px solid rgb(239, 243, 244);
+              //padding-right: 18px;
+          }
 
-                    header {
-                        display: flex;
-                        flex-direction: row;
-                    }
-                    header img {
-                        height: 77px;
-                        width: 77px;
-                        margin-right: 21px;
-                        border-radius: 10px;
-                        
-                    }
-                    header h1 {
-                        margin: 0 0 7px 0;
+          header {
+              display: flex;
+              flex-direction: row;
+          }
+          header img {
+              height: 77px;
+              width: 77px;
+              margin-right: 21px;
+              border-radius: 10px;
+              
+          }
+          header h1 {
+              margin: 0 0 7px 0;
 
-                    }
-                    header span {
-                        color: #444444;
+          }
+          header span {
+              color: #444444;
 
-                    }
+          }
 
-                    .textarea {
-                        padding: 50px 98px;
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .textarea strong {
-                        margin-bottom: 10px;
-                    }
+          .textarea {
+              padding: 50px 98px;
+              display: flex;
+              flex-direction: column;
+          }
+          .textarea strong {
+              margin-bottom: 10px;
+          }
 
 
 
-                    .registro-btn {
-                        display: flex;
-                        justify-content: center;
-                    }
-                    button {
-                        width: 269px;
-                        margin-bottom: 70px;
-                        padding: 12px 0;
-                        background: #473198;
-                        background: -webkit-linear-gradient(to right, #4A0D67, #473198);  /* Chrome 10-25, Safari 5.1-6 */
-                        background: linear-gradient(to right, #4A0D67, #473198); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-                        border: none;
-                        outline: none;
-                        border-radius: 10px;
-                        color: #fff;
-                        font-size: 24px;
-                        font-weight: bold;
-                        cursor: pointer;
-                    }
-                    input {
-                        border-radius: 10px;
-                        font-size: 14px;
-                        padding: 10px;
-                        border: thin solid #9E9EA7;
-                        outline: none;
-                        width: 100%;
-                        //max-width: 400px;
-                    }
-                    input:focus {
-                        border: thin solid #473198;
-                    }
-                    input:-webkit-autofill,
-                    input:-webkit-autofill:hover, 
-                    input:-webkit-autofill:focus, 
-                    input:-webkit-autofill:active{
-                        -webkit-box-shadow: 0 0 0 30px white inset !important;
-                    }
+          .registro-btn {
+              display: flex;
+              justify-content: center;
+          }
+          button {
+              width: 269px;
+              margin-bottom: 70px;
+              padding: 12px 0;
+              background: #473198;
+              background: -webkit-linear-gradient(to right, #4A0D67, #473198);  /* Chrome 10-25, Safari 5.1-6 */
+              background: linear-gradient(to right, #4A0D67, #473198); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+              border: none;
+              outline: none;
+              border-radius: 10px;
+              color: #fff;
+              font-size: 24px;
+              font-weight: bold;
+              cursor: pointer;
+          }
+          input {
+              border-radius: 10px;
+              font-size: 14px;
+              padding: 10px;
+              border: thin solid #9E9EA7;
+              outline: none;
+              width: 100%;
+              //max-width: 400px;
+          }
+          input:focus {
+              border: thin solid #473198;
+          }
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover, 
+          input:-webkit-autofill:focus, 
+          input:-webkit-autofill:active{
+              -webkit-box-shadow: 0 0 0 30px white inset !important;
+          }
 
-                    textarea {
-                        resize: none;
-                        border-radius: 10px;
-                        font-size: 14px;
-                        padding: 10px;
-                        border: thin solid #9E9EA7;
-                        outline: none;
-                    }
-                    textarea:focus {
-                        border: thin solid #473198;
-                    }
-                    textarea:-webkit-autofill,
-                    textarea:-webkit-autofill:hover, 
-                    textarea:-webkit-autofill:focus, 
-                    textarea:-webkit-autofill:active{
-                        -webkit-box-shadow: 0 0 0 30px white inset !important;
-                    }
-                `}
+          textarea {
+              resize: none;
+              border-radius: 10px;
+              font-size: 14px;
+              padding: 10px;
+              border: thin solid #9E9EA7;
+              outline: none;
+          }
+          textarea:focus {
+              border: thin solid #473198;
+          }
+          textarea:-webkit-autofill,
+          textarea:-webkit-autofill:hover, 
+          textarea:-webkit-autofill:focus, 
+          textarea:-webkit-autofill:active{
+              -webkit-box-shadow: 0 0 0 30px white inset !important;
+          }
+        `}
       </style>
     </>
   )

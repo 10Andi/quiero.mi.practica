@@ -12,15 +12,13 @@ import NavRegister from '../../../componets/nav/navregister'
 import categorias from '../../../helper/categorias'
 import horarios from '../../../helper/horarios'
 
-export default function EditarPublicacion ({ row }) {
+export default function EditarPublicacion () {
   const { user } = useAuth()
   const [offer, setOffer] = useState(null)
   const router = useRouter()
   const { id } = router.query
   // const data = router.query
   // console.log(id)
-
-  // console.log(row)
 
   const [loading, setLoading] = useState(false)
 
@@ -32,19 +30,19 @@ export default function EditarPublicacion ({ row }) {
     async function getOffer () {
       const docRef = doc(firestore, `test/${id}`)
       const docSnap = await getDoc(docRef)
-      const userDataFirestore = docSnap.data()
+      const offertDataFirestore = docSnap.data()
       // console.log(userDataFirestore)
-      return userDataFirestore
+      return offertDataFirestore
     }
 
-    function setUseForm (data) {
-      console.log(data)
-      Object.entries(data).forEach(entry => {
+    function setUseForm (dataOffert) {
+      console.log(dataOffert)
+      Object.entries(dataOffert).forEach(entry => {
         const [key, value] = entry
         setValue(key, value, { shouldTouch: true })
         // console.log(key,'->' , value)
       })
-      return data
+      return dataOffert
     }
 
     getOffer().then(setUseForm).then(setOffer).finally(setLoading(false))
@@ -63,9 +61,13 @@ export default function EditarPublicacion ({ row }) {
   // const visitas = 0
 
   async function onSubmit (data) {
-    // console.log(data)
+    console.log(data)
     // console.log(user)
     setLoading(true)
+    // const finish = () => {
+    //   setLoading(false)
+    //   router.push('/dashboard')
+    // }
 
     // const fechaModificacion = new Date()
     // user.uid
@@ -85,7 +87,7 @@ export default function EditarPublicacion ({ row }) {
     // const { id } = await addDoc(collection(firestore, 'test'), {
     await updateDoc(docRef, {
       beneficios: data.beneficios,
-      categoria: data.categoria.value,
+      categoria: data.categoria,
       cargo: data.cargo,
       // ciudad: user.region_empresa,
       // comuna: user.comuna_empresa,
@@ -94,7 +96,7 @@ export default function EditarPublicacion ({ row }) {
       descripcion: data.descripcion,
       ejercer: data.ejercer,
       // fecha_creacion: fechaCreacion,
-      horario: data.horario.value,
+      horario: data.horario,
       // logo: user.logo_empresa,
       // nombre_empresa: user.nombre_empresa,
       politica_trabajo: data.politica_trabajo,
@@ -105,6 +107,7 @@ export default function EditarPublicacion ({ row }) {
         setLoading(false)
         router.push('/dashboard')
       })
+      // .finally(finish)
   }
 
   return (
@@ -146,9 +149,9 @@ export default function EditarPublicacion ({ row }) {
                   rules={{ required: true }}
                   render={({ field: { onChange, onBlur, value, name, ref } }) => (
                     <Select
-                                            // {...field}
+                      // {...field}
                       isClearable
-                                            // defaultOptions
+                      // defaultOptions
                       placeholder='Busca la categoría ...'
                       options={categorias}
                       value={categorias.find((c) => c.value === value)}
@@ -165,9 +168,9 @@ export default function EditarPublicacion ({ row }) {
                   rules={{ required: true }}
                   render={({ field: { onChange, onBlur, value, name, ref } }) => (
                     <Select
-                                            // {...field}
+                      // {...field}
                       isClearable
-                                            // defaultOptions
+                      // defaultOptions
                       placeholder='Busca el horario ...'
                       options={horarios}
                       value={horarios.find((h) => h.value === value)}
@@ -247,19 +250,19 @@ export default function EditarPublicacion ({ row }) {
         </div>
       </section>
       {
-            loading
-              ? (
-                <div className='loading'>
-                  <Ring
-                    size={100}
-                    lineWeight={5}
-                    speed={2}
-                    color='#473198'
-                  />
-                </div>
-                )
-              : null
-}
+        loading
+          ? (
+            <div className='loading'>
+              <Ring
+                size={100}
+                lineWeight={5}
+                speed={2}
+                color='#473198'
+              />
+            </div>
+            )
+          : null
+      }
       <style jsx>{`
                 .loading {
                     display: grid;

@@ -122,10 +122,12 @@ export default function SavedOffertCard (props) {
                     return null
                   })}
                   {offerStatus && offerStatus.map(ele => {
+                    // if (ele.fecha_rechazo) return null
                     if (ele.id === id && ele.fecha_aprobacion) return (<small key={Math.random()}>Fecha de aprobación: {ele.fecha_aprobacion}</small>)
                     return null
                   })}
                   {offerStatus && offerStatus.map(ele => {
+                    // if (ele.fecha_aprobacion) return null
                     if (ele.id === id && ele.fecha_rechazo) return (<small key={Math.random()}>Fecha de rechazo: {ele.fecha_rechazo}</small>)
                     return null
                   })}

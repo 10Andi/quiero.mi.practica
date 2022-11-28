@@ -1,76 +1,75 @@
-import { useAuth } from "../../context/AuthContext";
-import HelpIcon from "../icons/helpicon";
-import HomeIcon from "../icons/homeicon";
-import Logo from "../icons/logo";
-import ItemMenu from "./itemmenu";
-import ItemMenuLogout from "./itemmenulogout";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
+import { useAuth } from '../../context/AuthContext'
+import HelpIcon from '../icons/helpicon'
+import HomeIcon from '../icons/homeicon'
+import Logo from '../icons/logo'
+import ItemMenu from './itemmenu'
+import ItemMenuLogout from './itemmenulogout'
 
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
-
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList'
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 
 const MENU_ITEMS_CONTENTS = {
-    contents: [
-        {
-            name: 'Inicio',
-            href: '#',
-            img: <HomeIcon />
-        },
-        {
-            name: 'Publicaciones',
-            href: '/',
-            img: <FeaturedPlayListIcon style={{ color: "#9E9EA7" }} />
-        },
-        {
-            name: 'Mi equipo',
-            href: '/miequipo',
-            img: <SupervisedUserCircleIcon style={{ color: "#9E9EA7" }} />
-        },
-        {
-            name: 'Ayuda',
-            href: '/ayuda',
-            img: <HelpIcon />
-        }
-    ]
+  contents: [
+    {
+      name: 'Inicio',
+      href: '#',
+      img: <HomeIcon />
+    },
+    {
+      name: 'Publicaciones',
+      href: '/',
+      img: <FeaturedPlayListIcon style={{ color: '#9E9EA7' }} />
+    },
+    {
+      name: 'Mi equipo',
+      href: '/miequipo',
+      img: <SupervisedUserCircleIcon style={{ color: '#9E9EA7' }} />
+    },
+    {
+      name: 'Ayuda',
+      href: '/ayuda',
+      img: <HelpIcon />
+    }
+  ]
 }
 
-export default function MenuCompany() {
-    const { user } = useAuth()
-    const router = useRouter()
-    // MENU_ITEMS_CONTENTS.contents.map(content =>
-    //     router.pathname === content.href
-    //         ? <style jsx>{`
-    //             :global(svg) {
-    //                 fill: red;
-    //             }
-    //         `}</style>
-    //         : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
-    // )
+export default function MenuCompany () {
+  const { user } = useAuth()
+  const router = useRouter()
+  // MENU_ITEMS_CONTENTS.contents.map(content =>
+  //     router.pathname === content.href
+  //         ? <style jsx>{`
+  //             :global(svg) {
+  //                 fill: red;
+  //             }
+  //         `}</style>
+  //         : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
+  // )
 
-    return (
-        <>
-            <aside>
-                <Logo />
-                <ul>
-                    {MENU_ITEMS_CONTENTS.contents.map(content =>
-                        router.pathname === content.href
-                            ? <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={true} />
-                            : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
-                    )}
-                    <ItemMenuLogout />
-                </ul>
-                <div className="user">
-                        <img loading="lazy" src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt="" draggable="false" />
-                        <div className="text">
-                            <span>{user?.displayName}</span>
-                            <span className="company">de {user?.nombre_empresa}</span>
-                        </div>
-                        {/* <span>{user?.displayName}</span> */}
-                </div>
-            </aside>
+  return (
+    <>
+      <aside>
+        <Logo />
+        <ul>
+          {MENU_ITEMS_CONTENTS.contents.map(content =>
+            router.pathname === content.href
+              ? <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected />
+              : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false} />
+          )}
+          <ItemMenuLogout />
+        </ul>
+        <div className='user'>
+          <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
+          <div className='text'>
+            <span>{user?.displayName}</span>
+            <span className='company'>de {user?.nombre_empresa}</span>
+          </div>
+          {/* <span>{user?.displayName}</span> */}
+        </div>
+      </aside>
 
-            <style jsx>{`
+      <style jsx>{`
                 aside {
                     max-height: 100vh;
                     height: 100vh;
@@ -113,7 +112,8 @@ export default function MenuCompany() {
                     color: #473198;
                     font-size: 16px;
                 }
-            `}</style>
-        </>
-    )
+            `}
+      </style>
+    </>
+  )
 }

@@ -1,9 +1,47 @@
 import Select from 'react-select'
-// import { useOffert } from '../../context/offertContext'
+import { useOffert } from '../../context/offertContext'
+import { useFiltered } from '../../context/searchedContext'
 import sortOptions from '../../helper/sortOfferts'
 
 export default function SortOfferts () {
   // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
+  const { offerList, setOfferList } = useOffert()
+  const { sortedResults, setSortedResults } = useFiltered()
+
+  const sortItems = (e) => {
+    const { value, categorias } = e
+    console.log('🚀 ~ file: index.js ~ line 11 ~ sortItems ~ value, categorias', value, categorias)
+    // setSearchInput(searchValue)
+    // if (searchInput !== '') {
+    //   const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(searchInput.toLowerCase()))
+    //   setFilteredResults(filteredData)
+    // } else {
+    //   setFilteredResults(offerList)
+    // }
+    if (categorias) {
+      const sortData = offerList.filter(ele => ele.categoria === value)
+      setOfferList(sortData)
+      console.log('🚀 ~ file: index.js ~ line 21 ~ sortItems ~ filteredData', sortData)
+      // setSortedResults(sortData)
+    } else {
+      if (value === 'Más nuevos') {
+        const sortData = offerList.sort(ele => ele.categoria === value)
+      }
+      if (value === 'Más vistos') {
+        const sortData = offerList.sort(ele => ele.vistas)
+        console.log('🚀 ~ file: index.js ~ line 32 ~ sortItems ~ sortData', sortData)
+        setOfferList(sortData)
+      }
+      if (value === 'Más cupos disponibles') {
+        const sortData = offerList.reverse((a, b) => a.cupos - b.cupos)
+        console.log('🚀 ~ file: index.js ~ line 36 ~ sortItems ~ sortData', sortData)
+        setOfferList(sortData)
+      }
+
+      // const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(value))
+      // setFilteredResults(filteredData)
+    }
+  }
 
   const styles = {
     menuList: (base) => ({
@@ -42,7 +80,7 @@ export default function SortOfferts () {
             placeholder='Mostrar por:'
             options={sortOptions}
             onChange={(e) => {
-              console.log(e)
+              sortItems(e)
             }}
           />
         </div>
@@ -67,7 +105,7 @@ export default function SortOfferts () {
                 max-width: 300px;
                 width: 100%;
             }
-            select {
+            {/* select {
                 width: 125px;
                 outline: none;
                 margin-left: 12px;
@@ -80,7 +118,7 @@ export default function SortOfferts () {
                 -webkit-appearance:none;
 
                 background:url(imagenes/iconDownArrow.svg) 90% 50%  no-repeat scroll transparent;
-            }
+            } */}
 
 
         `}

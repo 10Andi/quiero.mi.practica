@@ -1,4 +1,4 @@
-import { SearchedContextProvider } from '../../context/searchedContext'
+import { FilteredContextProvider } from '../../context/searchedContext'
 import Searchbar from '../searchbar'
 import ShowOfferts from '../showofferts'
 import SortOfferts from '../sortofferts'
@@ -7,11 +7,11 @@ export default function ListOffers () {
   return (
     <>
       <main>
-        <SearchedContextProvider>
+        <FilteredContextProvider>
           <Searchbar primary />
           <SortOfferts />
           <ShowOfferts />
-        </SearchedContextProvider>
+        </FilteredContextProvider>
       </main>
       <style jsx>{`
           main {

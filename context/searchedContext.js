@@ -1,12 +1,15 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
-const SearchedContext = createContext({})
-export const useSearched = () => useContext(SearchedContext)
+const FilteredContext = createContext({})
+export const useFiltered = () => useContext(FilteredContext)
 
-export const SearchedContextProvider = ({children}) => {
-    const [searched, setSearched] = useState(null)
+export const FilteredContextProvider = ({ children }) => {
+  const [sortedResults, setSortedResults] = useState([])
+  const [searchedResults, setSearchedResults] = useState([])
 
-    return <SearchedContext.Provider value={{ searched, setSearched }}>
-                {children} 
-    </SearchedContext.Provider>
+  return (
+    <FilteredContext.Provider value={{ sortedResults, setSortedResults, searchedResults, setSearchedResults }}>
+      {children}
+    </FilteredContext.Provider>
+  )
 }

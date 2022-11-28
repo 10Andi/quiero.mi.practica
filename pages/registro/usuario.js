@@ -136,6 +136,7 @@ export default function Usuario () {
                 <input
                   type='text' {...register('rut', {
                     required: true,
+                    minLength: 8,
                     validate: () => {
                       const valueRut = watch('rut')
                       const cleanedRut = cleanRut(valueRut)

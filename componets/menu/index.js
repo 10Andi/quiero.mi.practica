@@ -1,71 +1,70 @@
-import { useAuth } from "../../context/AuthContext";
-import HelpIcon from "../icons/helpicon";
-import HomeIcon from "../icons/homeicon";
-import Logo from "../icons/logo";
-import PostulationsIcon from "../icons/postulationsicon";
-import SearchIcon from "../icons/searchicon";
-import ItemMenu from "./itemmenu";
-import ItemMenuLogout from "./itemmenulogout";
-import { useRouter } from "next/router";
-
+import { useRouter } from 'next/router'
+import { useAuth } from '../../context/AuthContext'
+import HelpIcon from '../icons/helpicon'
+import HomeIcon from '../icons/homeicon'
+import Logo from '../icons/logo'
+import PostulationsIcon from '../icons/postulationsicon'
+import SearchIcon from '../icons/searchicon'
+import ItemMenu from './itemmenu'
+import ItemMenuLogout from './itemmenulogout'
 
 const MENU_ITEMS_CONTENTS = {
-    contents: [
-        {
-            name: 'Inicio',
-            href: '#',
-            img: <HomeIcon />
-        },
-        {
-            name: 'Buscar práctica',
-            href: '/home',
-            img: <SearchIcon />
-        },
-        {
-            name: 'Mis postulaciones',
-            href: '/mispostulaciones',
-            img: <PostulationsIcon />
-        },
-        {
-            name: 'Ayuda',
-            href: '/ayuda',
-            img: <HelpIcon />
-        }
-    ]
+  contents: [
+    {
+      name: 'Inicio',
+      href: '#',
+      img: <HomeIcon />
+    },
+    {
+      name: 'Buscar práctica',
+      href: '/home',
+      img: <SearchIcon />
+    },
+    {
+      name: 'Mis postulaciones',
+      href: '/mispostulaciones',
+      img: <PostulationsIcon />
+    },
+    {
+      name: 'Ayuda',
+      href: '/ayuda',
+      img: <HelpIcon />
+    }
+  ]
 }
 
-export default function Menu() {
-    const { user } = useAuth()
-    const router = useRouter()
-    // MENU_ITEMS_CONTENTS.contents.map(content =>
-    //     router.pathname === content.href
-    //         ? <style jsx>{`
-    //             :global(svg) {
-    //                 fill: red;
-    //             }
-    //         `}</style>
-    //         : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
-    // )
+export default function Menu () {
+  const { user } = useAuth()
+  const router = useRouter()
+  // MENU_ITEMS_CONTENTS.contents.map(content =>
+  //     router.pathname === content.href
+  //         ? <style jsx>{`
+  //             :global(svg) {
+  //                 fill: red;
+  //             }
+  //         `}</style>
+  //         : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
+  // )
 
-    return (
-        <>
-            <aside>
-                <Logo />
-                <ul>
-                    {MENU_ITEMS_CONTENTS.contents.map(content =>
-                        router.pathname === content.href
-                            ? <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={true} />
-                            : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
-                    )}
-                    <ItemMenuLogout />
-                </ul>
-                <div className="user">
-                        <img loading="lazy" src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt="" draggable="false" />
-                        <span>{user?.displayName}</span>
-                </div>
-            </aside>
+  return (
+    <>
+      <aside>
+        <Logo />
+        <ul>
+          {MENU_ITEMS_CONTENTS.contents.map(content =>
+            router.pathname === content.href
+              ? <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected />
+              : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false} />
+          )}
+          <ItemMenuLogout />
+        </ul>
+        <div className='user'>
+          <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
+          <span>{user?.displayName}</span>
+        </div>
+      </aside>
 
-            <style jsx>{`
+      <style jsx>{`
                 aside {
                     max-height: 100vh;
                     height: 100vh;
@@ -99,7 +98,8 @@ export default function Menu() {
                     margin-right: 10px;
                     margin-top: 10px;
                 }
-            `}</style>
-        </>
-    )
+            `}
+      </style>
+    </>
+  )
 }

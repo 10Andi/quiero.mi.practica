@@ -1,6 +1,6 @@
 import { Warning } from '@mui/icons-material'
 import { Ring } from '@uiball/loaders'
-import { collection, documentId, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, documentId, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
@@ -10,11 +10,8 @@ import SavedOffertCard from '../offertcard/savedoffertcard'
 export default function SavedShowOfferts () {
   const { user } = useAuth()
   const [offerList, setOfferList] = useState([])
-  // const [ofertas, setOfertas] = useState(undefined)
-  // const [offerStatus, setOfferStatus] = useState(null)
-  const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
-
-  // const [selectedOffert, setSelectedOffert] = useState(null)
+  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
+  const { setOfferStatus } = useOffert()
   const [loading, setLoading] = useState(false)
 
   // Extraer de user.ofertasGuardadas la fecha_postulacion para ordenar 'desc' y ver si bookmark esta en true
@@ -120,8 +117,9 @@ export default function SavedShowOfferts () {
   // }, [setOfferStatus, user])
 
   useEffect(() => {
+    // setLoading(true)
     async function getOfferts () {
-      setLoading(true)
+      // setLoading(true)
 
       const bookmark = user.bookmark
       const postulado = user.postulado
@@ -163,38 +161,19 @@ export default function SavedShowOfferts () {
         })
       }
       onGetOfferts().finally(setLoading(false))
-
-      // const querySnapshot = await getDocs(query(collection(firestore, 'test'), where(documentId(), 'in', ofertas)))
-      // // , orderBy("fecha_creacion", 'desc')
-
-      // return querySnapshot.docs.map(doc => {
-      //   const data = doc.data()
-      //   const id = doc.id
-      //   const { fecha_creacion } = data
-      //   // console.log(data)
-
-      //   // const date = new Date(fecha_creacion.seconds * 1000)
-      //   // const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL').format(date)
-
-      //   return {
-      //     ...data,
-      //     id,
-      //     fecha_creacion: +fecha_creacion.toDate()
-      //   }
-      // })
+      // onGetOfferts()
     }
 
     async function getSubColection () {
       setLoading(true)
-      // console.log(user.uid)
-      // const qSnap = await getDocs(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`), where(documentId(), 'in', ofertas)))
+
       const onSubColection = async () => {
         await onSnapshot(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`)), querySnapshot => {
           setOfferStatus(querySnapshot.docs.map(doc => {
             const data = doc.data()
             const id = doc.id
             const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false } = data
-            console.log(data)
+            // console.log(data)
 
             const format = (date, locale, options) =>
               new Intl.DateTimeFormat(locale, options).format(date)
@@ -228,50 +207,13 @@ export default function SavedShowOfferts () {
           }))
         })
       }
+      // onSubColection()
       onSubColection().finally(setLoading(false))
-
-      // const querySnapshot = await onSnapshot(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`))
-      // // return console.log(qSnap.docs.map(d => ({id: d.id, ...d.data()})))
-      // return querySnapshot.docs.map(doc => {
-      //   const data = doc.data()
-      //   const id = doc.id
-      //   const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false } = data
-      //   console.log(data)
-
-      //   const format = (date, locale, options) =>
-      //     new Intl.DateTimeFormat(locale, options).format(date)
-
-      //   // const date = new Date(fecha_postulacion.seconds * 1000)
-      //   // const formatDate = format(date, 'es', { dateStyle: 'long'})
-
-      //   function formatDate (dateFromData) {
-      //     const date = new Date(dateFromData.seconds * 1000)
-      //     return format(date, 'es', { dateStyle: 'long' })
-      //   }
-      //   const format_fecha_postulacion = formatDate(fecha_postulacion)
-      //   let format_fecha_aprobacion = false
-      //   let format_fecha_rechazo = false
-      //   if (fecha_aprobacion) {
-      //     format_fecha_aprobacion = formatDate(fecha_aprobacion)
-      //   }
-      //   if (fecha_rechazo) {
-      //     format_fecha_rechazo = formatDate(fecha_rechazo)
-      //   }
-
-      //   return {
-      //     ...data,
-      //     id,
-      //     fecha_postulacion: format_fecha_postulacion,
-      //     fecha_aprobacion: format_fecha_aprobacion,
-      //     fecha_rechazo: format_fecha_rechazo
-      //     // fecha_aprobacion: 123
-
-      //   }
-      // })
     }
 
     getOfferts()
     getSubColection()
+    setLoading(false)
   }, [setOfferStatus, user])
 
   return (
@@ -315,43 +257,42 @@ export default function SavedShowOfferts () {
           )}
 
       <style jsx>{`
-                div {
-                    padding: 50px;
-                    display: grid;
-                    place-content: center;
-                }
-                article {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    background: rgb(239, 243, 244);
-                    border: none;
-                    padding: 21px;
-                    margin: 16px 0;
-                    border-radius: 10px;
-                    gap: 8px;
-                }
-                section: {
-                    height: 100%;
-                    overflow-y: auto;
-                }
-                section::-webkit-scrollbar {
-                    width: 8px;
-                    height: 8px;
-                }
-                section::-webkit-scrollbar-thumb {
-                    background: #ccc;
-                    border-radius: 4px;
-                }
-                section::-webkit-scrollbar-thumb:hover {
-                    background: #b3b3b3;
-                }
-                section::-webkit-scrollbar-thumb:active {
-                    background-color: #999999;
-                }
-                
-            `}
+          div {
+            padding: 50px;
+            display: grid;
+            place-content: center;
+          }
+          article {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: rgb(239, 243, 244);
+            border: none;
+            padding: 21px;
+            margin: 16px 0;
+            border-radius: 10px;
+            gap: 8px;
+          }
+          section: {
+            height: 100%;
+            overflow-y: auto;
+          }
+          section::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          section::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+          }
+          section::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+          }
+          section::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+          }
+        `}
       </style>
     </>
   )

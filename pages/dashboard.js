@@ -49,7 +49,7 @@ export default function Dashboard () {
           const id = doc.id
           const { fecha_creacion } = data
 
-          console.log(data)
+          // console.log(data)
 
           const date = new Date(fecha_creacion.seconds * 1000)
           const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL', { dateStyle: 'long', timeStyle: 'medium' }).format(date)
@@ -145,26 +145,22 @@ export default function Dashboard () {
                   <TableBody>
                     {offerList && offerList.map((row) => (
                       <TableRow key={row.id} id={row.id} hover>
-                        {/* <TableCell component="th" scope="row" style={{ color: '#473198', fontWeight: 'bold' }}><a>{row.cargo}, {row.ejercer}</a></TableCell> */}
                         <TableCell component='th' scope='row'>
                           <DialogStudents row={row} />
                         </TableCell>
                         <TableCell align='right'>{row.cupos}</TableCell>
                         <TableCell align='right'>{row.fecha_creacion}</TableCell>
-                        {/* <TableCell align="right">{row.X}</TableCell> */}
                         <TableCell align='center'>
-                          <IconButton>
-                            <VisibilityIcon
-                              style={{ color: '#473198', cursor: 'pointer' }} onClick={() => {
-                                setOfferSelected(row)
-                              }}
-                            />
+                          <IconButton onClick={() => {
+                            setOfferSelected(row)
+                          }}
+                          >
+                            <VisibilityIcon style={{ color: '#473198', cursor: 'pointer' }} />
                           </IconButton>
                         </TableCell>
                         <TableCell align='center'>
                           <IconButton>
                             <Link href={`/editarpublicacion/${row.id}`}>
-                              {/* {'/editarpublicacion'} */}
                               <EditIcon style={{ color: '#FCE592', cursor: 'pointer' }} />
                             </Link>
                           </IconButton>
@@ -208,113 +204,114 @@ export default function Dashboard () {
           </section>
           )}
 
-      <style jsx>{`
-                section {
-                    height: 100vh;
-                    padding: 0 42px;
-                    //padding: 0 200px;
-                    display: grid;
-                    //grid-template-columns: 1fr 3fr;
-                    //grid-template-columns: 1fr 4fr;
-                    grid-template-columns: .6fr 2fr .9fr;
-                }
+      <style jsx>
+        {`
+          section {
+            height: 100vh;
+            padding: 0 42px;
+            //padding: 0 200px;
+            display: grid;
+            //grid-template-columns: 1fr 3fr;
+            //grid-template-columns: 1fr 4fr;
+            grid-template-columns: .6fr 2fr .9fr;
+          }
 
-                header {
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                }
-                main {
-                  border-right: 1px solid rgb(239, 243, 244);
-                  border-left: 1px solid rgb(239, 243, 244);
-                  padding-top: 56px;
-                  padding-left: 18px;
-                  padding: 56px 49px 0 49px;
-                  overflow: auto;
-                }
-                main::-webkit-scrollbar {
-                  width: 8px;
-                  height: 8px;
-                }
-                main::-webkit-scrollbar-thumb {
-                  padding-right: 56px;
-                  background: #ccc;
-                  border-radius: 4px;
-                }
-                main::-webkit-scrollbar-thumb:hover {
-                  background: #b3b3b3;
-                }
-                main::-webkit-scrollbar-thumb:active {
-                  background-color: #999999;
-                }
-                {/* rgb(247, 249, 249) */}
-                aside {
-                    height: 100vh;
-                    display: flex;
-                    justify-content: space-between;
-                    flex-direction: column;
-                    margin-left: 5%;
-                }
-                .infoCompany {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding-bottom: 48px;
-                    margin-top: 8%;
-                }
-                .infoCompany img {
-                    height: 126px;
-                    width: 126px;
-                    border-radius: 10px;
-                    
-                }
-                .infoCompany h4 {
-                    font-size: 24px;
-                    margin: 12px 0;
-                    text-align: center;
-                }
-                .infoCompany span {
-                    font-size: 14px;
-                    color: #444444;
-                }
+          header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          main {
+            border-right: 1px solid rgb(239, 243, 244);
+            border-left: 1px solid rgb(239, 243, 244);
+            padding-top: 56px;
+            padding-left: 18px;
+            padding: 56px 49px 0 49px;
+            overflow: auto;
+          }
+          main::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          main::-webkit-scrollbar-thumb {
+            padding-right: 56px;
+            background: #ccc;
+            border-radius: 4px;
+          }
+          main::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+          }
+          main::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+          }
+          {/* rgb(247, 249, 249) */}
+          aside {
+            height: 100vh;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            margin-left: 5%;
+          }
+          .infoCompany {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 48px;
+            margin-top: 8%;
+          }
+          .infoCompany img {
+            height: 126px;
+            width: 126px;
+            border-radius: 10px;
+              
+          }
+          .infoCompany h4 {
+            font-size: 24px;
+            margin: 12px 0;
+            text-align: center;
+          }
+          .infoCompany span {
+            font-size: 14px;
+            color: #444444;
+          }
 
-                .infoOffert {
-                    height: 50%;
-                    overflow-y: auto;
-                    padding-right: 10px;
-                    margin-bottom: 80px;
-                }
-                .infoOffert::-webkit-scrollbar {
-                    width: 8px;
-                    height: 8px;
-                }
-                .infoOffert::-webkit-scrollbar-thumb {
-                    background: #ccc;
-                    border-radius: 4px;
-                }
-                .infoOffert::-webkit-scrollbar-thumb:hover {
-                    background: #b3b3b3;
-                }
-                .infoOffert::-webkit-scrollbar-thumb:active {
-                    background-color: #999999;
-                }
-                .infoOffert span {
-                    font-size: 14px;
-                    font-weight: bold;
-                    margin-bottom: 20px;
-                }
-                .infoOffert p {
-                    font-size: 14px;
-                    color: #444444;
-                    margin-top: 20px;
-                    margin-bottom: 30px;
-                    white-space: pre-line;
-                }
-                a:hover {
-                  text-decoration: underline;
-                  cursor: pointer;
-                }
-            `}
+          .infoOffert {
+            height: 50%;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 80px;
+          }
+          .infoOffert::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          .infoOffert::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+          }
+          .infoOffert::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+          }
+          .infoOffert::-webkit-scrollbar-thumb:active {
+            background-color: #999999;
+          }
+          .infoOffert span {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+          }
+          .infoOffert p {
+            font-size: 14px;
+            color: #444444;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            white-space: pre-line;
+          }
+          a:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        `}
       </style>
     </>
   )
