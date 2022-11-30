@@ -386,7 +386,7 @@ export default function Empresa () {
 
           <div className='registro-btn'>
             {/* <button type="submit" className="disable">Anterior</button> */}
-            <button type='submit'>Regristrarse</button>
+            <button type='submit'>Registrarse</button>
           </div>
         </form>
 

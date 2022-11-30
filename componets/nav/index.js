@@ -9,7 +9,7 @@ export default function Nav () {
         <ul className='nav-links'>
           <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
           <li><Link href='/login'><a>Iniciar sesión</a></Link></li>
-          <li><Link href='/registro'><a>Registarse</a></Link></li>
+          <li><Link href='/registro'><a>Registrarse</a></Link></li>
         </ul>
       </nav>
 

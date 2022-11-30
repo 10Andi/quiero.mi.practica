@@ -243,7 +243,7 @@ export default function Usuario () {
             </div>
 
             <div className='registro-btn'>
-              <button type='submit'>Regristrarse</button>
+              <button type='submit'>Registrarse</button>
             </div>
           </form>
         </div>

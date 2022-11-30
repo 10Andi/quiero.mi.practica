@@ -1,22 +1,13 @@
-import { Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material'
-import Link from 'next/link'
+import { Dialog, DialogContent, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material'
+import { collection, onSnapshot, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { MailOutline, OpenInNew } from '@mui/icons-material'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import TaskIcon from '@mui/icons-material/Task'
-import { collection, doc, increment, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import { useAuth } from '../../context/AuthContext'
 import { firestore } from '../../firebase/client'
 import BodyTableCollapse from './bodytablecollapse'
 
 export default function DialogStudents ({ row }) {
-  // const { user } = useAuth()
+  const { user } = useAuth()
   const idOffer = row.id
   // const [ loading, setLoading ] = useState(false)
   const [open, setOpen] = useState(false)
