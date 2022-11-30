@@ -7,7 +7,6 @@ export default function Nav () {
       <nav>
         <Logo />
         <ul className='nav-links'>
-          <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
           <li><Link href='/login'><a>Iniciar sesión</a></Link></li>
           <li><Link href='/registro'><a>Registrarse</a></Link></li>
         </ul>

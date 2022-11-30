@@ -1,20 +1,21 @@
 import Link from 'next/link'
 
-export default function Footer() {
-    return (
-        <>
-            <footer>
-                <div>
-                    <h2>QUIEROMIPRÁCTICA</h2>
-                </div>
-                <ul>
-                    <li><Link href={"/sobrenosotros"}><a>Sobre nosostros</a></Link></li>
-                    <li><Link href={"/precios"}><a>Precios</a></Link></li>
-                    <li><Link href={"/privacidad"}><a>Privacidad</a></Link></li>
-                    <li><Link href={"/contacto"}><a>Contacto</a></Link></li>
-                </ul>
-            </footer>
-            <style jsx>{`
+export default function Footer () {
+  return (
+    <>
+      <footer>
+        <div>
+          <h2>QUIEROMIPRÁCTICA</h2>
+        </div>
+        <ul>
+          <li><Link href='/sobrenosotros'><a>Sobre nosostros</a></Link></li>
+          <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
+          <li><Link href='/precios'><a>Precios</a></Link></li>
+          <li><Link href='/privacidad'><a>Privacidad</a></Link></li>
+          <li><Link href='/contacto'><a>Contacto</a></Link></li>
+        </ul>
+      </footer>
+      <style jsx>{`
             footer {
                 heigth: 7vh;
                 width: 100%;
@@ -42,7 +43,8 @@ export default function Footer() {
                 text-decoration: none;
                 font-size: 14px;
             }
-            `}</style>
-        </>
-    )
+            `}
+      </style>
+    </>
+  )
 }
