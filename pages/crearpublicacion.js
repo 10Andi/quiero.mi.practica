@@ -181,7 +181,7 @@ export default function CrearPublicacion () {
                 />
               </div>
               <div className='textarea'>
-                <strong>Policas de trabajo:</strong>
+                <strong>Polícas de trabajo:</strong>
                 <textarea
                   cols='30' rows='10' {...register('politica_trabajo', {
                     required: true
@@ -578,9 +578,9 @@ export default function CrearPublicacion () {
           }
 
           .textarea {
-              padding: 50px 98px;
-              display: flex;
-              flex-direction: column;
+            padding: 24px 98px;
+            display: flex;
+            flex-direction: column;
           }
           .textarea strong {
               margin-bottom: 10px;

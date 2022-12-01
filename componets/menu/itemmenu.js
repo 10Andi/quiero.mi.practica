@@ -1,20 +1,19 @@
-import Link from "next/link"
+import Link from 'next/link'
 
+export default function ItemMenu ({ name, img, href, selected }) {
+  return (
+    selected
+      ? <>
+        <li className='nav-item'>
+          <Link href={href}>
+            <a className='nav-link'>
+              {img}
+              <span className='link-active'>{name}</span>
+            </a>
+          </Link>
+        </li>
 
-export default function ItemMenu({ name, img, href, selected }) {
-    return (
-        selected
-            ? <>
-            <li className="nav-item">
-                <Link href={href}>
-                    <a className="nav-link">
-                        {img}
-                        <span className="link-active">{name}</span>
-                    </a>
-                </Link>
-            </li>
-
-            <style jsx>{`
+        <style jsx>{`
                 li {
                     display: flex;
                     align-items: center;
@@ -42,16 +41,17 @@ export default function ItemMenu({ name, img, href, selected }) {
                 li a:hover > :global(svg) {
                     fill: red;
                 }
-            `}</style>
-        </>
-        : <>
-        <li className="nav-item">
-            <Link href={href}>
-                <a className="nav-link">
-                    {img}
-                    <span className="link-active">{name}</span>
-                </a>
-            </Link>
+            `}
+        </style>
+      </>
+      : <>
+        <li className='nav-item'>
+          <Link href={href}>
+            <a className='nav-link'>
+              {img}
+              <span className='link-active'>{name}</span>
+            </a>
+          </Link>
         </li>
 
         <style jsx>{`
@@ -83,8 +83,9 @@ export default function ItemMenu({ name, img, href, selected }) {
             {/* li a:hover > :global(svg) {
                 fill: red;
             } */}
-        `}</style>
-    </>
-        
-    )
+        `}
+        </style>
+      </>
+
+  )
 }

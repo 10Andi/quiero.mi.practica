@@ -264,13 +264,15 @@ export default function ShowOfferts () {
             display: grid;
             place-content: center;
           }
-          section: {
-            height: 100%;
+          section {
+            max-height: 76vh;
+            margin-top: 20px;
             overflow-y: auto;
           }
           section::-webkit-scrollbar {
             width: 8px;
             height: 8px;
+            margin-left: 18px;
           }
           section::-webkit-scrollbar-thumb {
             background: #ccc;

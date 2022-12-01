@@ -11,14 +11,14 @@ import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 
 const MENU_ITEMS_CONTENTS = {
   contents: [
-    {
-      name: 'Inicio',
-      href: '#',
-      img: <HomeIcon />
-    },
+    // {
+    //   name: 'Inicio',
+    //   href: '#',
+    //   img: <HomeIcon />
+    // },
     {
       name: 'Publicaciones',
-      href: '/',
+      href: '/dashboard',
       img: <FeaturedPlayListIcon style={{ color: '#9E9EA7' }} />
     },
     {

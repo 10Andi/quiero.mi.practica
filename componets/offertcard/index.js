@@ -1,6 +1,8 @@
 import { IconButton } from '@mui/material'
 import { arrayRemove, arrayUnion, doc, increment, updateDoc } from 'firebase/firestore'
 import { useEffect } from 'react'
+import { CircularProgressbar } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
 import { firestore } from '../../firebase/client'
@@ -15,9 +17,9 @@ export default function OffertCard (props) {
 
   const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, checkboxEmpresa } = props
   // console.log('🚀 ~ file: index.js ~ line 17 ~ OffertCard ~ checkboxEmpresa', checkboxEmpresa)
-  const match = user.checkboxAlumno.filter(prop => checkboxEmpresa?.indexOf(prop) >= 0)
+  const match = user.checkboxAlumno?.filter(prop => checkboxEmpresa?.indexOf(prop) >= 0)
   // console.log('🚀 ~ file: index.js ~ line 19 ~ OffertCard ~ match', match.length)
-  const porcentaje = (match.length / checkboxEmpresa?.length) * 100
+  const porcentaje = Math.floor((match.length / checkboxEmpresa?.length) * 100)
   console.log('🚀 ~ file: index.js ~ line 21 ~ OffertCard ~ porcentaje', porcentaje)
   const { offertSelected, setOffertSelected } = useOffert()
 
@@ -118,6 +120,9 @@ export default function OffertCard (props) {
           {props.bookmark?.includes(user.uid)
             ? <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
             : <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>}
+          <div style={{ width: 50, height: 50, marginTop: 20 }}>
+            <CircularProgressbar value={porcentaje} text={`${porcentaje}%`} />
+          </div>
         </div>
       </article>
 
@@ -196,6 +201,10 @@ export default function OffertCard (props) {
           }
           .right-col-end {
             margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
             {/* z-index: 10; */}
           }
         `}

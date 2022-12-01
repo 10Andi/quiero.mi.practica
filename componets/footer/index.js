@@ -12,7 +12,8 @@ export default function Footer () {
           <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
           <li><Link href='/precios'><a>Precios</a></Link></li>
           <li><Link href='/privacidad'><a>Privacidad</a></Link></li>
-          <li><Link href='/contacto'><a>Contacto</a></Link></li>
+          {/* <li><Link href='/contacto'><a>Contacto</a></Link></li> */}
+          <li><a href='mailto:hola@quieromipractica.cl'>Contacto</a></li>
         </ul>
       </footer>
       <style jsx>{`
@@ -39,6 +40,11 @@ export default function Footer () {
                 list-style: none;
             }
             a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            span {
                 color: #fff;
                 text-decoration: none;
                 font-size: 14px;

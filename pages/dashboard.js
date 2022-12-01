@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material'
 import { Ring } from '@uiball/loaders'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
 // import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -108,6 +108,11 @@ export default function Dashboard () {
     return
   }
 
+  const deleteOffert = async (idOffert) => {
+    await deleteDoc(doc(firestore, 'test', idOffert))
+    // console.log(idOffert)
+  }
+
   return (
     <>
       {loading
@@ -166,7 +171,10 @@ export default function Dashboard () {
                           </IconButton>
                         </TableCell>
                         <TableCell align='center'>
-                          <IconButton>
+                          <IconButton onClick={() => {
+                            deleteOffert(row.id)
+                          }}
+                          >
                             <DeleteForeverIcon style={{ color: '#FC9292', cursor: 'pointer' }} />
                           </IconButton>
                         </TableCell>

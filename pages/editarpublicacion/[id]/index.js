@@ -117,7 +117,7 @@ export default function EditarPublicacion () {
         <div className='layout'>
           <main>
             <header>
-              <img loading='lazy' src='https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png' alt='' />
+              <img loading='lazy' src={user?.logo_empresa} alt='' />
               <div>
                 <h1>Estas editando la oferta <span>{offer?.cargo}, {offer?.ejercer}</span></h1>
                 <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
@@ -212,7 +212,7 @@ export default function EditarPublicacion () {
                 />
               </div>
               <div className='textarea'>
-                <strong>Policas de trabajo:</strong>
+                <strong>Polícas de trabajo:</strong>
                 <textarea
                   cols='30' rows='10' {...register('politica_trabajo', {
                     required: true
@@ -226,13 +226,7 @@ export default function EditarPublicacion () {
             </form>
 
           </main>
-          {/*
-                    cupos
-                    vistas
 
-                    <aside>
-
-                    </aside> */}
           <aside>
             <span>Lugar:</span>
             <p>{offer?.comuna}, {offer?.ciudad}.</p>
@@ -338,9 +332,9 @@ export default function EditarPublicacion () {
                 }
 
                 .textarea {
-                    padding: 50px 98px;
-                    display: flex;
-                    flex-direction: column;
+                  padding: 24px 98px;
+                  display: flex;
+                  flex-direction: column;
                 }
                 .textarea strong {
                     margin-bottom: 10px;

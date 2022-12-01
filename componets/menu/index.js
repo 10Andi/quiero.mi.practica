@@ -10,11 +10,11 @@ import ItemMenuLogout from './itemmenulogout'
 
 const MENU_ITEMS_CONTENTS = {
   contents: [
-    {
-      name: 'Inicio',
-      href: '#',
-      img: <HomeIcon />
-    },
+    // {
+    //   name: 'Inicio',
+    //   href: '#',
+    //   img: <HomeIcon />
+    // },
     {
       name: 'Buscar práctica',
       href: '/home',
