@@ -136,7 +136,9 @@ export default function Empresa () {
       nombre_empresa: data.nombre_empresa,
       tipo: userType,
       avatar,
-      logo_empresa: URL
+      logo_empresa: URL,
+      region_empresa: data.comuna_empresa.region,
+      comuna_empresa: data.comuna_empresa.value
     })
     await setDoc(docRefCompany, {
       uid_empresa: uidEmpresa,

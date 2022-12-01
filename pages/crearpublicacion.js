@@ -17,6 +17,7 @@ export default function CrearPublicacion () {
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit, control } = useForm()
   // const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
+  console.log(user)
 
   if (user === null) {
     router.push('/login')
@@ -89,7 +90,7 @@ export default function CrearPublicacion () {
         <div className='layout'>
           <main>
             <header>
-              <img loading='lazy' src='https://icons-for-free.com/download-icon-google+logo+new+icon-1320185797820629294_128.png' alt='' />
+              <img loading='lazy' src={user?.logo_empresa} alt='' />
               <div>
                 <h1>Crea una nueva oferta de práctica</h1>
                 <span>Tú y los demás miembros del equipo recibirán una notificación cuando se postule un nuevo practicante.</span>
