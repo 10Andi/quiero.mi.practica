@@ -317,7 +317,7 @@ export default function EditarPublicacion () {
                     width: 77px;
                     margin-right: 21px;
                     border-radius: 10px;
-                    
+                    object-fit: contain;
                 }
                 header h1 {
                     margin: 0 0 7px 0;

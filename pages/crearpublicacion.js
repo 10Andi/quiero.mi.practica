@@ -1,6 +1,6 @@
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { firestore } from '../firebase/client'
 
@@ -15,9 +15,19 @@ export default function CrearPublicacion () {
   const { user } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [empresa, setEmpresa] = useState(false)
   const { register, handleSubmit, control } = useForm()
   // const { register, handleSubmit, formState: { errors }, watch, control, trigger } = useForm()
   console.log(user)
+
+  useEffect(() => {
+    async function getEmpresa () {
+      const docSnap = await getDoc(doc(firestore, 'EMPRESA', user.uid_empresa))
+      const dataEmpresa = docSnap.data()
+      return dataEmpresa
+    }
+    getEmpresa().then(setEmpresa)
+  }, [user.uid_empresa])
 
   if (user === null) {
     router.push('/login')
@@ -53,8 +63,8 @@ export default function CrearPublicacion () {
       beneficios: data.beneficios,
       categoria: data.categoria.value,
       cargo: data.cargo,
-      ciudad: user.region_empresa,
-      comuna: user.comuna_empresa,
+      ciudad: empresa.region_empresa,
+      comuna: empresa.comuna_empresa,
       condicion: data.conocimientos,
       cupos,
       descripcion: data.sobre_trabajo,
@@ -566,7 +576,7 @@ export default function CrearPublicacion () {
               width: 77px;
               margin-right: 21px;
               border-radius: 10px;
-              
+              object-fit: contain;
           }
           header h1 {
               margin: 0 0 7px 0;
