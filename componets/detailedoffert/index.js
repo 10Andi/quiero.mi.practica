@@ -114,6 +114,7 @@ export default function DetailedOffert () {
                   height: 126px;
                   width: 126px;
                   border-radius: 10px;
+                  object-fit: contain;
                 }
                 .infoCompany h4 {
                   font-size: 24px;

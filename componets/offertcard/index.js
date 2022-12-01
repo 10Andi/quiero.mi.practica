@@ -157,6 +157,7 @@ export default function OffertCard (props) {
             width: 77px;
             margin-right: 21px;
             border-radius: 10px;
+            object-fit: contain;
           }
           .offer .offerInfo h4 {
             font-size: 24px;
