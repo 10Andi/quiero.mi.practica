@@ -36,7 +36,8 @@ export const AuthContextProvider = ({ children }) => {
               secondSurename: userDataFirestore.apellidoMaterno,
               type: userDataFirestore.tipo,
               bookmark: userDataFirestore.bookmark,
-              postulado: userDataFirestore.postulado
+              postulado: userDataFirestore.postulado,
+              checkboxAlumno: userDataFirestore.checkboxAlumno
             })
           } else if (userDataFirestore && userDataFirestore.tipo === 'empresa') {
             setUser({
@@ -52,7 +53,8 @@ export const AuthContextProvider = ({ children }) => {
               nombre_empresa: userDataFirestore.nombre_empresa,
               logo_empresa: userDataFirestore.logo_empresa,
               comuna_empresa: userDataFirestore.comuna_empresa,
-              region_empresa: userDataFirestore.region_empresa
+              region_empresa: userDataFirestore.region_empresa,
+              checkboxEmpresa: userDataFirestore.checkboxEmpresa
             })
           }
           // console.log(userDataFirestore.tipo)

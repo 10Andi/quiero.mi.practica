@@ -240,141 +240,12 @@ export default function Usuario () {
               </div>
             </div>
 
-            {/* <FormGroup> */}
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Categorías de trabajo</span>
                 <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
-                {/* <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Diseño / UX'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Programación'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Data Science | Analytics'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Desarrollo Mobile'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Marketing Digital'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='SysAdmin | DevOps | QA'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Comercial y Ventas'
-                  />
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name='categorias'
-                        control={control}
-                        render={({ field: props }) => (
-                          <Checkbox
-                            {...props}
-                            checked={props.value}
-                            onChange={(e) => props.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
-                  }
-                    label='Innovación y Agilidad'
-                  /> */}
                 <label className='checkbox-text'>
                   <input
                     name='categorias'
@@ -458,7 +329,6 @@ export default function Usuario () {
               </div>
 
             </div>
-            {/* </FormGroup> */}
 
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>

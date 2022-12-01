@@ -34,11 +34,13 @@ export default function Login () {
   }
 
   useEffect(() => {
-    if ((user && user.type === 'estudiante')) {
-      router.push('/home').finally(() => setLoading(false))
+    if (user && user.type === 'estudiante') {
+      // router.push('/home').finally(() => setLoading(false))
+      router.push('/home')
     }
-    if ((user && user.type === 'empresa')) {
-      router.push('/dashboard').finally(() => setLoading(false))
+    if (user && user.type === 'empresa') {
+      // router.push('/dashboard').finally(() => setLoading(false))
+      router.push('/dashboard')
     }
   }, [router, user])
 

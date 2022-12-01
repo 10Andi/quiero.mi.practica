@@ -13,7 +13,12 @@ import Views from '../icons/views'
 export default function OffertCard (props) {
   const { user } = useAuth()
 
-  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer } = props
+  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, checkboxEmpresa } = props
+  // console.log('🚀 ~ file: index.js ~ line 17 ~ OffertCard ~ checkboxEmpresa', checkboxEmpresa)
+  const match = user.checkboxAlumno.filter(prop => checkboxEmpresa?.indexOf(prop) >= 0)
+  // console.log('🚀 ~ file: index.js ~ line 19 ~ OffertCard ~ match', match.length)
+  const porcentaje = (match.length / checkboxEmpresa?.length) * 100
+  console.log('🚀 ~ file: index.js ~ line 21 ~ OffertCard ~ porcentaje', porcentaje)
   const { offertSelected, setOffertSelected } = useOffert()
 
   const timeAgo = useTimeAgo(fecha_creacion)

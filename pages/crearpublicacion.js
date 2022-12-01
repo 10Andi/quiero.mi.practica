@@ -64,7 +64,8 @@ export default function CrearPublicacion () {
       nombre_empresa: user.nombre_empresa,
       politica_trabajo: data.politica_trabajo,
       requerimiento: data.requerimiento,
-      vistas: visitas
+      vistas: visitas,
+      checkboxEmpresa: data.checkboxEmpresa
     })
     // get the id of the document saved setDoc() method
     await setDoc(doc(firestore, `EMPRESA/${user.uid_empresa}/INFO_OFERTAS/${id}`), {
@@ -187,6 +188,286 @@ export default function CrearPublicacion () {
                 />
               </div>
 
+              <div className='textarea'>
+                <strong className='card-postulacion-info-titulo'>Categorías de trabajo</strong>
+                {/* <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label> */}
+                <div className='card-postulacion-componets'>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Diseño / UX'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Diseño / UX
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Programación'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Programación
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Data Science | Analytics'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Data Science | Analytics
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Desarrollo Mobile'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Desarrollo Mobile
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Marketing Digital'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Marketing Digital
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='SysAdmin | DevOps | QA'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    SysAdmin | DevOps | QA
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Comercial y Ventas'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Comercial y Ventas
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='categorias'
+                      type='checkbox'
+                      value='Innovación y Agilidad'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Innovación y Agilidad
+                  </label>
+                </div>
+
+              </div>
+
+              <div className='textarea'>
+                <strong className='card-postulacion-info-titulo'>Modalidad de trabajo</strong>
+                {/* <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label> */}
+                <div className='card-postulacion-componets'>
+                  <label className='checkbox-text'>
+                    <input
+                      name='modalidad'
+                      type='checkbox'
+                      value='Presencial'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Presencial
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='modalidad'
+                      type='checkbox'
+                      value='Mixto'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Mixto
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='modalidad'
+                      type='checkbox'
+                      value='Teletrabajo'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Teletrabajo
+                  </label>
+                </div>
+
+              </div>
+
+              <div className='textarea'>
+                <strong className='card-postulacion-info-titulo'>Horario de trabajo</strong>
+                {/* <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label> */}
+                <div className='card-postulacion-componets'>
+                  <label className='checkbox-text'>
+                    <input
+                      name='horarioTrabajo'
+                      type='checkbox'
+                      value='Full-Time'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Full-Time
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='horarioTrabajo'
+                      type='checkbox'
+                      value='Part-Time'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Part-Time
+                  </label>
+                </div>
+
+              </div>
+
+              <div className='textarea'>
+                <strong className='card-postulacion-info-titulo'>Metodologías de trabajo</strong>
+                {/* <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label> */}
+                <div className='card-postulacion-componets'>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='SCRUM'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    SCRUM
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Xtreme Programming (XP)'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Xtreme Programming (XP)
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Kanban'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Kanban
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='ScrumBan'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    ScrumBan
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Lean'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Lean
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='PMBOK'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    PMBOK
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Cascada'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Cascada
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Ruta Crítica'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Ruta Crítica
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='metodologias'
+                      type='checkbox'
+                      value='Agíl'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Agíl
+                  </label>
+                </div>
+
+              </div>
+
+              <div className='textarea'>
+                <strong className='card-postulacion-info-titulo'>Horario de estudio</strong>
+                {/* <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label> */}
+                <div className='card-postulacion-componets'>
+                  <label className='checkbox-text'>
+                    <input
+                      name='horarioEstudiante'
+                      type='checkbox'
+                      value='Diurno'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Diurno
+                  </label>
+                  <label className='checkbox-text'>
+                    <input
+                      name='horarioEstudiante'
+                      type='checkbox'
+                      value='Vespertino'
+                      // ref={register({ required: 'Please select fruits' })}
+                      {...register('checkboxEmpresa')}
+                    />
+                    Vespertino
+                  </label>
+                </div>
+
+              </div>
+
               <div className='registro-btn'>
                 <button type='submit'>Publicar oferta</button>
               </div>
@@ -218,6 +499,15 @@ export default function CrearPublicacion () {
       }
       <style jsx>
         {`
+          .checkbox-text {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+          }
+          input[type="checkbox"] {
+            width: min-content;
+            
+          }
           .loading {
               display: grid;
               place-content: center;

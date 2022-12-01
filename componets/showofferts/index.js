@@ -230,7 +230,7 @@ export default function ShowOfferts () {
             <section>
               {offerList && offerList.map(({
                 id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
-                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa
               }) => (
                 <OffertCard
                   key={id}
@@ -252,6 +252,7 @@ export default function ShowOfferts () {
                   politica_trabajo={politica_trabajo}
                   requerimiento={requerimiento}
                   bookmark={bookmark}
+                  checkboxEmpresa={checkboxEmpresa}
                 />
               ))}
             </section>
