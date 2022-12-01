@@ -33,7 +33,7 @@ export default function Footer () {
             // }
             ul {
                 display: flex;
-                gap: 71px;
+                gap: 40px;
             }
             li {
                 list-style: none;

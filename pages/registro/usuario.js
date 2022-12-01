@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 import { Ring } from '@uiball/loaders'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import 'filepond/dist/filepond.min.css'
@@ -33,17 +34,14 @@ export default function Usuario () {
   }
 
   async function submitHandler (data) {
+    console.log(data)
     // e.preventDefault()
     setLoading(true)
-
     const newUser = await createUserWithEmailAndPassword(auth, data.email, data.password)
-
     const uid = newUser.user.uid
     const avatar = `https://ui-avatars.com/api/?name=${data.nombres}+${data.apellidoPaterno}&size=128`
     // const fechaCreacion = undefined // obtener de user.metadata.creationTime.millisecondsSinceEpoch o hacer TIMESTAMP
-
     const docRef = doc(firestore, `USUARIO/${uid}`)
-
     // const fileRef = ref(storage, `certificadosAlumnoRegular/${uid}/${data.certificadoAlumnoRegular[0].filename}`)
 
     const URL = await uploadFileAndURL(uid, data.certificadoAlumnoRegular[0].file, data.certificadoAlumnoRegular[0].filename)
@@ -61,14 +59,15 @@ export default function Usuario () {
       nom_institucion: data.nom_institucion,
       certificadoAlumnoRegular: URL,
       tipo: userType,
-      avatar
+      avatar,
+      checkboxAlumno: data.checkboxAlumno
       // fechaCreacion: fechaCreacion // ( ? ) -> sera necesario; teniendo esta info en FirebaseAuth
+    }).finally(() => {
+      console.log('finally')
+      setLoading(false)
+      router.push('/login')
     })
     // .then(await uploadBytes(fileRef, data.certificadoAlumnoRegular[0].file))
-      .finally(() => {
-        setLoading(false)
-        router.push('/login')
-      })
     // console.log(newUser)
     // console.log(user)
   }
@@ -242,6 +241,426 @@ export default function Usuario () {
               </div>
             </div>
 
+            {/* <FormGroup> */}
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Categorías de trabajo</span>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                {/* <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Diseño / UX'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Programación'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Data Science | Analytics'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Desarrollo Mobile'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Marketing Digital'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='SysAdmin | DevOps | QA'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Comercial y Ventas'
+                  />
+                  <FormControlLabel
+                    control={
+                      <Controller
+                        name='categorias'
+                        control={control}
+                        render={({ field: props }) => (
+                          <Checkbox
+                            {...props}
+                            checked={props.value}
+                            onChange={(e) => props.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                  }
+                    label='Innovación y Agilidad'
+                  /> */}
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Diseño / UX'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Diseño / UX
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Programación'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Programación
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Data Science | Analytics'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Data Science | Analytics
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Desarrollo Mobile'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Desarrollo Mobile
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Marketing Digital'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Marketing Digital
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='SysAdmin | DevOps | QA'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  SysAdmin | DevOps | QA
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Comercial y Ventas'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Comercial y Ventas
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='categorias'
+                    type='checkbox'
+                    value='Innovación y Agilidad'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Innovación y Agilidad
+                </label>
+              </div>
+
+            </div>
+            {/* </FormGroup> */}
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Modalidad de trabajo</span>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                <label className='checkbox-text'>
+                  <input
+                    name='modalidad'
+                    type='checkbox'
+                    value='Presencial'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Presencial
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='modalidad'
+                    type='checkbox'
+                    value='Mixto'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Mixto
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='modalidad'
+                    type='checkbox'
+                    value='Teletrabajo'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Teletrabajo
+                </label>
+              </div>
+
+            </div>
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Horario de trabajo</span>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                <label className='checkbox-text'>
+                  <input
+                    name='horarioTrabajo'
+                    type='checkbox'
+                    value='Full-Time'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Full-Time
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='horarioTrabajo'
+                    type='checkbox'
+                    value='Part-Time'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Part-Time
+                </label>
+              </div>
+
+            </div>
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Metodologías de trabajo</span>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='SCRUM'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  SCRUM
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Xtreme Programming (XP)'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Xtreme Programming (XP)
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Kanban'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Kanban
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='ScrumBan'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  ScrumBan
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Lean'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Lean
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='PMBOK'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  PMBOK
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Cascada'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Cascada
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Ruta Crítica'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Ruta Crítica
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='metodologias'
+                    type='checkbox'
+                    value='Agíl'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Agíl
+                </label>
+              </div>
+
+            </div>
+
+            <div className='card-postulacion'>
+              <div className='card-postulacion-info'>
+                <span className='card-postulacion-info-titulo'>Horario de estudio</span>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+              </div>
+              <div className='card-postulacion-componets'>
+                <label className='checkbox-text'>
+                  <input
+                    name='horarioEstudiante'
+                    type='checkbox'
+                    value='Diurno'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Diurno
+                </label>
+                <label className='checkbox-text'>
+                  <input
+                    name='horarioEstudiante'
+                    type='checkbox'
+                    value='Vespertino'
+                      // ref={register({ required: 'Please select fruits' })}
+                    {...register('checkboxAlumno')}
+                  />
+                  Vespertino
+                </label>
+              </div>
+
+            </div>
+
             <div className='registro-btn'>
               <button type='submit'>Registrarse</button>
             </div>
@@ -264,6 +683,15 @@ export default function Usuario () {
           : null
 }
       <style jsx>{`
+            .checkbox-text {
+              display: flex;
+              gap: 10px;
+              margin-bottom: 10px;
+            }
+            input[type="checkbox"] {
+              width: min-content;
+              
+            }
             .loading {
                 display: grid;
                 place-content: center;
