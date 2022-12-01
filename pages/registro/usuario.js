@@ -1,4 +1,3 @@
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 import { Ring } from '@uiball/loaders'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import 'filepond/dist/filepond.min.css'
