@@ -10,32 +10,32 @@ const contents = {
   },
   card: [
     {
-      title: '¿Por qué utilizar está plataforma?',
-      paragraph: 'QUIEROMIPRÁCTICA está pensado para los estudiantes, ya que queremos que consigas la mayor ayuda posible para conseguir tu práctica, contamos con un sistema de bookmark para guardar tus practicas favoritas, un sistema de valorización de empresas y un sistema de reseñas hecho por los mismos practicantes. Con esto te ofrecemos un feedback hecho por y para estudiantes para poder ayudarte a encontrar tu mejor pasantía posible.'
+      title: '¿Es necesario el conocimiento previo en informática o computación para operar la plataforma web?',
+      paragraph: 'QuieroMiPráctica está creado para que cualquier persona pueda utilizar nuestra plataforma, ya que es intuitiva y simple para navegar.'
     },
     {
-      title: '¿Cómo publico una oferta de trabajo?',
-      paragraph: 'Primero tienes que registrar tu empresa , luego seleccionar un plan más conveniente y finalmente pagar para publicar tu oferta.'
+      title: '¿Cuánto tardará una postulación',
+      paragraph: 'Eso dependerá de la empresa a la cual postules. Este proceso no afecta en que puedas postular a nuevas ofertas que QuieroMiPráctica te puede ofrecer.'
     },
     {
       title: '¿Cómo postulo a una práctica?',
-      paragraph: 'Primero tienes que crearte una cuenta de estudiante y luego seleccionar la práctica que más te guste.'
+      paragraph: 'Para postular en QuieroMiPráctica tienes que registrarte como Profesional, luego seleccionar la oferta que más te guste!'
     },
     {
       title: '¿Cómo puedo comunicarme para conseguir asistencia?',
-      paragraph: 'Lo que tienes que hacer es ir a la sección de contacto que está en la parte inferior de nuestra página web.'
+      paragraph: 'Te puedes comunicar con el equipo de QuieroMiPráctica a través del botón Ayuda o tambien puedes escribirnos a hola@quieromipractica.cl'
     },
     {
-      title: '¿Por qué solamente pasantías de área informática?',
-      paragraph: 'Para comenzar con nuestro proyecto solamente vamos a incluir informática, pero en un futuro no muy lejano, vamos a incluir otras áreas.'
+      title: '¿Qué requisitos necesita una empresa para registrarse?',
+      paragraph: 'Las empresas asociadas a QuieroMiPráctica están verificadas por el equipo a cargo y ante el SII, verificando que la empresa existe y es legal.'
     },
     {
-      title: '¿En qué consiste el proceso de moderación?',
-      paragraph: 'La empresa contratante siempre debe identificarse. En QUIEROMIPRÁCTICA las empresas reclutadoras siempre deben identificar la empresa final en la cual trabajará el profesional.'
+      title: '¿Cuantas ofertás labores puedo publicar?',
+      paragraph: 'Si tiene el plan Free tendras publicaciones limitadas. El plan premium te ofrece ilimitadas públicaciones y más herramientas como nuestra base de talentos.'
     },
     {
-      title: '¿Cómo recupero mi contraseña?',
-      paragraph: 'Para recuperar tu contraseña lo único que tienes que hacer es ir al apartado “olvidaste tu contraseña” en la página de inicio de sesión, a lo cual te pedirá tu correo electrónico para enviarte los datos de recuperación...'
+      title: '¿Qué es la Base de Talentos?',
+      paragraph: 'La base de talentos ofrece a los estudiantes que resaltán dentro de los procesos de práctica, de esta forma potenciamos la contrataciones de buenos talentos a empresas interesadas'
     }
   ]
 
