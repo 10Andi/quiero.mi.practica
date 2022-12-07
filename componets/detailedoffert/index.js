@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Rating } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
 import DeletePostulation from '../icons/deletepostulation'
+import Locate from '../icons/locate'
 
 export default function DetailedOffert () {
   const { user } = useAuth()
@@ -30,7 +31,11 @@ export default function DetailedOffert () {
                 <img loading='lazy' src={offertSelected.logo} alt={offertSelected.nombre_empresa} />
                 <h4>{offertSelected.cargo}<br />{offertSelected.ejercer}</h4>
                 <strong>{offertSelected.nombre_empresa}</strong>
-                <span>{offertSelected.comuna}, {offertSelected.ciudad}</span>
+                <div className='location'>
+                  <Locate />
+                  <span>{offertSelected.comuna}, {offertSelected.ciudad}</span>
+                </div>
+                <Rating name='size-medium' defaultValue={2} />
               </div>
 
               <div className='infoOffert'>
@@ -55,9 +60,19 @@ export default function DetailedOffert () {
                     </a>
                   </Link>}
                 {offerStatus?.map(ele => {
-                  if (ele.id === offertSelected.id && ele.estado === 'Aprobado') return (<button disabled className='aprobadoBtn'>Aprobado</button>)
-                  if (ele.id === offertSelected.id && ele.estado === 'Rechazado') return (<button disabled className='rechazadoBtn'>Rechazado</button>)
-                  if (ele.id === offertSelected.id && ele.estado === 'En espera') return (<button disabled className='enEsperaBtn'>En espera</button>)
+                  if (ele.id === offertSelected.id && ele.estado === 'Aprobado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='aprobadoBtn'>Aprobado</button>)
+                  if (ele.id === offertSelected.id && ele.estado === 'Rechazado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='rechazadoBtn'>Rechazado</button>)
+                  if (ele.id === offertSelected.id && ele.estado === 'En espera') return (<button key={`${ele.id}-${ele.estado}`} disabled className='enEsperaBtn'>En espera</button>)
+                  if (ele.id === offertSelected.id && ele.estado === 'Finalizado') {
+                    return (
+                    // <button key={`${ele.id}-${ele.estado}`} className='enEsperaBtn'>En espera</button>
+                      <Link key={`${ele.id}-${ele.estado}`} href={`/evaluarpractica/${offertSelected.id}`}>
+                        <a>
+                          <button className='evaluarBtn'>Evaluar práctica</button>
+                        </a>
+                      </Link>
+                    )
+                  }
                   return null
                 })}
                 {user.postulado?.includes(offertSelected.id) &&
@@ -92,6 +107,12 @@ export default function DetailedOffert () {
             </section>
 
             <style jsx>{`
+                .location {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 6px;
+                }
                 strong {
                   margin-bottom: 10px;
                 }
@@ -168,10 +189,11 @@ export default function DetailedOffert () {
 
                 .postulate {
                   display: flex;
+                  margin-top: auto;
                   margin-bottom: 42px;
                 }
                 .postulate a {
-                  width: 83%; 
+                  width: 100%; 
                   margin-right: 5%;
                 }
                 .postulate .postularBtn {
@@ -188,7 +210,24 @@ export default function DetailedOffert () {
                   font-size: 24px;
                   font-weight: bold;
                   cursor: pointer;
+                  position: relative;
                 }
+                {/* .postularBtn::before {
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  z-index: -1;
+                  width: 100%;
+                  height: 100%;
+                  background: linear-gradient(
+                    45deg,
+                    red, blue, deeppink, blue, red, blue, deeppik, blue
+                  );
+                  background-size: 800%;
+                  border-radius: 9px;
+                  filter: blur(8px);
+                } */}
                 .postulate .enEsperaBtn {
                   width: 100%;
                   margin-right: 5%;
@@ -241,6 +280,21 @@ export default function DetailedOffert () {
                   border: none;
                   outline: none;
                   border-radius: 10px;
+                  cursor: pointer;
+                }
+                .postulate .evaluarBtn {
+                  width: 100%;
+                  //margin-right: 5%;
+                  padding: 12px 0;
+                  background: #473198;
+                  background: -webkit-linear-gradient(to right, #4A0D67, #473198);  /* Chrome 10-25, Safari 5.1-6 */
+                  background: linear-gradient(to right, #4A0D67, #473198); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                  border: none;
+                  outline: none;
+                  border-radius: 10px;
+                  color: #fff;
+                  font-size: 24px;
+                  font-weight: bold;
                   cursor: pointer;
                 }
                 .postulate .commentBtn > :global(svg) {

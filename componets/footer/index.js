@@ -7,6 +7,7 @@ export default function Footer () {
         <div>
           <h2>QUIEROMIPRÁCTICA</h2>
         </div>
+        {/* <div className='subtitulo'>Quiero Mi Práctica es una empresa nueva de Tecnología de Información, con el objetivo de ser el portal laboral N°1, en especial en los Profesionales egresados, apoyándolos tanto en los aspectos técnicos y su procesos profesionales.</div> */}
         <ul>
           <li><Link href='/sobrenosotros'><a>Sobre nosostros</a></Link></li>
           <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
@@ -48,6 +49,12 @@ export default function Footer () {
                 color: #fff;
                 text-decoration: none;
                 font-size: 14px;
+            }
+            .subtitulo {
+              color: #fff;
+              width: flex;
+              margin: auto;
+              max-width: 500px;
             }
             `}
       </style>

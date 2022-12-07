@@ -1,4 +1,4 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { firestore } from '../../firebase/client'
 import CardReacentPublication from './cardreacentpublication'
@@ -7,22 +7,23 @@ export default function ReacentsPublications () {
   const [offerList, setOfferList] = useState(null)
 
   useEffect(() => {
-    const onGetOfferts = async () => {
-      await onSnapshot(query(collection(firestore, 'test'), orderBy('fecha_creacion', 'desc')), querySnapshot => {
-        setOfferList(querySnapshot.docs.map(doc => {
-          const data = doc.data()
-          const id = doc.id
-          const { fecha_creacion } = data
+    // const onGetOfferts = async () => {
+    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), orderBy('fecha_creacion', 'desc'), limit(9)), querySnapshot => {
+      setOfferList(querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        const { fecha_creacion } = data
 
-          return {
-            ...data,
-            id,
-            fecha_creacion: +fecha_creacion.toDate()
-          }
-        }))
-      })
-    }
-    onGetOfferts()
+        return {
+          ...data,
+          id,
+          fecha_creacion: +fecha_creacion.toDate()
+        }
+      }))
+    })
+    // }
+    // onGetOfferts()
+    return () => unsubscribe()
   }, [])
 
   return (
@@ -30,15 +31,6 @@ export default function ReacentsPublications () {
       <div className='recent'>
         <h2>Publicaciones <br /> recientes</h2>
         <div className='allRecentPublications'>
-          {/* <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication />
-          <CardReacentPublication /> */}
           {offerList && offerList.map(({
             id, cargo, ciudad, comuna, ejercer, fecha_creacion, logo, nombre_empresa
           }) => (

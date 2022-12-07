@@ -47,6 +47,7 @@ export default function CardReacentPublication (props) {
             width: 92.82px;
             margin-right: 30px;
             border-radius: 10px;
+            object-fit: contain;
           }
           .titleRecentPublications h3{
             font-size: 24px;

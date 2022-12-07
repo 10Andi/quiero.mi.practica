@@ -60,9 +60,13 @@ export default function PreguntasFrecuentes () {
             padding: 0 42px;
           }
           .card-request-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            padding: 0 120px;
+            justify-items: center;
             margin-top: 120px;
           }
         `}

@@ -1,12 +1,14 @@
-import { IconButton } from '@mui/material'
+import { IconButton, Rating } from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
 import { arrayRemove, arrayUnion, doc, increment, updateDoc } from 'firebase/firestore'
 import { useEffect } from 'react'
-import { CircularProgressbar } from 'react-circular-progressbar'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
 import { firestore } from '../../firebase/client'
 import useTimeAgo from '../../hooks/useTimeAgo'
+import ProgressProvider from '../../utility/progressProvider'
 import Bookmark from '../icons/bookmark'
 import Dot from '../icons/dot'
 import Locate from '../icons/locate'
@@ -14,13 +16,10 @@ import Views from '../icons/views'
 
 export default function OffertCard (props) {
   const { user } = useAuth()
-
+  // const [isHover, setIsHover] = useState(false)
   const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, checkboxEmpresa } = props
-  // console.log('🚀 ~ file: index.js ~ line 17 ~ OffertCard ~ checkboxEmpresa', checkboxEmpresa)
   const match = user.checkboxAlumno?.filter(prop => checkboxEmpresa?.indexOf(prop) >= 0)
-  // console.log('🚀 ~ file: index.js ~ line 19 ~ OffertCard ~ match', match.length)
   const porcentaje = Math.floor((match.length / checkboxEmpresa?.length) * 100)
-  console.log('🚀 ~ file: index.js ~ line 21 ~ OffertCard ~ porcentaje', porcentaje)
   const { offertSelected, setOffertSelected } = useOffert()
 
   const timeAgo = useTimeAgo(fecha_creacion)
@@ -74,14 +73,29 @@ export default function OffertCard (props) {
     }
   }, [id, setOffertSelected])
 
+  // const handleMouseEnter = () => {
+  //   setIsHover(true)
+  // }
+  // const handleMouseLeave = () => {
+  //   setIsHover(false)
+  // }
+
+  // const boxStyle = {
+  //   backgroundColor: isHover ? 'lightblue' : 'rgb(0, 191, 255)',
+  //   backgroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white'
+  // }
+
   return (
     <>
-      <article className='offer' key={id} id={id} style={{ backroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white' }} onClick={() => handleClick(props)}>
+      <article key={id} className='offer' id={id} style={{ backgroundColor: id === offertSelected?.id ? 'rgb(247, 249, 249)' : 'white' }} onClick={() => handleClick(props)}>
         <div className='offerLogo'>
           <img loading='lazy' src={logo} alt={nombre_empresa} draggable='false' />
         </div>
         <div className='offerInfo'>
-          <h4>{nombre_empresa}</h4>
+          <header>
+            <h4>{nombre_empresa}</h4>
+            <Rating name='size-small' defaultValue={2} size='small' />
+          </header>
           <span>{cargo}, {ejercer}</span>
           <div className='infoItemsTop'>
             <div className='infoItem'>
@@ -118,15 +132,39 @@ export default function OffertCard (props) {
               : <Bookmark width={27} height={27} onClick={handleClickBookmark} />}
           </IconButton> */}
           {props.bookmark?.includes(user.uid)
-            ? <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
-            : <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>}
-          <div style={{ width: 50, height: 50, marginTop: 20 }}>
-            <CircularProgressbar value={porcentaje} text={`${porcentaje}%`} />
-          </div>
+            ? (
+              <Tooltip title='Eliminar de favoritos' placement='top' arrow>
+                <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
+              </Tooltip>
+              )
+
+            : (
+              <Tooltip title='Agregar a favoritos' placement='top' arrow>
+                <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>
+              </Tooltip>
+              )}
+          <Tooltip title={`Tienes un ${porcentaje}% de afinidad con esta publicación`} placement='right' arrow>
+            <div style={{ width: 50, height: 50, marginTop: 20 }}>
+              <ProgressProvider valueStart={0} valueEnd={porcentaje}>
+                {porcentaje => <CircularProgressbar
+                  value={porcentaje} text={`${porcentaje}%`} styles={buildStyles({
+                    textColor: '#473198',
+                    pathColor: '#473198'
+                  })}
+                               />}
+              </ProgressProvider>
+            </div>
+          </Tooltip>
+
         </div>
       </article>
 
-      <style jsx>{`    
+      <style jsx>{`
+          header {
+            display: flex;
+            align-items: center;
+            gap: 21px;
+          }
           article {
             width: 100%;
             padding: 21px;

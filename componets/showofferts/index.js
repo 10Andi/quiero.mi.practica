@@ -1,5 +1,6 @@
 import { Ring } from '@uiball/loaders'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+// import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
@@ -8,14 +9,13 @@ import { firestore } from '../../firebase/client'
 import OffertCard from '../offertcard'
 
 export default function ShowOfferts () {
-  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
-  // const [selectedOffert, setSelectedOffert] = useState(null)
   const { user } = useAuth()
   const { setOfferStatus, offerList, setOfferList } = useOffert()
-  const { } = useFiltered()
-  // const [offerList, setOfferList] = useState(null)
   const [loading, setLoading] = useState(false)
-  const searched = false
+  // const searched = false
+  // const [searched, setSearched] = useState(false)
+  // const [rating, setRating] = useState([])
+  const { sortedResults, searchedResults } = useFiltered()
 
   // useEffect(() => {
   //   async function getOfferts () {
@@ -88,6 +88,7 @@ export default function ShowOfferts () {
   //   getOfferts().then(setOfferList).finally(setLoading(false))
   // }, [setOfferStatus, user])
 
+  /*  Ultimo
   useEffect(() => {
     setLoading(true)
     const onGetOfferts = async () => {
@@ -192,6 +193,8 @@ export default function ShowOfferts () {
 
     // onGetOfferts().then(setOfferList)
   }, [setOfferList, setOfferStatus, user.uid])
+  */
+
   // async function onGetOfferts() {
 
   //     onSnapshot(collection(firestore, 'test'), (querySnapshot) => {
@@ -212,6 +215,107 @@ export default function ShowOfferts () {
   //     })
   // }
 
+  useEffect(() => {
+    setLoading(true)
+    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), orderBy('fecha_creacion', 'desc')), querySnapshot => {
+      setOfferList(querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        const { fecha_creacion } = data
+        setLoading(false)
+
+        return {
+          ...data,
+          id,
+          fecha_creacion: +fecha_creacion.toDate()
+        }
+      }))
+    })
+
+    return () => unsubscribe()
+  }, [setOfferList])
+
+  useEffect(() => {
+    setLoading(true)
+    const unsubscribe = onSnapshot(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`)), querySnapshot => {
+      setOfferStatus(querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false } = data
+        // console.log(data)
+
+        const format = (date, locale, options) =>
+          new Intl.DateTimeFormat(locale, options).format(date)
+
+        // const date = new Date(fecha_postulacion.seconds * 1000)
+        // const formatDate = format(date, 'es', { dateStyle: 'long'})
+
+        function formatDate (dateFromData) {
+          const date = new Date(dateFromData.seconds * 1000)
+          return format(date, 'es', { dateStyle: 'long' })
+        }
+        const format_fecha_postulacion = formatDate(fecha_postulacion)
+        let format_fecha_aprobacion = false
+        let format_fecha_rechazo = false
+        if (fecha_aprobacion) {
+          format_fecha_aprobacion = formatDate(fecha_aprobacion)
+        }
+        if (fecha_rechazo) {
+          format_fecha_rechazo = formatDate(fecha_rechazo)
+        }
+        setLoading(false)
+
+        return {
+          ...data,
+          id,
+          fecha_postulacion: format_fecha_postulacion,
+          fecha_aprobacion: format_fecha_aprobacion,
+          fecha_rechazo: format_fecha_rechazo
+          // fecha_aprobacion: 123
+
+        }
+      }))
+    })
+
+    return () => unsubscribe()
+  }, [setOfferStatus, user.uid])
+
+  // useEffect(() => {
+  //   const q = query(collection(firestore, 'EVA_EMPRESA'))
+  //   const getRating = async () => {
+  //     const querySnapshot = await getDocs(q)
+  //     //   querySnapshot.forEach((doc) => {
+  //     //   // doc.data() is never undefined for query doc snapshots
+  //     //     console.log(doc.id, ' => ', doc.data())
+  //     //   })
+  //     // }
+
+  //     setRating(querySnapshot.docs.map((doc) => {
+  //       // setOfferList(querySnapshot.docs.map((doc) => {
+  //       const data = doc.data()
+  //       const id = doc.id
+  //       // const arrData = []
+  //       //  const arrData = Object.entries(data).forEach(entrie => )
+  //       const output = Object.entries(data).reduce((acc, curr) => {
+  //         const matchingNode = acc.find(node => node[0] === curr[0])
+  //         if (!matchingNode) {
+  //           acc.push(curr)
+  //         }
+  //         return acc
+  //       }, [])
+  //       console.log('🚀 ~ file: index.js:306 ~ output ~ output', output)
+
+  //       return {
+  //         ...offerList,
+  //         ...output,
+  //         id
+  //       }
+  //     }))
+  //   }
+  //   getRating()
+  // }, [offerList])
+  // }, [offerList, setOfferList])
+
   return (
     <>
       {loading
@@ -220,11 +324,38 @@ export default function ShowOfferts () {
             <Ring size={40} lineWeight={5} speed={2} color='#473198' />
           </div>
           )
-        : searched
+        : searchedResults.length
           ? (
-            <section>
-              {searched}
-            </section>
+            // <section>
+            //   {searchedResults.map(({
+            //     id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+            //     logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa
+            //   }) => (
+            //     <OffertCard
+            //       key={id}
+            //       id={id}
+            //       logo={logo}
+            //       nombre_empresa={nombre_empresa}
+            //       cargo={cargo}
+            //       ejercer={ejercer}
+            //       comuna={comuna}
+            //       ciudad={ciudad}
+            //       vistas={vistas}
+            //       fecha_creacion={fecha_creacion}
+            //       horario={horario}
+            //       cupos={cupos}
+            //       beneficios={beneficios} //
+            //       categoria={categoria}
+            //       condicion={condicion}
+            //       descripcion={descripcion}
+            //       politica_trabajo={politica_trabajo}
+            //       requerimiento={requerimiento}
+            //       bookmark={bookmark}
+            //       checkboxEmpresa={checkboxEmpresa}
+            //     />
+            //   ))}
+            // </section>
+              null
             )
           : (
             <section>

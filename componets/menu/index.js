@@ -1,20 +1,17 @@
+import BookmarksIcon from '@mui/icons-material/Bookmarks'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../context/AuthContext'
 import HelpIcon from '../icons/helpicon'
-import HomeIcon from '../icons/homeicon'
 import Logo from '../icons/logo'
-import PostulationsIcon from '../icons/postulationsicon'
-import SearchIcon from '../icons/searchicon'
+// import PostulationsIcon from '../icons/postulationsicon'
+// import SearchIcon from '../icons/searchicon'
+import BallotIcon from '@mui/icons-material/Ballot'
+import SearchIcon from '@mui/icons-material/Search'
 import ItemMenu from './itemmenu'
 import ItemMenuLogout from './itemmenulogout'
 
 const MENU_ITEMS_CONTENTS = {
   contents: [
-    // {
-    //   name: 'Inicio',
-    //   href: '#',
-    //   img: <HomeIcon />
-    // },
     {
       name: 'Buscar práctica',
       href: '/home',
@@ -23,7 +20,12 @@ const MENU_ITEMS_CONTENTS = {
     {
       name: 'Mis postulaciones',
       href: '/mispostulaciones',
-      img: <PostulationsIcon />
+      img: <BallotIcon />
+    },
+    {
+      name: 'Mis favoritos',
+      href: '/misfavoritos',
+      img: <BookmarksIcon />
     },
     {
       name: 'Ayuda',
@@ -36,15 +38,6 @@ const MENU_ITEMS_CONTENTS = {
 export default function Menu () {
   const { user } = useAuth()
   const router = useRouter()
-  // MENU_ITEMS_CONTENTS.contents.map(content =>
-  //     router.pathname === content.href
-  //         ? <style jsx>{`
-  //             :global(svg) {
-  //                 fill: red;
-  //             }
-  //         `}</style>
-  //         : <ItemMenu key={content.name} name={content.name} img={content.img} href={content.href} selected={false}/>
-  // )
 
   return (
     <>

@@ -1,4 +1,5 @@
-import { IconButton } from '@mui/material'
+import { IconButton, Rating } from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
@@ -69,7 +70,10 @@ export default function SavedOffertCard (props) {
           <img loading='lazy' src={logo} alt={nombre_empresa} draggable='false' />
         </div>
         <div className='offerInfo'>
-          <h4>{nombre_empresa}</h4>
+          <header>
+            <h4>{nombre_empresa}</h4>
+            <Rating name='size-small' defaultValue={2} size='small' />
+          </header>
           <span>{cargo}, {ejercer}</span>
           <div className='infoItemsTop'>
             <div className='infoItem'>
@@ -103,9 +107,10 @@ export default function SavedOffertCard (props) {
                 <div className='estado'>
                   <p>Estado:
                     {offerStatus && offerStatus.map(ele => {
-                      if (ele.id === id && ele.estado === 'Aprobado') return (<label style={{ background: '#adfc92' }}>Aprobado</label>)
-                      if (ele.id === id && ele.estado === 'Rechazado') return (<label style={{ background: '#FC9292' }}>Rechazado</label>)
-                      if (ele.id === id && ele.estado === 'En espera') return (<label style={{ background: '#e6e6e6' }}>En espera</label>)
+                      if (ele.id === id && ele.estado === 'Aprobado') return (<label key={`${ele.id}-${ele.estado}`} style={{ background: '#adfc92' }}>Aprobado</label>)
+                      if (ele.id === id && ele.estado === 'Rechazado') return (<label key={`${ele.id}-${ele.estado}`} style={{ background: '#FC9292' }}>Rechazado</label>)
+                      if (ele.id === id && ele.estado === 'En espera') return (<label key={`${ele.id}-${ele.estado}`} style={{ background: '#e6e6e6' }}>En espera</label>)
+                      if (ele.id === id && ele.estado === 'Finalizado') return (<label key={`${ele.id}-${ele.estado}`} style={{ background: '#473198', color: 'white' }}>Finalizado</label>)
                       return null
                     })}
                   </p>
@@ -118,17 +123,22 @@ export default function SavedOffertCard (props) {
               <div className='selfInfo'>
                 <div className='fecha'>
                   {offerStatus && offerStatus.map(ele => {
-                    if (ele.id === id && ele.fecha_postulacion) return (<small key={Math.random()}>Fecha de postulación: {ele.fecha_postulacion}</small>)
+                    if (ele.id === id && ele.fecha_postulacion) return (<small key={`${ele.id}-${ele.fecha_postulacion}`}>Fecha de postulación: {ele.fecha_postulacion}</small>)
                     return null
                   })}
                   {offerStatus && offerStatus.map(ele => {
                     // if (ele.fecha_rechazo) return null
-                    if (ele.id === id && ele.fecha_aprobacion) return (<small key={Math.random()}>Fecha de aprobación: {ele.fecha_aprobacion}</small>)
+                    if (ele.id === id && ele.fecha_aprobacion) return (<small key={`${ele.id}-${ele.fecha_aprobacion}`}>Fecha de aprobación: {ele.fecha_aprobacion}</small>)
                     return null
                   })}
                   {offerStatus && offerStatus.map(ele => {
                     // if (ele.fecha_aprobacion) return null
-                    if (ele.id === id && ele.fecha_rechazo) return (<small key={Math.random()}>Fecha de rechazo: {ele.fecha_rechazo}</small>)
+                    if (ele.id === id && ele.fecha_rechazo) return (<small key={`${ele.id}-${ele.fecha_rechazo}`}>Fecha de rechazo: {ele.fecha_rechazo}</small>)
+                    return null
+                  })}
+                  {offerStatus && offerStatus.map(ele => {
+                    // if (ele.fecha_aprobacion) return null
+                    if (ele.id === id && ele.fecha_finalizacion) return (<small key={`${ele.id}-${ele.fecha_finalizacion}`}>Fecha de finalización: {ele.fecha_finalizacion}</small>)
                     return null
                   })}
                 </div>
@@ -138,12 +148,25 @@ export default function SavedOffertCard (props) {
         </div>
         <div className='right-col-end'>
           {props.bookmark?.includes(user.uid)
-            ? <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
-            : <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>}
+            ? (
+              <Tooltip title='Eliminar de favoritos' placement='top' arrow>
+                <IconButton onClick={e => handleClickUnbookmark(e, user.uid, id)}><Bookmark width={27} height={27} fill='#473198' stroke='#473198' /></IconButton>
+              </Tooltip>
+              )
+            : (
+              <Tooltip title='Agregar a favoritos' placement='top' arrow>
+                <IconButton onClick={e => handleClickBookmark(e, user.uid, id)}><Bookmark width={27} height={27} /></IconButton>
+              </Tooltip>
+              )}
         </div>
       </article>
 
       <style jsx>{`
+            header {
+              display: flex;
+              align-items: center;
+              gap: 21px;
+            }
             article {
               width: 100%;
               padding: 21px;
@@ -212,6 +235,7 @@ export default function SavedOffertCard (props) {
             width: 77px;
             margin-right: 21px;
             border-radius: 10px;
+            object-fit: contain;
           }
           .offer .offerInfo h4 {
             font-size: 24px;

@@ -8,7 +8,7 @@ export default function Searchbar (props) {
   // const [filteredResults, setFilteredResults] = useState([])
   const { searchedResults, setSearchedResults } = useFiltered()
 
-  console.log('🚀 ~ file: index.js ~ line 8 ~ Searchbar ~ filteredResults', searchedResults)
+  // console.log('🚀 ~ file: index.js ~ line 8 ~ Searchbar ~ filteredResults', searchedResults)
   const { offerList } = useOffert()
 
   const searchItems = (searchValue) => {
@@ -27,7 +27,8 @@ export default function Searchbar (props) {
         <input
           type='text'
           name='search'
-          id='' placeholder='Busca por categoría, empresa, ciudad, o ...'
+          id=''
+          placeholder='Busca por categoría, empresa, ciudad, o ...'
           onFocus={(e) => { e.target.placeholder = '' }}
           onBlur={(e) => { e.target.placeholder = 'Busca por categoría, empresa, ciudad, o ...' }}
           onChange={(e) => searchItems(e.target.value)}

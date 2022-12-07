@@ -1,19 +1,18 @@
-import AddBoxIcon from '@mui/icons-material/AddBox'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import EditIcon from '@mui/icons-material/Edit'
+import MailIcon from '@mui/icons-material/Mail'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material'
+import { IconButton, Paper, Rating, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { Ring } from '@uiball/loaders'
-import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, query } from 'firebase/firestore'
+// import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import DialogStudents from '../componets/dialog'
+import DialogStudentsTalent from '../componets/dialog/dialogStudentsTalent'
 import MenuCompany from '../componets/menu/menucompany'
 import { useAuth } from '../context/AuthContext'
 import { firestore } from '../firebase/client'
 
-export default function Dashboard () {
+export default function Talentos () {
   const [loading, setLoading] = useState(true)
   const [offerList, setOfferList] = useState(null)
   const [offerSelected, setOfferSelected] = useState(null)
@@ -21,33 +20,54 @@ export default function Dashboard () {
   const router = useRouter()
 
   useEffect(() => {
-    // async function getOfferts () {
-    setLoading(true)
+    async function getOfferts () {
+      setLoading(true)
 
-    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), where('nombre_empresa', '==', user.nombre_empresa)), querySnapshot => {
-      setOfferList(querySnapshot.docs.map(doc => {
-        const data = doc.data()
-        const id = doc.id
-        const { fecha_creacion } = data
+      const unsubscribe = onSnapshot(query(collection(firestore, 'EVA_ESTUDIANTE')), querySnapshot => {
+        setOfferList(querySnapshot.docs.map(doc => {
+          const data = doc.data()
+          const id = doc.id
+          console.log(data)
+          const { fechaFinalizacion, adaptabilidad, aplicacion, asistencia, capacidad, capacidadDecision, capacidadNegociar, confianza, conocimientos, creatividad, escrita, ingles, iniciativa, liderazgo, oral, organizacion, responsabilidad, trabajoEquipo, valoresEticosMorales } = data
+          const arr = [adaptabilidad, aplicacion, asistencia, capacidad, capacidadDecision, capacidadNegociar, confianza, conocimientos, creatividad, escrita, ingles, iniciativa, liderazgo, oral, organizacion, responsabilidad, trabajoEquipo, valoresEticosMorales]
+          // console.log(arr)
+          let sumaCalificaciones = 0
+          arr.forEach(ele => {
+            if (ele === 0) return
+            sumaCalificaciones = sumaCalificaciones + ele
+          })
+          const promedio = sumaCalificaciones / arr.filter(ele => ele !== 0).length
+          // console.log(promedio)
+          // console.log(data)
 
-        // console.log(data)
+          const date = new Date(fechaFinalizacion.seconds * 1000)
+          const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL', { dateStyle: 'long', timeStyle: 'medium' }).format(date)
 
-        const date = new Date(fecha_creacion.seconds * 1000)
-        const normalizedCreatedAt = new Intl.DateTimeFormat('ES-CL', { dateStyle: 'long', timeStyle: 'medium' }).format(date)
+          return {
+            ...data,
+            id,
+            fechaFinalizacion: normalizedCreatedAt,
+            promedio
+          }
+        }))
+      })
+      return () => unsubscribe()
+    }
 
-        return {
-          ...data,
-          id,
-          fecha_creacion: normalizedCreatedAt
-        }
-      }))
-    })
-    // }
-
-    // getOfferts().finally(() => setLoading(false))
-    setLoading(false)
-    return () => unsubscribe()
+    // getOfferts().then(setOfferList).finally(() => setLoading(false)) -> ya seteo la oferta en el map
+    getOfferts().finally(() => setLoading(false))
   }, [user])
+
+  // const handleClick = (props) => {
+  //   setOffertSelected(props)
+
+  //   const newVisits = vistas + 1
+
+  //   const docRef = doc(firestore, 'test', id)
+  //   updateDoc(docRef, {
+  //     vistas: newVisits
+  //   })
+  // }
 
   useEffect(() => {
     const btnFocus = document.getElementById(offerSelected?.id)
@@ -79,10 +99,6 @@ export default function Dashboard () {
     return
   }
 
-  const deleteOffert = async (idOffert) => {
-    await deleteDoc(doc(firestore, 'test', idOffert))
-  }
-
   return (
     <>
       {loading
@@ -96,35 +112,33 @@ export default function Dashboard () {
             <MenuCompany />
             <main>
               <header>
-                <h1>Mis publicaciones</h1>
-                <Link href='/crearpublicacion'>
+                <h1>Base de datos de talentos</h1>
+                {/* <Link href='/crearpublicacion'>
                   <Tooltip title='Crear una nueva oferta' arrow placement='top'>
                     <AddBoxIcon fontSize='large' style={{ color: '#ADFC92', cursor: 'pointer' }} />
                   </Tooltip>
-                </Link>
+                </Link> */}
               </header>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Titulo de publicación</TableCell>
-                      <TableCell align='right'>Cupos disponibles</TableCell>
-                      {/* <TableCell align="right">Cantidad de postulantes</TableCell> */}
-                      <TableCell align='right'>Fecha de creación</TableCell>
-                      {/* <TableCell align="right">Postulantes aceptados</TableCell> */}
+                      <TableCell>Nombre</TableCell>
+                      <TableCell align='right'>Categoria</TableCell>
+                      <TableCell align='right'>Fecha de evaluación</TableCell>
                       <TableCell align='center'>Ver</TableCell>
-                      <TableCell align='center'>Editar</TableCell>
-                      <TableCell align='center'>Eliminar</TableCell>
+                      <TableCell align='center'>E-mail</TableCell>
+                      <TableCell align='center'>Calificación</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {offerList && offerList.map((row) => (
                       <TableRow key={row.id} id={row.id} hover>
                         <TableCell component='th' scope='row'>
-                          <DialogStudents row={row} />
+                          <DialogStudentsTalent row={row} />
                         </TableCell>
-                        <TableCell align='right'>{row.cupos}</TableCell>
-                        <TableCell align='right'>{row.fecha_creacion}</TableCell>
+                        <TableCell align='right'>{row.categoria}</TableCell>
+                        <TableCell align='right'>{row.fechaFinalizacion}</TableCell>
                         <TableCell align='center'>
                           <IconButton onClick={() => {
                             setOfferSelected(row)
@@ -136,17 +150,12 @@ export default function Dashboard () {
                         <TableCell align='center'>
                           <IconButton>
                             <Link href={`/editarpublicacion/${row.id}`}>
-                              <EditIcon style={{ color: '#FCE592', cursor: 'pointer' }} />
+                              <MailIcon style={{ color: '#FCE592', cursor: 'pointer' }} />
                             </Link>
                           </IconButton>
                         </TableCell>
                         <TableCell align='center'>
-                          <IconButton onClick={() => {
-                            deleteOffert(row.id)
-                          }}
-                          >
-                            <DeleteForeverIcon style={{ color: '#FC9292', cursor: 'pointer' }} />
-                          </IconButton>
+                          <Rating precision={0.5} value={row.promedio} readOnly />
                         </TableCell>
                       </TableRow>
                     ))}

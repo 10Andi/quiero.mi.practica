@@ -1,66 +1,22 @@
-import { Warning } from '@mui/icons-material'
 import { Ring } from '@uiball/loaders'
-import { collection, documentId, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
+// import { useFiltered } from '../../context/searchedContext'
 import { firestore } from '../../firebase/client'
-import SavedOffertCard from '../offertcard/savedoffertcard'
+import OffertCard from '../offertcard'
 
-export default function SavedShowOfferts () {
+export default function FavoritesShowOfferts () {
   const { user } = useAuth()
-  const [offerList, setOfferList] = useState(null)
-  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
-  const { setOfferStatus } = useOffert()
+  const { setOfferStatus, offerList, setOfferList } = useOffert()
   const [loading, setLoading] = useState(false)
+  // const { sortedResults, searchedResults } = useFiltered()
 
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(query(collection(firestore, 'test'), orderBy('fecha_creacion', 'desc')), querySnapshot => {
-  //     setData(querySnapshot.docs.map(doc => {
-  //       const data = doc.data()
-  //       const id = doc.id
-  //       const { fecha_creacion } = data
-
-  //       return {
-  //         ...data,
-  //         id,
-  //         fecha_creacion: +fecha_creacion.toDate()
-  //       }
-  //     }))
-  //   })
-
-  //   return () => unsubscribe()
-  // }, [])
-
-  // console.log(data)
   useEffect(() => {
-    if (!user.postulado) {
-      return
-    }
     setLoading(true)
 
-    // const bookmark = data.forEach(ele => ele.bookmark) // sacar de useEffect          <----------------------------!!!
-    // let ofertas
-
-    // if (bookmark && postulado) {
-    //   ofertas = [...bookmark, ...postulado].reduce((accArr, valor) => {
-    //     if (accArr.indexOf(valor) < 0) {
-    //       accArr.push(valor)
-    //     }
-
-    //     return accArr
-    //   }, [])
-    // }
-    // if (bookmark && !postulado) {
-    //   ofertas = bookmark
-    // }
-    // if (!bookmark && postulado) {
-    //   ofertas = postulado
-    // }
-
-    // console.log(ofertas)
-
-    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), where(documentId(), 'in', user.postulado)), querySnapshot => {
+    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), where('bookmark', 'array-contains', user.uid)), querySnapshot => {
       setOfferList(querySnapshot.docs.map(doc => {
         const data = doc.data()
         const id = doc.id
@@ -73,23 +29,17 @@ export default function SavedShowOfferts () {
         }
       }))
     })
-    setLoading(false)
-    // onGetOfferts()
 
+    setLoading(false)
     return () => unsubscribe()
-  }, [user.bookmark, user.postulado])
+  }, [setOfferList, user.uid])
 
   useEffect(() => {
-    if (!user.postulado) {
-      return
-    }
-    setLoading(true)
-
     const unsubscribe = onSnapshot(query(collection(firestore, `USUARIO/${user.uid}/POSTULACIONES/`)), querySnapshot => {
       setOfferStatus(querySnapshot.docs.map(doc => {
         const data = doc.data()
         const id = doc.id
-        const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false, fecha_finalizacion = false } = data
+        const { fecha_postulacion, fecha_aprobacion = false, fecha_rechazo = false } = data
         // console.log(data)
 
         const format = (date, locale, options) =>
@@ -105,15 +55,11 @@ export default function SavedShowOfferts () {
         const format_fecha_postulacion = formatDate(fecha_postulacion)
         let format_fecha_aprobacion = false
         let format_fecha_rechazo = false
-        let format_fecha_finalizacion = false
         if (fecha_aprobacion) {
           format_fecha_aprobacion = formatDate(fecha_aprobacion)
         }
         if (fecha_rechazo) {
           format_fecha_rechazo = formatDate(fecha_rechazo)
-        }
-        if (fecha_finalizacion) {
-          format_fecha_finalizacion = formatDate(fecha_finalizacion)
         }
 
         return {
@@ -121,17 +67,15 @@ export default function SavedShowOfferts () {
           id,
           fecha_postulacion: format_fecha_postulacion,
           fecha_aprobacion: format_fecha_aprobacion,
-          fecha_rechazo: format_fecha_rechazo,
-          fecha_finalizacion: format_fecha_finalizacion
+          fecha_rechazo: format_fecha_rechazo
+          // fecha_aprobacion: 123
+
         }
       }))
     })
 
-    // onSubColection()
-    setLoading(false)
-
     return () => unsubscribe()
-  }, [setOfferStatus, user.postulado, user.uid])
+  }, [setOfferStatus, user.uid])
 
   return (
     <>
@@ -145,9 +89,9 @@ export default function SavedShowOfferts () {
           <section>
             {offerList && offerList.map(({
               id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
-              logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark
+              logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa
             }) => (
-              <SavedOffertCard
+              <OffertCard
                 key={id}
                 id={id}
                 logo={logo}
@@ -167,37 +111,28 @@ export default function SavedShowOfferts () {
                 politica_trabajo={politica_trabajo}
                 requerimiento={requerimiento}
                 bookmark={bookmark}
+                checkboxEmpresa={checkboxEmpresa}
               />
             ))}
-            {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta.</p></article>}
           </section>
           )}
 
-      <style jsx>{`
+      <style jsx>
+        {`
           div {
             padding: 50px;
             display: grid;
             place-content: center;
           }
-          article {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            background: rgb(239, 243, 244);
-            border: none;
-            padding: 21px;
-            margin: 16px 0;
-            border-radius: 10px;
-            gap: 8px;
-          }
-          section: {
-            height: 100%;
+          section {
+            max-height: 76vh;
+            margin-top: 20px;
             overflow-y: auto;
           }
           section::-webkit-scrollbar {
             width: 8px;
             height: 8px;
+            margin-left: 18px;
           }
           section::-webkit-scrollbar-thumb {
             background: #ccc;

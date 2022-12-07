@@ -4,38 +4,30 @@ import { useFiltered } from '../../context/searchedContext'
 import sortOptions from '../../helper/sortOfferts'
 
 export default function SortOfferts () {
-  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
-  const { offerList, setOfferList } = useOffert()
-  const { sortedResults, setSortedResults } = useFiltered()
+  const { offerList } = useOffert()
+  const { setSortedResults } = useFiltered()
 
   const sortItems = (e) => {
     const { value, categorias } = e
     console.log('🚀 ~ file: index.js ~ line 11 ~ sortItems ~ value, categorias', value, categorias)
-    // setSearchInput(searchValue)
-    // if (searchInput !== '') {
-    //   const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(searchInput.toLowerCase()))
-    //   setFilteredResults(filteredData)
-    // } else {
-    //   setFilteredResults(offerList)
-    // }
     if (categorias) {
       const sortData = offerList.filter(ele => ele.categoria === value)
-      setOfferList(sortData)
-      console.log('🚀 ~ file: index.js ~ line 21 ~ sortItems ~ filteredData', sortData)
-      // setSortedResults(sortData)
+      console.log('🚀 ~ file: index.js:23 ~ sortItems ~ sortData', sortData)
+      setSortedResults(sortData)
     } else {
       if (value === 'Más nuevos') {
         const sortData = offerList.sort(ele => ele.categoria === value)
+        setSortedResults(sortData)
       }
       if (value === 'Más vistos') {
         const sortData = offerList.sort(ele => ele.vistas)
         console.log('🚀 ~ file: index.js ~ line 32 ~ sortItems ~ sortData', sortData)
-        setOfferList(sortData)
+        setSortedResults(sortData)
       }
       if (value === 'Más cupos disponibles') {
         const sortData = offerList.reverse((a, b) => a.cupos - b.cupos)
         console.log('🚀 ~ file: index.js ~ line 36 ~ sortItems ~ sortData', sortData)
-        setOfferList(sortData)
+        setSortedResults(sortData)
       }
 
       // const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(value))
