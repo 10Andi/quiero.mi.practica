@@ -1,5 +1,5 @@
 import { Ring } from '@uiball/loaders'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
 // import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
@@ -14,7 +14,8 @@ export default function ShowOfferts () {
   const [loading, setLoading] = useState(false)
   // const searched = false
   // const [searched, setSearched] = useState(false)
-  // const [rating, setRating] = useState([])
+  const [rating, setRating] = useState([])
+  console.log('🚀 ~ file: index.js:18 ~ ShowOfferts ~ rating', rating)
   const { sortedResults, searchedResults } = useFiltered()
 
   // useEffect(() => {
@@ -271,8 +272,6 @@ export default function ShowOfferts () {
           fecha_postulacion: format_fecha_postulacion,
           fecha_aprobacion: format_fecha_aprobacion,
           fecha_rechazo: format_fecha_rechazo
-          // fecha_aprobacion: 123
-
         }
       }))
     })
@@ -280,41 +279,25 @@ export default function ShowOfferts () {
     return () => unsubscribe()
   }, [setOfferStatus, user.uid])
 
-  // useEffect(() => {
-  //   const q = query(collection(firestore, 'EVA_EMPRESA'))
-  //   const getRating = async () => {
-  //     const querySnapshot = await getDocs(q)
-  //     //   querySnapshot.forEach((doc) => {
-  //     //   // doc.data() is never undefined for query doc snapshots
-  //     //     console.log(doc.id, ' => ', doc.data())
-  //     //   })
-  //     // }
-
-  //     setRating(querySnapshot.docs.map((doc) => {
-  //       // setOfferList(querySnapshot.docs.map((doc) => {
-  //       const data = doc.data()
-  //       const id = doc.id
-  //       // const arrData = []
-  //       //  const arrData = Object.entries(data).forEach(entrie => )
-  //       const output = Object.entries(data).reduce((acc, curr) => {
-  //         const matchingNode = acc.find(node => node[0] === curr[0])
-  //         if (!matchingNode) {
-  //           acc.push(curr)
-  //         }
-  //         return acc
-  //       }, [])
-  //       console.log('🚀 ~ file: index.js:306 ~ output ~ output', output)
-
-  //       return {
-  //         ...offerList,
-  //         ...output,
-  //         id
-  //       }
-  //     }))
-  //   }
-  //   getRating()
-  // }, [offerList])
-  // }, [offerList, setOfferList])
+  useEffect(() => {
+    const q = query(collection(firestore, 'EVA_EMPRESA'))
+    const getRating = async () => {
+      const querySnapshot = await getDocs(q)
+      const sumaCalificaciones = querySnapshot.docs.map((doc) => {
+        let counter = 0
+        return {
+          id: doc.id,
+          promedio: (Object.values(doc.data()).reduce((accumulator, currentValue) => {
+            if (currentValue === 0) return accumulator
+            counter++
+            return accumulator + parseFloat(currentValue)
+          }, 0) / counter)
+        }
+      })
+      return sumaCalificaciones
+    }
+    getRating().then(setRating)
+  }, [])
 
   return (
     <>
@@ -361,31 +344,38 @@ export default function ShowOfferts () {
             <section>
               {offerList && offerList.map(({
                 id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
-                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa
-              }) => (
-                <OffertCard
-                  key={id}
-                  id={id}
-                  logo={logo}
-                  nombre_empresa={nombre_empresa}
-                  cargo={cargo}
-                  ejercer={ejercer}
-                  comuna={comuna}
-                  ciudad={ciudad}
-                  vistas={vistas}
-                  fecha_creacion={fecha_creacion}
-                  horario={horario}
-                  cupos={cupos}
-                  beneficios={beneficios} //
-                  categoria={categoria}
-                  condicion={condicion}
-                  descripcion={descripcion}
-                  politica_trabajo={politica_trabajo}
-                  requerimiento={requerimiento}
-                  bookmark={bookmark}
-                  checkboxEmpresa={checkboxEmpresa}
-                />
-              ))}
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )}
             </section>
             )}
 

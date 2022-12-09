@@ -32,14 +32,6 @@ export default function EvaluarPractica () {
       return offertDataFirestore
     }
 
-    // async function getStudent () {
-    //   const docRef = doc(firestore, `USUARIO/${studentId}`)
-    //   const docSnap = await getDoc(docRef)
-    //   const studentDataFirestore = docSnap.data()
-    //   // console.log(studentDataFirestore)
-    //   return studentDataFirestore
-    // }
-
     getOffer().then(setOffer).finally(setLoading(false))
   }, [id])
   console.log(offer)
@@ -58,35 +50,48 @@ export default function EvaluarPractica () {
     setLoading(true)
     const now = new Date()
     const docRef = doc(firestore, `EVA_EMPRESA/${offer.idEmpresa}`)
-    // const evaluacion = new Map()
-    // evaluacion.set({
-    //   phone: '213-555-1234',
-    //   address: '123 N 1st Ave'
-    // })
+    const dataNum = [
+      +data.material,
+      +data.capacitacion,
+      +data.tutor,
+      +data.contrato,
+      +data.pago,
+      +data.horarios,
+      +data.liderazgo,
+      +data.companeros,
+      +data.inclusividad,
+      +data.recomendarias]
+    let sumaCalificaciones = 0
+    dataNum.forEach(ele => {
+      if (ele === 0) return
+      sumaCalificaciones = sumaCalificaciones + ele
+    })
+    const promedio = sumaCalificaciones / dataNum.filter(ele => ele !== 0).length
 
+    // [user.uid]: {
+    //   material: +data.material,
+    //   capacitacion: +data.capacitacion,
+    //   tutor: +data.tutor,
+    //   contrato: +data.contrato,
+    //   pago: +data.pago,
+    //   horarios: +data.horarios,
+    //   comentarios: data.comentarios,
+    //   liderazgo: +data.liderazgo,
+    //   companeros: +data.companeros,
+    //   inclusividad: +data.inclusividad,
+    //   recomendarias: +data.recomendarias,
+    //   fechaEvaluacion: now,
+    //   idPractica: id
+    //   // nomnreResponsable: user.displayName,
+    //   // estudianteNombres: student.nombres,
+    //   // estudianteApellidoPaterno: student.apellidoPaterno,
+    //   // estudianteApellidoMaterno: student.apellidoMaterno,
+    //   // estudianteNom_institucion: student.nom_institucion,
+    //   // estudianteEmail: student.email,
+    //   // categoria: offer.categoria
+    // }
     await setDoc(docRef, {
-      [user.uid]: {
-        material: +data.material,
-        capacitacion: +data.capacitacion,
-        tutor: +data.tutor,
-        contrato: +data.contrato,
-        pago: +data.pago,
-        horarios: +data.horarios,
-        comentarios: data.comentarios,
-        liderazgo: +data.liderazgo,
-        companeros: +data.companeros,
-        inclusividad: +data.inclusividad,
-        recomendarias: +data.recomendarias,
-        fechaEvaluacion: now,
-        idPractica: id
-        // nomnreResponsable: user.displayName,
-        // estudianteNombres: student.nombres,
-        // estudianteApellidoPaterno: student.apellidoPaterno,
-        // estudianteApellidoMaterno: student.apellidoMaterno,
-        // estudianteNom_institucion: student.nom_institucion,
-        // estudianteEmail: student.email,
-        // categoria: offer.categoria
-      }
+      [user.uid]: promedio
     })
       .then(
         updateDoc(doc(firestore, `USUARIO/${user.uid}/POSTULACIONES/${id}`), {

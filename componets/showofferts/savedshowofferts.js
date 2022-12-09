@@ -1,6 +1,6 @@
 import { Warning } from '@mui/icons-material'
 import { Ring } from '@uiball/loaders'
-import { collection, documentId, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, documentId, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
@@ -10,6 +10,7 @@ import SavedOffertCard from '../offertcard/savedoffertcard'
 export default function SavedShowOfferts () {
   const { user } = useAuth()
   const [offerList, setOfferList] = useState(null)
+  const [rating, setRating] = useState([])
   // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
   const { setOfferStatus } = useOffert()
   const [loading, setLoading] = useState(false)
@@ -133,6 +134,26 @@ export default function SavedShowOfferts () {
     return () => unsubscribe()
   }, [setOfferStatus, user.postulado, user.uid])
 
+  useEffect(() => {
+    const q = query(collection(firestore, 'EVA_EMPRESA'))
+    const getRating = async () => {
+      const querySnapshot = await getDocs(q)
+      const sumaCalificaciones = querySnapshot.docs.map((doc) => {
+        let counter = 0
+        return {
+          id: doc.id,
+          promedio: (Object.values(doc.data()).reduce((accumulator, currentValue) => {
+            if (currentValue === 0) return accumulator
+            counter++
+            return accumulator + parseFloat(currentValue)
+          }, 0) / counter)
+        }
+      })
+      return sumaCalificaciones
+    }
+    getRating().then(setRating)
+  }, [])
+
   return (
     <>
       {loading
@@ -145,30 +166,38 @@ export default function SavedShowOfferts () {
           <section>
             {offerList && offerList.map(({
               id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
-              logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark
-            }) => (
-              <SavedOffertCard
-                key={id}
-                id={id}
-                logo={logo}
-                nombre_empresa={nombre_empresa}
-                cargo={cargo}
-                ejercer={ejercer}
-                comuna={comuna}
-                ciudad={ciudad}
-                vistas={vistas}
-                fecha_creacion={fecha_creacion}
-                horario={horario}
-                cupos={cupos}
-                beneficios={beneficios} //
-                categoria={categoria}
-                condicion={condicion}
-                descripcion={descripcion}
-                politica_trabajo={politica_trabajo}
-                requerimiento={requerimiento}
-                bookmark={bookmark}
-              />
-            ))}
+              logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, idEmpresa
+            }) => {
+              const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+              console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+              return (
+                <SavedOffertCard
+                  key={id}
+                  id={id}
+                  logo={logo}
+                  nombre_empresa={nombre_empresa}
+                  cargo={cargo}
+                  ejercer={ejercer}
+                  comuna={comuna}
+                  ciudad={ciudad}
+                  vistas={vistas}
+                  fecha_creacion={fecha_creacion}
+                  horario={horario}
+                  cupos={cupos}
+                  beneficios={beneficios}
+                  categoria={categoria}
+                  condicion={condicion}
+                  descripcion={descripcion}
+                  politica_trabajo={politica_trabajo}
+                  requerimiento={requerimiento}
+                  bookmark={bookmark}
+                  // checkboxEmpresa={checkboxEmpresa}
+                  promedio={empresa.promedio}
+                />
+              )
+            }
+            )}
             {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta.</p></article>}
           </section>
           )}

@@ -14,7 +14,7 @@ import Views from '../icons/views'
 export default function SavedOffertCard (props) {
   const { user } = useAuth()
 
-  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer } = props
+  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, promedio } = props
   const { offertSelected, setOffertSelected, offerStatus } = useOffert()
 
   const timeAgo = useTimeAgo(fecha_creacion)
@@ -72,7 +72,7 @@ export default function SavedOffertCard (props) {
         <div className='offerInfo'>
           <header>
             <h4>{nombre_empresa}</h4>
-            <Rating name='size-small' defaultValue={2} size='small' />
+            <Rating name='size-small' defaultValue={promedio} precision={0.5} size='small' readOnly />
           </header>
           <span>{cargo}, {ejercer}</span>
           <div className='infoItemsTop'>

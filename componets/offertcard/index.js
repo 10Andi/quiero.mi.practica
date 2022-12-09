@@ -17,7 +17,7 @@ import Views from '../icons/views'
 export default function OffertCard (props) {
   const { user } = useAuth()
   // const [isHover, setIsHover] = useState(false)
-  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, checkboxEmpresa } = props
+  const { id, logo, nombre_empresa, cargo, ciudad, comuna, fecha_creacion, horario, vistas, cupos, ejercer, checkboxEmpresa, promedio } = props
   const match = user.checkboxAlumno?.filter(prop => checkboxEmpresa?.indexOf(prop) >= 0)
   const porcentaje = Math.floor((match.length / checkboxEmpresa?.length) * 100)
   const { offertSelected, setOffertSelected } = useOffert()
@@ -94,7 +94,7 @@ export default function OffertCard (props) {
         <div className='offerInfo'>
           <header>
             <h4>{nombre_empresa}</h4>
-            <Rating name='size-small' defaultValue={2} size='small' />
+            <Rating name='size-small' defaultValue={promedio} precision={0.5} size='small' readOnly />
           </header>
           <span>{cargo}, {ejercer}</span>
           <div className='infoItemsTop'>

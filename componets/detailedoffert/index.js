@@ -35,7 +35,7 @@ export default function DetailedOffert () {
                   <Locate />
                   <span>{offertSelected.comuna}, {offertSelected.ciudad}</span>
                 </div>
-                <Rating name='size-medium' defaultValue={2} />
+                <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly />
               </div>
 
               <div className='infoOffert'>
