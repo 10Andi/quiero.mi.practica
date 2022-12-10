@@ -9,7 +9,7 @@ import SavedOffertCard from '../offertcard/savedoffertcard'
 
 export default function SavedShowOfferts () {
   const { user } = useAuth()
-  const [offerList, setOfferList] = useState(null)
+  const [offerList, setOfferList] = useState([])
   const [rating, setRating] = useState([])
   const { setOfferStatus } = useOffert()
   const [loading, setLoading] = useState(false)
@@ -196,7 +196,7 @@ export default function SavedShowOfferts () {
               )
             }
             )}
-            {!offerList && <article><Warning /><p>Aun no has postulado a alguna oferta.</p></article>}
+            {offerList.length < 1 && <article><Warning /><p>Aun no has postulado a alguna oferta.</p></article>}
           </section>
           )}
 
