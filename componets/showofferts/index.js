@@ -1,6 +1,6 @@
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied'
 import { Ring } from '@uiball/loaders'
 import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
-// import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useOffert } from '../../context/offertContext'
@@ -10,13 +10,10 @@ import OffertCard from '../offertcard'
 
 export default function ShowOfferts () {
   const { user } = useAuth()
-  const { setOfferStatus, offerList, setOfferList } = useOffert()
   const [loading, setLoading] = useState(false)
-  // const searched = false
-  // const [searched, setSearched] = useState(false)
   const [rating, setRating] = useState([])
-  console.log('🚀 ~ file: index.js:18 ~ ShowOfferts ~ rating', rating)
-  const { sortedResults, searchedResults } = useFiltered()
+  const { setOfferStatus, offerList, setOfferList } = useOffert()
+  const { sortedResults, searchedResults, searchBarInUse } = useFiltered()
 
   // useEffect(() => {
   //   async function getOfferts () {
@@ -228,6 +225,7 @@ export default function ShowOfferts () {
         return {
           ...data,
           id,
+          timestamp: fecha_creacion,
           fecha_creacion: +fecha_creacion.toDate()
         }
       }))
@@ -301,7 +299,517 @@ export default function ShowOfferts () {
 
   return (
     <>
-      {loading
+      {loading && (
+        <div>
+          <Ring size={40} lineWeight={5} speed={2} color='#473198' />
+        </div>
+      )}
+      <section>
+        {(() => {
+          if (searchBarInUse) {
+            if (searchedResults.length > 1) {
+              return (
+                searchedResults.map(({
+                  id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                  logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+                }) => {
+                  const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                  // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                  return (
+                    <OffertCard
+                      key={id}
+                      id={id}
+                      logo={logo}
+                      nombre_empresa={nombre_empresa}
+                      cargo={cargo}
+                      ejercer={ejercer}
+                      comuna={comuna}
+                      ciudad={ciudad}
+                      vistas={vistas}
+                      fecha_creacion={fecha_creacion}
+                      horario={horario}
+                      cupos={cupos}
+                      beneficios={beneficios}
+                      categoria={categoria}
+                      condicion={condicion}
+                      descripcion={descripcion}
+                      politica_trabajo={politica_trabajo}
+                      requerimiento={requerimiento}
+                      bookmark={bookmark}
+                      checkboxEmpresa={checkboxEmpresa}
+                      promedio={empresa.promedio}
+                    />
+                  )
+                }
+                )
+              )
+            } else {
+              return (
+                <article><SentimentDissatisfiedIcon /><p>Lo sentimos, no se han encontrado resultados.</p></article>
+                // <h1>Sorry, no results found</h1>
+              )
+            }
+          } else if (offerList && sortedResults === 'Más nuevos') {
+            const nuevos = offerList.sort((a, b) => b.timestamp - a.timestamp)
+            return (
+              nuevos.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Más vistos') {
+            const vistos = offerList.sort((a, b) => b.vistas - a.vistas)
+            return (
+              vistos.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Más cupos disponibles') {
+            const cupos = offerList.sort((a, b) => b.cupos - a.cupos)
+            return (
+              cupos.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Diseño / UX') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Programación') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Data Science | Analytics') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Desarrollo Mobile') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Marketing Digital') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'SysAdmin | DevOps | QA') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Comercial y Ventas') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList && sortedResults === 'Innovación y Agilidad') {
+            const categoria = offerList.filter(ele => ele.categoria === sortedResults)
+            return (
+              categoria.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          } else if (offerList) {
+            return (
+              offerList.map(({
+                id, beneficios, cargo, categoria, ciudad, comuna, condicion, cupos, descripcion, ejercer, fecha_creacion, horario,
+                logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, checkboxEmpresa, idEmpresa
+              }) => {
+                const empresa = rating.find(ele => idEmpresa === ele.id) || {}
+                // console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
+
+                return (
+                  <OffertCard
+                    key={id}
+                    id={id}
+                    logo={logo}
+                    nombre_empresa={nombre_empresa}
+                    cargo={cargo}
+                    ejercer={ejercer}
+                    comuna={comuna}
+                    ciudad={ciudad}
+                    vistas={vistas}
+                    fecha_creacion={fecha_creacion}
+                    horario={horario}
+                    cupos={cupos}
+                    beneficios={beneficios}
+                    categoria={categoria}
+                    condicion={condicion}
+                    descripcion={descripcion}
+                    politica_trabajo={politica_trabajo}
+                    requerimiento={requerimiento}
+                    bookmark={bookmark}
+                    checkboxEmpresa={checkboxEmpresa}
+                    promedio={empresa.promedio}
+                  />
+                )
+              }
+              )
+            )
+          }
+        })()}
+      </section>
+
+      {/* {loading
         ? (
           <div>
             <Ring size={40} lineWeight={5} speed={2} color='#473198' />
@@ -377,16 +885,29 @@ export default function ShowOfferts () {
               }
               )}
             </section>
-            )}
+            )} */}
 
-      <style jsx>{`
+      <style jsx>
+        {`
+          article {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: rgb(239, 243, 244);
+            border: none;
+            padding: 21px;
+            margin: 16px 0;
+            border-radius: 10px;
+            gap: 8px;
+          }
           div {
             padding: 50px;
             display: grid;
             place-content: center;
           }
           section {
-            max-height: 76vh;
+            max-height: 75vh;
             margin-top: 20px;
             overflow-y: auto;
           }
@@ -405,7 +926,6 @@ export default function ShowOfferts () {
           section::-webkit-scrollbar-thumb:active {
             background-color: #999999;
           }
-            
         `}
       </style>
     </>

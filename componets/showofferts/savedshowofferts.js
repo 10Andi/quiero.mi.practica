@@ -11,7 +11,6 @@ export default function SavedShowOfferts () {
   const { user } = useAuth()
   const [offerList, setOfferList] = useState(null)
   const [rating, setRating] = useState([])
-  // const { offertSelected, setOffertSelected, offerStatus, setOfferStatus } = useOffert()
   const { setOfferStatus } = useOffert()
   const [loading, setLoading] = useState(false)
 
@@ -169,7 +168,6 @@ export default function SavedShowOfferts () {
               logo, nombre_empresa, politica_trabajo, requerimiento, vistas, bookmark, idEmpresa
             }) => {
               const empresa = rating.find(ele => idEmpresa === ele.id) || {}
-              console.log('🚀 ~ file: index.js:353 ~ ShowOfferts ~ promedio', empresa.id, empresa.promedio)
 
               return (
                 <SavedOffertCard
@@ -220,8 +218,9 @@ export default function SavedShowOfferts () {
             border-radius: 10px;
             gap: 8px;
           }
-          section: {
-            height: 100%;
+          section {
+            max-height: 75vh;
+            margin-top: 20px;
             overflow-y: auto;
           }
           section::-webkit-scrollbar {

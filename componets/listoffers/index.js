@@ -9,7 +9,7 @@ export default function ListOffers () {
       <main>
         <FilteredContextProvider>
           <Searchbar primary />
-          <SortOfferts />
+          <SortOfferts title='Prácticas para ti' />
           <ShowOfferts />
         </FilteredContextProvider>
       </main>

@@ -1,38 +1,40 @@
 import Select from 'react-select'
-import { useOffert } from '../../context/offertContext'
+// import { useOffert } from '../../context/offertContext'
 import { useFiltered } from '../../context/searchedContext'
 import sortOptions from '../../helper/sortOfferts'
 
-export default function SortOfferts () {
-  const { offerList } = useOffert()
+export default function SortOfferts ({ title }) {
+  // const { offerList } = useOffert()
   const { setSortedResults } = useFiltered()
 
   const sortItems = (e) => {
     const { value, categorias } = e
-    console.log('🚀 ~ file: index.js ~ line 11 ~ sortItems ~ value, categorias', value, categorias)
-    if (categorias) {
-      const sortData = offerList.filter(ele => ele.categoria === value)
-      console.log('🚀 ~ file: index.js:23 ~ sortItems ~ sortData', sortData)
-      setSortedResults(sortData)
-    } else {
-      if (value === 'Más nuevos') {
-        const sortData = offerList.sort(ele => ele.categoria === value)
-        setSortedResults(sortData)
-      }
-      if (value === 'Más vistos') {
-        const sortData = offerList.sort(ele => ele.vistas)
-        console.log('🚀 ~ file: index.js ~ line 32 ~ sortItems ~ sortData', sortData)
-        setSortedResults(sortData)
-      }
-      if (value === 'Más cupos disponibles') {
-        const sortData = offerList.reverse((a, b) => a.cupos - b.cupos)
-        console.log('🚀 ~ file: index.js ~ line 36 ~ sortItems ~ sortData', sortData)
-        setSortedResults(sortData)
-      }
+    // const { value, categorias } = e
+    // console.log('🚀 ~ file: index.js ~ line 11 ~ sortItems ~ value, categorias', value, categorias)
+    // if (categorias) {
+    //   const sortData = offerList.filter(ele => ele.categoria === value)
+    //   console.log('🚀 ~ file: index.js:23 ~ sortItems ~ sortData', sortData)
+    //   setSortedResults(sortData)
+    // } else {
+    //   if (value === 'Más nuevos') {
+    //     // const sortData = offerList.sort(ele => ele.categoria === value)
+    //     setSortedResults(offerList)
+    //   }
+    //   if (value === 'Más vistos') {
+    //     const sortData = offerList.sort((a, b) => b.vistas - a.vistas)
+    //     console.log('🚀 ~ file: index.js ~ line 32 ~ sortItems ~ sortData', sortData)
+    //     setSortedResults(sortData)
+    //   }
+    //   if (value === 'Más cupos disponibles') {
+    //     const sortData = offerList.sort((a, b) => b.cupos - a.cupos)
+    //     console.log('🚀 ~ file: index.js ~ line 36 ~ sortItems ~ sortData', sortData)
+    //     setSortedResults(sortData)
+    //   }
 
-      // const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(value))
-      // setFilteredResults(filteredData)
-    }
+    //   // const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(value))
+    //   // setFilteredResults(filteredData)
+    // }
+    setSortedResults(value)
   }
 
   const styles = {
@@ -62,13 +64,13 @@ export default function SortOfferts () {
   return (
     <>
       <section>
-        <span>Prácticas para ti</span>
+        <span>{title}</span>
         <div>
           {/* <small>Mostrar por:</small> */}
           <Select
             styles={styles}
             defaultOptions
-            defaultValue={sortOptions[0].options[0]}
+            // defaultValue={sortOptions[0].options[0]}
             placeholder='Mostrar por:'
             options={sortOptions}
             onChange={(e) => {

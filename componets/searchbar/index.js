@@ -5,21 +5,23 @@ import BtnBuscar from '../icons/btnbuscar'
 
 export default function Searchbar (props) {
   const [searchInput, setSearchInput] = useState('')
-  // const [filteredResults, setFilteredResults] = useState([])
-  const { searchedResults, setSearchedResults } = useFiltered()
-
-  // console.log('🚀 ~ file: index.js ~ line 8 ~ Searchbar ~ filteredResults', searchedResults)
   const { offerList } = useOffert()
+  const { searchBarInUse, setSearchBarInUse, setSearchedResults } = useFiltered()
 
   const searchItems = (searchValue) => {
+    // console.log('🚀 ~ file: index.js:15 ~ searchItems ~ searchValue', searchValue)
     setSearchInput(searchValue)
     if (searchInput !== '') {
       const filteredData = offerList.filter(ele => Object.values(ele).join('').toLowerCase().includes(searchInput.toLowerCase()))
+      console.log('🚀 ~ file: index.js:16 ~ searchItems ~ filteredData', filteredData)
       setSearchedResults(filteredData)
+      setSearchBarInUse(true)
     } else {
       setSearchedResults(offerList)
+      setSearchBarInUse(false)
     }
   }
+  console.log('🚀 ~ file: index.js:23 ~ searchItems ~ searchBarInUse', searchBarInUse)
 
   return (
     <>
@@ -29,8 +31,8 @@ export default function Searchbar (props) {
           name='search'
           id=''
           placeholder='Busca por categoría, empresa, ciudad, o ...'
-          onFocus={(e) => { e.target.placeholder = '' }}
-          onBlur={(e) => { e.target.placeholder = 'Busca por categoría, empresa, ciudad, o ...' }}
+          // onFocus={(e) => { e.target.placeholder = '' }}
+          // onBlur={(e) => { e.target.placeholder = 'Busca por categoría, empresa, ciudad, o ...' }}
           onChange={(e) => searchItems(e.target.value)}
         />
         <button>

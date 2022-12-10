@@ -9,11 +9,12 @@ export default function FavoritesListOffers () {
       <main>
         <FilteredContextProvider>
           <Searchbar primary />
-          <SortOfferts />
+          <SortOfferts title='Prácticas guardadas' />
           <FavoritesShowOfferts />
         </FilteredContextProvider>
       </main>
-      <style jsx>{`
+      <style jsx>
+        {`
           main {
             border-right: 1px solid rgb(239, 243, 244);
             border-left: 1px solid rgb(239, 243, 244);
