@@ -13,8 +13,8 @@ export default function Footer () {
           <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
           <li><Link href='/precios'><a>Precios</a></Link></li>
           <li><Link href='/privacidad'><a>Privacidad</a></Link></li>
-          {/* <li><Link href='/contacto'><a>Contacto</a></Link></li> */}
-          <li><a href='mailto:hola@quieromipractica.cl'>Contacto</a></li>
+          {/* <li><a href='mailto:hola@quieromipractica.cl'>Contacto</a></li> */}
+          <li><Link href='/contacto'><a>Contacto</a></Link></li>
         </ul>
       </footer>
       <style jsx>{`

@@ -24,7 +24,7 @@ export default function Dashboard () {
     // async function getOfferts () {
     setLoading(true)
 
-    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), where('nombre_empresa', '==', user.nombre_empresa)), querySnapshot => {
+    const unsubscribe = onSnapshot(query(collection(firestore, 'test'), where('nombre_empresa', '==', user?.nombre_empresa)), querySnapshot => {
       setOfferList(querySnapshot.docs.map(doc => {
         const data = doc.data()
         const id = doc.id
