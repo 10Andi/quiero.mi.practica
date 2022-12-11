@@ -1,10 +1,8 @@
-import Link from 'next/link'
-
-export default function Logo () {
+export default function LogoApp () {
   return (
     <>
       <div>
-        <h2><Link href='/'><a>QUIEROMI<span>PRÁCTICA</span></a></Link></h2>
+        <h2><a>QUIEROMI<span>PRÁCTICA</span></a></h2>
       </div>
 
       <style jsx>

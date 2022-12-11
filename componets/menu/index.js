@@ -1,12 +1,13 @@
 import BookmarksIcon from '@mui/icons-material/Bookmarks'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../context/AuthContext'
-import HelpIcon from '../icons/helpicon'
-import Logo from '../icons/logo'
+// import HelpIcon from '../icons/helpicon'
+// import Logo from '../icons/logo'
 // import PostulationsIcon from '../icons/postulationsicon'
 // import SearchIcon from '../icons/searchicon'
 import BallotIcon from '@mui/icons-material/Ballot'
 import SearchIcon from '@mui/icons-material/Search'
+import LogoApp from '../icons/logoApp'
 import ItemMenu from './itemmenu'
 import ItemMenuLogout from './itemmenulogout'
 
@@ -26,11 +27,6 @@ const MENU_ITEMS_CONTENTS = {
       name: 'Mis favoritos',
       href: '/misfavoritos',
       img: <BookmarksIcon />
-    },
-    {
-      name: 'Ayuda',
-      href: '/ayuda',
-      img: <HelpIcon />
     }
   ]
 }
@@ -42,7 +38,7 @@ export default function Menu () {
   return (
     <>
       <aside>
-        <Logo />
+        <LogoApp />
         <ul>
           {MENU_ITEMS_CONTENTS.contents.map(content =>
             router.pathname === content.href
