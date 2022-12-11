@@ -136,7 +136,7 @@ export default function Suscripcion () {
               </div>
               <div className='plan-estado' style={{ display: 'flex', justifyContent: 'center' }}>
                 {/* <a className='plan-estado-link-desactivado'>Actual</a> */}
-                <a className='plan-estado-link' href='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=2c93808484ed6a680184ffa1c143102dhttps://www.flow.cl/btn.php?token=i096twp'>Contratar</a>
+                <a className='plan-estado-link' href='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=2c93808484ed6a680184ffa1c143102d'>Contratar</a>
               </div>
             </div>
           </div>
