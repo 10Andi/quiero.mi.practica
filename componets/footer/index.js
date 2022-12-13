@@ -9,7 +9,7 @@ export default function Footer () {
         </div>
         {/* <div className='subtitulo'>Quiero Mi Práctica es una empresa nueva de Tecnología de Información, con el objetivo de ser el portal laboral N°1, en especial en los Profesionales egresados, apoyándolos tanto en los aspectos técnicos y su procesos profesionales.</div> */}
         <ul>
-          <li><Link href='/sobrenosotros'><a>Sobre nosostros</a></Link></li>
+          <li><Link href='/sobrenosotros'><a>Sobre nosotros</a></Link></li>
           <li><Link href='/preguntasfrecuentes'><a>FAQ</a></Link></li>
           <li><Link href='/precios'><a>Precios</a></Link></li>
           <li><Link href='/privacidad'><a>Privacidad</a></Link></li>

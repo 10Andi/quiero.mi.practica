@@ -201,7 +201,7 @@ export default function Empresa () {
                 })}
               />
               <Tooltip title='Debes ponerte en contacto con tu administrador de tu cuenta para que seas agregado como miembro del equipo. Si no conoces al administrador o necesitas recuperar acceso a una cuenta de empresa que ya existe, contáctanos.' arrow>
-                <label className='test'>¿Tu empresa ya existe en QUIERO MI PRACTICA? No crees un duplicado.</label>
+                <label className='test'>¿Tu empresa ya existe en QUIERO MI PRÁCTICA? No crees un duplicado.</label>
               </Tooltip>
             </div>
           </div>
