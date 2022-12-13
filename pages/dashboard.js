@@ -107,7 +107,7 @@ export default function Dashboard () {
                 <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Titulo de publicación</TableCell>
+                      <TableCell>Título de publicación</TableCell>
                       <TableCell align='right'>Cupos disponibles</TableCell>
                       {/* <TableCell align="right">Cantidad de postulantes</TableCell> */}
                       <TableCell align='right'>Fecha de creación</TableCell>
@@ -174,7 +174,7 @@ export default function Dashboard () {
                     <p>{offerSelected.condicion}</p>
                     <span>Beneficios:</span>
                     <p>{offerSelected.beneficios}</p>
-                    <span>Policas de trabajo:</span>
+                    <span>Políticas de trabajo:</span>
                     <p>{offerSelected.politica_trabajo}</p>
                   </div>
                 </aside>

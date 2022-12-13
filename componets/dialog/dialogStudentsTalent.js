@@ -47,29 +47,83 @@ export default function DialogStudentsTalent ({ row }) {
         <DialogContent>
           <section>
             <article>
-              <strong>Capacidad:</strong> {filteredData.capacidad.text}
-              <strong>Responsabilidad:</strong> {filteredData.responsabilidad.text}
-              <strong>Confianza:</strong> {filteredData.confianza.text}
-              <strong>Aplicación:</strong> {filteredData.aplicacion.text}
-              <strong>Adaptabilidad:</strong> {filteredData.adaptabilidad.text}
-              <strong>Iniciativa:</strong> {filteredData.iniciativa.text}
-              <strong>Liderazgo:</strong> {filteredData.liderazgo.text}
-              <strong>Organización:</strong> {filteredData.organizacion.text}
-              <strong>Capacidad de decisión:</strong> {filteredData.capacidadDecision.text}
-              <strong>Creatividad:</strong> {filteredData.creatividad.text}
-              <strong>Capacidad para negociar:</strong> {filteredData.capacidadNegociar.text}
-              <strong>Valores éticos y morales:</strong> {filteredData.valoresEticosMorales.text}
-              <strong>Trabajo en equipo:</strong> {filteredData.trabajoEquipo.text}
-              <strong>Conocimientos:</strong> {filteredData.conocimientos.text}
-              <strong>Asistencia:</strong> {filteredData.asistencia.text}
-              <strong>Comunicación escrita:</strong> {filteredData.escrita.text}
-              <strong>Comunicación oral:</strong> {filteredData.oral.text}
-              <strong>Comunicación en inglés:</strong> {filteredData.ingles.text}
-              <strong>1. ¿Volvería a contratar al mismo estudiante en la práctica?</strong> {row.preguntaUno}
-              <strong>2. Si existiera la posibilidad ¿Contrataría al estudiante para trabajar en la empresa?</strong> {row.preguntaDos}
-              <strong>3. ¿El practicante generó conflictos dentro de la organización?</strong> {row.preguntaTres}
-              <strong>4. ¿El practicante fue un aporte dentro de la organización?</strong> {row.preguntaCuatro}
-              <strong>Opinión o comentarios del Empleador respecto del practicante:</strong> {row.comentarios}
+              <strong>Capacidad:</strong>
+              <p>
+                {filteredData.capacidad.text}
+              </p>
+              <strong>Responsabilidad:</strong>
+              <p>
+                {filteredData.responsabilidad.text}
+              </p>
+              <strong>Confianza:</strong>
+              <p>
+                {filteredData.confianza.text}
+              </p>
+              <strong>Aplicación:</strong>
+              <p>
+                {filteredData.aplicacion.text}
+              </p>
+              <strong>Adaptabilidad:</strong>
+              <p>
+                {filteredData.adaptabilidad.text}
+              </p>
+              <strong>Iniciativa:</strong>
+              <p>
+                {filteredData.iniciativa.text}
+              </p>
+              <strong>Liderazgo:</strong>
+              <p>
+                {filteredData.liderazgo.text}
+              </p>
+              <strong>Organización:</strong>
+              <p>
+                {filteredData.organizacion.text}
+              </p>
+              <strong>Capacidad de decisión:</strong>
+              <p>
+                {filteredData.capacidadDecision.text}
+              </p>
+              <strong>Creatividad:</strong>
+              <p>
+                {filteredData.creatividad.text}
+              </p>
+              <strong>Capacidad para negociar:</strong>
+              <p>
+                {filteredData.capacidadNegociar.text}
+              </p>
+              <strong>Valores éticos y morales:</strong>
+              <p>
+                {filteredData.valoresEticosMorales.text}
+              </p>
+              <strong>Trabajo en equipo:</strong>
+              <p>
+                {filteredData.trabajoEquipo.text}
+              </p>
+              <strong>Conocimientos:</strong>
+              <p>
+                {filteredData.conocimientos.text}
+              </p>
+              <strong>Asistencia:</strong>
+              <p>
+                {filteredData.asistencia.text}
+              </p>
+              <strong>Comunicación escrita:</strong>
+              <p>
+                {filteredData.escrita.text}
+              </p>
+              <strong>Comunicación oral:</strong>
+              <p>
+                {filteredData.oral.text}
+              </p>
+              <strong>Comunicación en inglés:</strong>
+              <p>
+                {filteredData.ingles.text}
+              </p>
+              <strong>1. ¿Volvería a contratar al mismo estudiante en la práctica?</strong> <p>{row.preguntaUno}</p>
+              <strong>2. Si existiera la posibilidad ¿Contrataría al estudiante para trabajar en la empresa?</strong> <p>{row.preguntaDos}</p>
+              <strong>3. ¿El practicante generó conflictos dentro de la organización?</strong> <p>{row.preguntaTres}</p>
+              <strong>4. ¿El practicante fue un aporte dentro de la organización?</strong> <p>{row.preguntaCuatro}</p>
+              <strong>Opinión o comentarios del Empleador respecto del practicante:</strong> <p>{row.comentarios}</p>
             </article>
             <aside>
               <div>
@@ -92,6 +146,7 @@ export default function DialogStudentsTalent ({ row }) {
       </Dialog>
 
       <style jsx>{`
+        
               a {
                 color: #473198;
                 font-weight: bold;
@@ -110,12 +165,21 @@ export default function DialogStudentsTalent ({ row }) {
                 padding: 5px 8px;
               }
               section {
-                display: flex;
-                width: 100%;
-                justify-content: space-between;
+                //display: flex;
+                //width: 100%;
+                //justify-content: space-between;
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                grid-template-rows: 1fr;
+                grid-column-gap: 0px;
+                grid-row-gap: 0px;
               }
               section strong {
                 display: flex;
+              }
+              article p {
+                margin: 0;
+                margin-bottom: 10px;
               }
               aside {
                 background-color: rgb(247, 249, 249);

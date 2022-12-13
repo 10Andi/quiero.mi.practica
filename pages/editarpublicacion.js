@@ -166,7 +166,7 @@ export default function EditarPublicacion () {
   //                                     })}/>
   //                                 </div>
   //                                 <div className="textarea">
-  //                                     <strong>Policas de trabajo:</strong>
+  //                                     <strong>Políticas de trabajo:</strong>
   //                                     <textarea cols="30" rows="10" {...register("politica_trabajo", {
   //                                         required:true
   //                                     })}/>

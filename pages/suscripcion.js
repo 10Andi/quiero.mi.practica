@@ -9,6 +9,8 @@ export default function Suscripcion () {
   // const [loading, setLoading] = useState(false)
   const { user } = useAuth()
   const router = useRouter()
+  const { preapproval_id } = router.query // ?preapproval_id=8aef63a384f1e12a0184ffb4e3a304d0
+
   // const API_KEY = '31AFDEDE-E95A-4E6E-8C8E-22L12A95CF34'
   // const SECRET_KEY = '161bccd2a5c0afecd16e8b796316276989616b56'
   // const sign = cryptoJs.HmacSHA256('stringToSign', SECRET_KEY)
@@ -161,7 +163,7 @@ export default function Suscripcion () {
                     <p>{offerSelected.condicion}</p>
                     <span>Beneficios:</span>
                     <p>{offerSelected.beneficios}</p>
-                    <span>Policas de trabajo:</span>
+                    <span>Políticas de trabajo:</span>
                     <p>{offerSelected.politica_trabajo}</p>
                   </div>
                 </aside>

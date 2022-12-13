@@ -671,7 +671,7 @@ export default function EvaluarPractica () {
             <p>{offer?.condicion}</p>
             <span>Beneficios:</span>
             <p>{offer?.beneficios}</p>
-            <span>Policas de trabajo:</span>
+            <span>Políticas de trabajo:</span>
             <p>{offer?.politica_trabajo}</p>
           </aside>
         </div>

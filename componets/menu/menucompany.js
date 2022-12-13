@@ -18,11 +18,11 @@ const MENU_ITEMS_CONTENTS = {
       href: '/dashboard',
       img: <FeaturedPlayListIcon style={{ color: '#9E9EA7' }} />
     },
-    {
-      name: 'Mi equipo',
-      href: '/miequipo',
-      img: <SupervisedUserCircleIcon style={{ color: '#9E9EA7' }} />
-    },
+    // {
+    //   name: 'Mi equipo',
+    //   href: '/miequipo',
+    //   img: <SupervisedUserCircleIcon style={{ color: '#9E9EA7' }} />
+    // },
     {
       name: 'Mi suscripción',
       href: '/suscripcion',
@@ -37,11 +37,11 @@ const UPDATE_MENU_ITEMS_CONTENTS = {
       href: '/dashboard',
       img: <FeaturedPlayListIcon style={{ color: '#9E9EA7' }} />
     },
-    {
-      name: 'Mi equipo',
-      href: '/miequipo',
-      img: <SupervisedUserCircleIcon style={{ color: '#9E9EA7' }} />
-    },
+    // {
+    //   name: 'Mi equipo',
+    //   href: '/miequipo',
+    //   img: <SupervisedUserCircleIcon style={{ color: '#9E9EA7' }} />
+    // },
     {
       name: 'Base de talentos',
       href: '/talentos',

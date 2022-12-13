@@ -183,11 +183,11 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Contraseña</span>
-                <label className='card-postulacion-info-subtitulo'>Tu contraseña debe tener <strong>minimo 6 caracteres</strong></label>
+                <label className='card-postulacion-info-subtitulo'>Tu contraseña debe tener <strong>mínimo 6 caracteres</strong></label>
                 <label className='card-postulacion-info-subtitulo'>Por tu seguiridad te recomendamos:</label>
-                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un numero</label>
-                <label className='card-postulacion-info-subtitulo'>* Incluir al menos una letra en mayuscula</label>
-                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un caracter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un número</label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos una letra en mayúscula</label>
+                <label className='card-postulacion-info-subtitulo'>* Incluir al menos un carácter especial <strong>! @ # $% & *() - + = ^ .</strong></label>
               </div>
               <div className='card-postulacion-inputs'>
                 <input
@@ -201,7 +201,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Nombre de la Institución</span>
-                <label className='card-postulacion-info-subtitulo'>Ingresa el nombre de tu institución educacional (universidad, instituto profecional, CFT, escuela tecnica , etc)</label>
+                <label className='card-postulacion-info-subtitulo'>Ingresa el nombre de tu institución educacional (universidad, instituto profesional, CFT, escuela técnica , etc)</label>
               </div>
               <div className='card-postulacion-inputs'>
                 <input
@@ -243,7 +243,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Categorías de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -333,7 +333,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Modalidad de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -373,7 +373,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Horario de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -403,7 +403,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Metodologías de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -503,7 +503,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Horario de estudio</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoria para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>

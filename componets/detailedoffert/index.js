@@ -47,7 +47,7 @@ export default function DetailedOffert () {
                 <p>{offertSelected.condicion}</p>
                 <span>Beneficios:</span>
                 <p>{offertSelected.beneficios}</p>
-                <span>Policas de trabajo:</span>
+                <span>Políticas de trabajo:</span>
                 <p>{offertSelected.politica_trabajo}</p>
                 {/* <a href="">Leer más</a> */}
               </div>

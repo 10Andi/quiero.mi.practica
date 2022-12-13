@@ -125,7 +125,7 @@ export default function CrearPublicacion () {
                 />
               </div>
               <div className='textarea'>
-                <strong>Elige una categoria:</strong>
+                <strong>Elige una categoría:</strong>
                 <Controller
                   control={control}
                   name='categoria'

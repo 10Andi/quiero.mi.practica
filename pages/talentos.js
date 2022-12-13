@@ -124,9 +124,9 @@ export default function Talentos () {
                   <TableHead>
                     <TableRow>
                       <TableCell>Nombre</TableCell>
-                      <TableCell align='right'>Categoria</TableCell>
+                      <TableCell align='right'>Categoría</TableCell>
                       <TableCell align='right'>Fecha de evaluación</TableCell>
-                      <TableCell align='center'>Ver</TableCell>
+                      {/* <TableCell align='center'>Ver</TableCell> */}
                       <TableCell align='center'>E-mail</TableCell>
                       <TableCell align='center'>Calificación</TableCell>
                     </TableRow>
@@ -139,18 +139,18 @@ export default function Talentos () {
                         </TableCell>
                         <TableCell align='right'>{row.categoria}</TableCell>
                         <TableCell align='right'>{row.fechaFinalizacion}</TableCell>
-                        <TableCell align='center'>
+                        {/* <TableCell align='center'>
                           <IconButton onClick={() => {
                             setOfferSelected(row)
                           }}
                           >
                             <VisibilityIcon style={{ color: '#473198', cursor: 'pointer' }} />
                           </IconButton>
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell align='center'>
                           <IconButton>
-                            <Link href={`/editarpublicacion/${row.id}`}>
-                              <MailIcon style={{ color: '#FCE592', cursor: 'pointer' }} />
+                            <Link href={`mailto:${row.estudianteEmail}`}>
+                              <MailIcon style={{ color: '#473198', cursor: 'pointer' }} />
                             </Link>
                           </IconButton>
                         </TableCell>
@@ -183,7 +183,7 @@ export default function Talentos () {
                     <p>{offerSelected.condicion}</p>
                     <span>Beneficios:</span>
                     <p>{offerSelected.beneficios}</p>
-                    <span>Policas de trabajo:</span>
+                    <span>Políticas de trabajo:</span>
                     <p>{offerSelected.politica_trabajo}</p>
                   </div>
                 </aside>

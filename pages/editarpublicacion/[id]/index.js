@@ -142,7 +142,7 @@ export default function EditarPublicacion () {
                 />
               </div>
               <div className='textarea'>
-                <strong>Elige una categoria:</strong>
+                <strong>Elige una categoría:</strong>
                 <Controller
                   control={control}
                   name='categoria'
@@ -238,7 +238,7 @@ export default function EditarPublicacion () {
             <p>{offer?.condicion}</p>
             <span>Beneficios:</span>
             <p>{offer?.beneficios}</p>
-            <span>Policas de trabajo:</span>
+            <span>Políticas de trabajo:</span>
             <p>{offer?.politica_trabajo}</p>
           </aside>
         </div>
