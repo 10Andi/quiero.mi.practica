@@ -72,6 +72,7 @@ export default function CrearPublicacion () {
       fecha_creacion: fechaCreacion,
       horario: data.horario.value,
       logo: user.logo_empresa,
+      idEmpresa: user.uid_empresa,
       nombre_empresa: user.nombre_empresa,
       politica_trabajo: data.politica_trabajo,
       requerimiento: data.requerimiento,

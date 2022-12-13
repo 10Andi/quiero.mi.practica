@@ -799,7 +799,7 @@ export default function ShowOfferts () {
                     requerimiento={requerimiento}
                     bookmark={bookmark}
                     checkboxEmpresa={checkboxEmpresa}
-                    promedio={empresa.promedio}
+                    promedio={empresa?.promedio}
                   />
                 )
               }

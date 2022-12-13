@@ -2,12 +2,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material'
 import { Ring } from '@uiball/loaders'
 import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import DialogStudents from '../componets/dialog'
 import MenuCompany from '../componets/menu/menucompany'
 import { useAuth } from '../context/AuthContext'
@@ -17,6 +18,7 @@ export default function Dashboard () {
   const [loading, setLoading] = useState(true)
   const [offerList, setOfferList] = useState(null)
   const [offerSelected, setOfferSelected] = useState(null)
+  const [open, setOpen] = useState(false)
   const { user } = useAuth()
   const router = useRouter()
 
@@ -79,9 +81,30 @@ export default function Dashboard () {
     return
   }
 
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = (isDelete, idOffert, cargo, ejercer) => {
+    // console.log(isDelete)
+    // console.log(idOffert)
+    if (isDelete) {
+      deleteOffert(idOffert)
+        .finally(toast.error(`Has eliminado la oferta: ${cargo}, ${ejercer}`))
+
+      setOpen(false)
+    } else {
+      setOpen(false)
+    }
+  }
+
   const deleteOffert = async (idOffert) => {
     await deleteDoc(doc(firestore, 'test', idOffert))
   }
+  // <IconButton onClick={() => {
+  //    deleteOffert(row.id)
+  //   }}
+  // />
 
   return (
     <>
@@ -141,12 +164,28 @@ export default function Dashboard () {
                           </IconButton>
                         </TableCell>
                         <TableCell align='center'>
-                          <IconButton onClick={() => {
-                            deleteOffert(row.id)
-                          }}
-                          >
+                          <IconButton onClick={handleClickOpen}>
                             <DeleteForeverIcon style={{ color: '#FC9292', cursor: 'pointer' }} />
                           </IconButton>
+                          <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby='alert-dialog-title'
+                            aria-describedby='alert-dialog-description'
+                          >
+                            <DialogTitle id='alert-dialog-title'>
+                              Estas seguro de quererar eliminar la oferta: {row.cargo}, {row.ejercer}?
+                            </DialogTitle>
+                            <DialogContent>
+                              <DialogContentText id='alert-dialog-description'>
+                                Una vez eliminada la oferta se perderá toda la información.
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={() => handleClose(false)}>Cancelar</Button>
+                              <Button color='error' onClick={() => handleClose(true, row.id, row.cargo, row.ejercer)} autoFocus>Eliminar oferta</Button>
+                            </DialogActions>
+                          </Dialog>
                         </TableCell>
                       </TableRow>
                     ))}

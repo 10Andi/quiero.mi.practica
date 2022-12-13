@@ -13,6 +13,7 @@ import { firestore } from '../../../firebase/client'
 export default function EvaluarPractica () {
   const { user } = useAuth()
   const [offer, setOffer] = useState(null)
+  console.log('🚀 ~ file: index.js:16 ~ EvaluarPractica ~ offer.idEmpresa', offer.idEmpresa)
   // const [student, setStundet] = useState(null)
   const router = useRouter()
   const { id } = router.query

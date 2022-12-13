@@ -93,8 +93,7 @@ export default function DetailedOffert () {
                       </DialogTitle>
                       <DialogContent>
                         <DialogContentText id='alert-dialog-description'>
-                          Let Google help apps determine location. This means sending anonymous
-                          location data to Google, even when no apps are running.
+                          Una vez eliminada tu postulación perderás todo avance logrado.
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
