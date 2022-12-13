@@ -215,7 +215,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Certificado de alumno regular</span>
-                <label className='card-postulacion-info-subtitulo'>Se necesita certificado de alumno regular para acreditar tu institución educacional y virificar estado academico</label>
+                <label className='card-postulacion-info-subtitulo'>Se necesita certificado de alumno regular para acreditar tu institución educacional y verificar estado academico</label>
                 <label className='card-postulacion-info-subtitulo'>* El formato debe ser PDF</label>
               </div>
               <div className='card-postulacion-componets'>
