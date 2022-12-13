@@ -1,5 +1,4 @@
 import MailIcon from '@mui/icons-material/Mail'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import { IconButton, Paper, Rating, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { Ring } from '@uiball/loaders'
 import { collection, onSnapshot, query } from 'firebase/firestore'

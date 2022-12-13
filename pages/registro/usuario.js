@@ -243,7 +243,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Categorías de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona al menos 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -333,7 +333,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Modalidad de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona al menos 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -373,7 +373,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Horario de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona al menos 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -403,7 +403,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Metodologías de trabajo</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona al menos 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
@@ -503,7 +503,7 @@ export default function Usuario () {
             <div className='card-postulacion'>
               <div className='card-postulacion-info'>
                 <span className='card-postulacion-info-titulo'>Horario de estudio</span>
-                <label className='card-postulacion-info-subtitulo'>Selecciona 1 categoría para poder hacer un match con tu futura práctica</label>
+                <label className='card-postulacion-info-subtitulo'>Selecciona al menos 1 categoría para poder hacer un match con tu futura práctica</label>
               </div>
               <div className='card-postulacion-componets'>
                 <label className='checkbox-text'>
