@@ -14,7 +14,7 @@ export default function Precios () {
           </header>
           <main>
             <div className='cards'>
-              <div className='card' style={{ height: '526px' }}>
+              <div className='card' style={{ height: '420px' }}>
                 <div className='price-basic'>
                   <div className='basic'>
                     <label>Gratis</label>
@@ -39,12 +39,12 @@ export default function Precios () {
                     <strong>Cuentas de equipo ilimitadas</strong>
                   </div>
                 </div>
-                <div className='' style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <div className='' style={{ display: 'flex', justifyContent: 'center' }}>
                   <a id='btnEstado_plan' className='plan-estado-link-desactivado'>Actual</a>
                   <a id='btnEstado_plan' className='plan-estado-link' href='https://www.flow.cl/btn.php?token=2xmymaj'>Contratar</a>
-                </div>
+                </div> */}
               </div>
-              <div className='card' style={{ height: '526px' }}>
+              <div className='card' style={{ height: '420px' }}>
                 <div className='price-premium'>
                   <div className='basic'>
                     <label>$30.000</label>
@@ -69,10 +69,10 @@ export default function Precios () {
                     <strong>Cuentas de equipo ilimitadas</strong>
                   </div>
                 </div>
-                <div className='' style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <div className='' style={{ display: 'flex', justifyContent: 'center' }}>
                   <a id='btnEstado_plan' className='plan-estado-link-desactivado'>Actual</a>
                   <a id='btnEstado_plan' className='plan-estado-link' href='https://www.flow.cl/btn.php?token=2xmymaj'>Contratar</a>
-                </div>
+                </div> */}
               </div>
             </div>
           </main>
