@@ -190,6 +190,7 @@ export default function SavedShowOfferts () {
                   politica_trabajo={politica_trabajo}
                   requerimiento={requerimiento}
                   bookmark={bookmark}
+                  idEmpresa={idEmpresa}
                   // checkboxEmpresa={checkboxEmpresa}
                   promedio={empresa.promedio}
                 />

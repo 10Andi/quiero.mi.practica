@@ -798,6 +798,7 @@ export default function ShowOfferts () {
                     politica_trabajo={politica_trabajo}
                     requerimiento={requerimiento}
                     bookmark={bookmark}
+                    idEmpresa={idEmpresa}
                     checkboxEmpresa={checkboxEmpresa}
                     promedio={empresa?.promedio}
                   />

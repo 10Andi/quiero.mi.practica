@@ -13,11 +13,13 @@ import { firestore } from '../../../firebase/client'
 export default function EvaluarPractica () {
   const { user } = useAuth()
   const [offer, setOffer] = useState(null)
-  console.log('🚀 ~ file: index.js:16 ~ EvaluarPractica ~ offer.idEmpresa', offer.idEmpresa)
+  console.log('🚀 ~ file: index.js:16 ~ EvaluarPractica ~ offer', offer)
+  // console.log('🚀 ~ file: index.js:16 ~ EvaluarPractica ~ offer.idEmpresa', offer.idEmpresa)
   // const [student, setStundet] = useState(null)
   const router = useRouter()
   const { id } = router.query
-  // const [studentId, offertId] = id.split('-')
+  const [offerId, companyId] = id.split('-')
+  console.log('🚀 ~ file: index.js:21 ~ EvaluarPractica ~ offerId, companyId', offerId, companyId)
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm()
   console.log(user)
@@ -26,7 +28,7 @@ export default function EvaluarPractica () {
     setLoading(true)
 
     async function getOffer () {
-      const docRef = doc(firestore, `test/${id}`)
+      const docRef = doc(firestore, `test/${offerId}`)
       const docSnap = await getDoc(docRef)
       const offertDataFirestore = docSnap.data()
       // console.log(offertDataFirestore)
@@ -34,7 +36,7 @@ export default function EvaluarPractica () {
     }
 
     getOffer().then(setOffer).finally(setLoading(false))
-  }, [id])
+  }, [offerId])
   console.log(offer)
 
   if (user === null) {
@@ -50,7 +52,7 @@ export default function EvaluarPractica () {
     console.log(data)
     setLoading(true)
     const now = new Date()
-    const docRef = doc(firestore, `EVA_EMPRESA/${offer.idEmpresa}`)
+    const docRef = doc(firestore, `EVA_EMPRESA/${companyId}`)
     const dataNum = [
       +data.material,
       +data.capacitacion,
@@ -95,7 +97,7 @@ export default function EvaluarPractica () {
       [user.uid]: promedio
     })
       .then(
-        updateDoc(doc(firestore, `USUARIO/${user.uid}/POSTULACIONES/${id}`), {
+        updateDoc(doc(firestore, `USUARIO/${user.uid}/POSTULACIONES/${offerId}`), {
           fecha_finalizacion: now,
           estado: 'Finalizado',
           evaluacionEmpresa: true
@@ -124,7 +126,7 @@ export default function EvaluarPractica () {
               <img loading='lazy' src={offer?.logo} alt='' />
               <div>
                 <h1>Estas por evaluar como fue tu práctica como  <span>{offer?.cargo}, {offer?.ejercer}</span></h1>
-                <span>Necesitamos que califiques como fue tu experiencia durante tu práctica para compartir este feed.</span>
+                <span>Necesitamos que califiques como fue tu experiencia en <b>{offer?.nombre_empresa}</b> durante tu práctica, con el fin de que podamos compartir este feedback con los proximos interesados en postular a esta empresa.</span>
               </div>
             </header>
             <form onSubmit={handleSubmit(onSubmit)}>

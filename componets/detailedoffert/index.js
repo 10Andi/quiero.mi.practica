@@ -10,6 +10,7 @@ import Locate from '../icons/locate'
 export default function DetailedOffert () {
   const { user } = useAuth()
   const { offertSelected, offerStatus } = useOffert()
+  console.log('🚀 ~ file: index.js:13 ~ DetailedOffert ~ offertSelected', offertSelected)
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -35,7 +36,10 @@ export default function DetailedOffert () {
                   <Locate />
                   <span>{offertSelected.comuna}, {offertSelected.ciudad}</span>
                 </div>
-                <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly />
+                <Tooltip title='Puedes elimiar tu postulación cuando lo desees.' placement='top' arrow>
+                  <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly />
+                </Tooltip>
+                {/* <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly /> */}
               </div>
 
               <div className='infoOffert'>
@@ -60,48 +64,54 @@ export default function DetailedOffert () {
                     </a>
                   </Link>}
                 {offerStatus?.map(ele => {
-                  if (ele.id === offertSelected.id && ele.estado === 'Aprobado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='aprobadoBtn'>Aprobado</button>)
-                  if (ele.id === offertSelected.id && ele.estado === 'Rechazado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='rechazadoBtn'>Rechazado</button>)
-                  if (ele.id === offertSelected.id && ele.estado === 'En espera') return (<button key={`${ele.id}-${ele.estado}`} disabled className='enEsperaBtn'>En espera</button>)
-                  if (ele.id === offertSelected.id && ele.estado === 'Finalizado') {
+                  if (ele.id === offertSelected.id && !ele.evaluacionEmpresa && ele.estado === 'Aprobado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='aprobadoBtn'>Aprobado</button>)
+                  if (ele.id === offertSelected.id && !ele.evaluacionEmpresa && ele.estado === 'Rechazado') return (<button key={`${ele.id}-${ele.estado}`} disabled className='rechazadoBtn'>Rechazado</button>)
+                  if (ele.id === offertSelected.id && !ele.evaluacionEmpresa && ele.estado === 'En espera') return (<button key={`${ele.id}-${ele.estado}`} disabled className='enEsperaBtn'>En espera</button>)
+                  if (ele.id === offertSelected.id && !ele.evaluacionEmpresa && ele.estado === 'Finalizado') {
                     return (
                     // <button key={`${ele.id}-${ele.estado}`} className='enEsperaBtn'>En espera</button>
-                      <Link key={`${ele.id}-${ele.estado}`} href={`/evaluarpractica/${offertSelected.id}`}>
+                      <Link key={`${ele.id}-${ele.estado}`} href={`/evaluarpractica/${offertSelected.id}-${offertSelected.idEmpresa}`}>
                         <a>
                           <button className='evaluarBtn'>Evaluar práctica</button>
                         </a>
                       </Link>
                     )
                   }
+                  if (ele.id === offertSelected.id && ele.evaluacionEmpresa && ele.estado === 'Finalizado') return null
                   return null
                 })}
-                {user.postulado?.includes(offertSelected.id) &&
-                  <>
-                    <Tooltip title='Puedes elimiar tu postulación cuando lo desees.' placement='top' arrow>
-                      <button className='commentBtn' onClick={handleClickOpen}>
-                        <DeletePostulation stroke='white' />
-                      </button>
-                    </Tooltip>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby='alert-dialog-title'
-                      aria-describedby='alert-dialog-description'
-                    >
-                      <DialogTitle id='alert-dialog-title'>
-                        Estas seguro de quererar eliminar tu postulación?
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id='alert-dialog-description'>
-                          Una vez eliminada tu postulación perderás todo avance logrado.
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose}>Cancelar</Button>
-                        <Button color='error' onClick={handleClose} autoFocus>Eliminar postulación</Button>
-                      </DialogActions>
-                    </Dialog>
-                  </>}
+                {offerStatus?.map(ele => {
+                  if (user.postulado?.includes(offertSelected.id) && !ele.evaluacionEmpresa) {
+                    <>
+                      <Tooltip title='Puedes elimiar tu postulación cuando lo desees.' placement='top' arrow>
+                        <button className='commentBtn' onClick={handleClickOpen}>
+                          <DeletePostulation stroke='white' />
+                        </button>
+                      </Tooltip>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby='alert-dialog-title'
+                        aria-describedby='alert-dialog-description'
+                      >
+                        <DialogTitle id='alert-dialog-title'>
+                          Estas seguro de quererar eliminar tu postulación?
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id='alert-dialog-description'>
+                            Una vez eliminada tu postulación perderás todo avance logrado.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Cancelar</Button>
+                          <Button color='error' onClick={handleClose} autoFocus>Eliminar postulación</Button>
+                        </DialogActions>
+                      </Dialog>
+                    </>
+                  }
+                  return null
+                })}
+
               </div>
             </section>
 
@@ -121,13 +131,14 @@ export default function DetailedOffert () {
                   justify-content: space-between;
                   flex-direction: column;
                   margin-left: 5%;
+                  gap: 10px;
                 }
 
                 .infoCompany {
                   display: flex;
                   flex-direction: column;
                   align-items: center;
-                  padding-bottom: 48px;
+                  padding-bottom: 18px;
                   margin-top: 8%;
                 }
                 .infoCompany img {
