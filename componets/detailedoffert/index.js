@@ -36,10 +36,10 @@ export default function DetailedOffert () {
                   <Locate />
                   <span>{offertSelected.comuna}, {offertSelected.ciudad}</span>
                 </div>
-                <Tooltip title='Puedes elimiar tu postulación cuando lo desees.' placement='top' arrow>
+                {/* <Tooltip title='Puedes elimiar tu postulación cuando lo desees.' placement='top' arrow>
                   <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly />
-                </Tooltip>
-                {/* <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly /> */}
+                </Tooltip> */}
+                <Rating name='size-small' defaultValue={offertSelected.promedio} precision={0.5} size='small' readOnly />
               </div>
 
               <div className='infoOffert'>
