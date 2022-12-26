@@ -81,7 +81,7 @@ export default function Suscripcion () {
                 </Link> */}
           </header>
           <div className='cards'>
-            <div className='card' style={{ height: '526px' }}>
+            <div className='card' style={{ minHeight: '526px' }}>
               <div className='price-basic'>
                 <div className='basic'>
                   <label>Gratis</label>
@@ -115,7 +115,7 @@ export default function Suscripcion () {
                 {/* <a className='plan-estado-link' href='https://www.flow.cl/btn.php?token=2xmymaj'>Contratar</a> */}
               </div>
             </div>
-            <div className='card' style={{ height: '526px' }}>
+            <div className='card' style={{ minHeight: '526px' }}>
               <div className='price-premium'>
                 <div className='basic'>
                   <label>$30.000</label>
@@ -141,15 +141,15 @@ export default function Suscripcion () {
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
-                  <strong>Cuentas de equipo ilimitadas</strong>
+                  <strong>Match con postulantes</strong>
+                </div>
+                <div className='bottom-card-item'>
+                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
+                  <strong>Cuentas de equipo ilimitadas <br />- proximamente</strong>
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
                   <strong>Chat en tiempo real - proximamente</strong>
-                </div>
-                <div className='bottom-card-item'>
-                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
-                  <strong>Match con postulantes - proximamente</strong>
                 </div>
               </div>
               <div className='plan-estado' style={{ display: 'flex', justifyContent: 'center' }}>

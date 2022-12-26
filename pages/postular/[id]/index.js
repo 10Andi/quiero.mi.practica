@@ -73,6 +73,7 @@ export default function Postular (props) {
     // const docRef = doc(firestore, 'USUARIO', user.uid);
     const querySnapshot = await getDoc(doc(firestore, 'USUARIO', user.uid))
     const dataUser = querySnapshot.data()
+    console.log('🚀 ~ file: index.js:76 ~ onSubmit ~ dataUser', dataUser)
     // console.log(dataUser)
 
     const now = new Date()
@@ -86,7 +87,6 @@ export default function Postular (props) {
     const docRef = doc(firestore, `test/${id}/POSTULANTES/${uidUser}`)
 
     await setDoc(docRef, {
-      // uidUser: {
       nombres: dataUser.nombres,
       apellidoPaterno: dataUser.apellidoPaterno,
       apellidoMaterno: dataUser.apellidoMaterno,
@@ -96,13 +96,12 @@ export default function Postular (props) {
       email: dataUser.email,
       nom_institucion: dataUser.nom_institucion,
       certificadoAlumnoRegular: dataUser.certificadoAlumnoRegular,
-      // certificadoAlumnoRegularURL: dataUser.certificadoAlumnoRegularURL,
       avatar: dataUser.avatar,
       infoPersonal: data.info_personal,
       infoEstudio: data.info_estudio,
       fechaPostulacion: now,
-      estado: 'En espera'
-      // }
+      estado: 'En espera',
+      checkboxAlumno: dataUser.checkboxAlumno
     })
       .then(
         updateDoc(doc(firestore, 'USUARIO', user.uid), {

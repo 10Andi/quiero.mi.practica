@@ -4,13 +4,17 @@ import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import TaskIcon from '@mui/icons-material/Task'
-import { Button, Collapse, Divider, IconButton, Stack, TableCell, TableRow, Typography } from '@mui/material'
+import 'react-circular-progressbar/dist/styles.css'
+
+import { Button, Collapse, Divider, IconButton, Stack, TableCell, TableRow, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { doc, increment, updateDoc } from 'firebase/firestore'
 import Link from 'next/link'
 import { useState } from 'react'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import toast from 'react-hot-toast'
 import { firestore } from '../../firebase/client'
+import ProgressProvider from '../../utility/progressProvider'
 
 export default function BodyTableCollapse ({ row, idOffer }) {
   // console.log('🚀 ~ file: bodytablecollapse.js:16 ~ BodyTableCollapse ~ row', row)
@@ -69,6 +73,23 @@ export default function BodyTableCollapse ({ row, idOffer }) {
           </IconButton>
         </TableCell>
         <TableCell component='th' scope='row'>{row.nombres} {row.apellidoPaterno} {row.apellidoMaterno}</TableCell>
+        <TableCell align='right'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Tooltip title={`Tienes un ${row.porcentaje}% de afinidad con este postulante`} placement='right' arrow>
+              <div style={{ width: 60, height: 60 }}>
+                <ProgressProvider valueStart={0} valueEnd={row.porcentaje}>
+                  {porcentaje => <CircularProgressbar
+                    value={porcentaje} text={`${porcentaje}%`} styles={buildStyles({
+                      textColor: '#473198',
+                      pathColor: '#473198',
+                      textSize: '24px'
+                    })}
+                                 />}
+                </ProgressProvider>
+              </div>
+            </Tooltip>
+          </div>
+        </TableCell>
         <TableCell align='right'>{row.rut}</TableCell>
         <TableCell align='right'>{row.fechaPostulacion}</TableCell>
         <TableCell align='center'>
@@ -236,6 +257,7 @@ export default function BodyTableCollapse ({ row, idOffer }) {
 
       <style jsx>
         {`
+        
           a {
             color: #473198;
             font-weight: bold;

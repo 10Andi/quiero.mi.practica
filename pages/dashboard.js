@@ -119,7 +119,7 @@ export default function Dashboard () {
                         <TableCell component='th' scope='row'>
                           <DialogStudents row={row} />
                         </TableCell>
-                        <TableCell align='right'>{row.cupos}</TableCell>
+                        <TableCell align='right'>{row.cupos} / 15</TableCell>
                         <TableCell align='right'>{row.fecha_creacion}</TableCell>
                         <TableCell align='center'>
                           <IconButton onClick={() => {
