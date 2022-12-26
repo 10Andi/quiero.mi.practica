@@ -73,7 +73,7 @@ export default function Postular (props) {
     // const docRef = doc(firestore, 'USUARIO', user.uid);
     const querySnapshot = await getDoc(doc(firestore, 'USUARIO', user.uid))
     const dataUser = querySnapshot.data()
-    console.log('🚀 ~ file: index.js:76 ~ onSubmit ~ dataUser', dataUser)
+    console.log('🚀 ~ file: index.js:76 ~ onSubmit ~ dataUser', dataUser.checkboxAlumno)
     // console.log(dataUser)
 
     const now = new Date()

@@ -126,13 +126,13 @@ export default function EvaluarPractica () {
               <img loading='lazy' src={offer?.logo} alt='' />
               <div>
                 <h1>Estas por evaluar como fue tu práctica como  <span>{offer?.cargo}, {offer?.ejercer}</span></h1>
-                <span>Necesitamos que califiques como fue tu experiencia en <b>{offer?.nombre_empresa}</b> durante tu práctica, con el fin de que podamos compartir este feedback con los proximos interesados en postular a esta empresa.</span>
+                <span>Necesitamos que califiques como fue tu experiencia en <b>{offer?.nombre_empresa}</b> durante tu práctica, con el fin de que podamos compartir este feedback con los próximos interesados en postular a esta empresa.</span>
               </div>
             </header>
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset>
                 <div className='textarea'>
-                  <strong>¿La empresa entrego el material necesario para realizar tu trabajo?</strong>
+                  <strong>¿La empresa entregó el material necesario para realizar tu trabajo?</strong>
                   <label className='checkbox-text'>
                     <input
                       {...register('material')}
@@ -158,7 +158,7 @@ export default function EvaluarPractica () {
                       type='radio'
                       value={3}
                     />
-                    Nuetro.
+                    Neutro.
                   </label>
                   <label className='checkbox-text'>
                     <input
@@ -182,7 +182,7 @@ export default function EvaluarPractica () {
               </fieldset>
               <fieldset>
                 <div className='textarea'>
-                  <strong>¿La empresa entrego servicios de capacitación profesional?</strong>
+                  <strong>¿La empresa entregó servicios de capacitación profesional?</strong>
                   <label className='checkbox-text'>
                     <input
                       {...register('capacitacion')}
