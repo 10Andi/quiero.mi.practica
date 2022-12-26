@@ -3,7 +3,7 @@ import Footer from '../componets/footer'
 import Hero from '../componets/hero'
 import Nav from '../componets/nav'
 import ReacentsPublications from '../componets/reacentspublications/index'
-import Searchbar from '../componets/searchbar'
+// import Searchbar from '../componets/searchbar'
 import ShowCompanies from '../componets/showcompanies'
 // import { useAuth } from '../context/AuthContext'
 
@@ -15,7 +15,7 @@ export default function Landing () {
         <Nav />
         {/* <button onClick={logOut}>CERRAR SESION</button> */}
         <Hero />
-        <Searchbar />
+        {/* <Searchbar /> */}
         <ShowCompanies />
         <Categories />
         <ReacentsPublications />

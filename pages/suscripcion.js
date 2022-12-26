@@ -95,15 +95,19 @@ export default function Suscripcion () {
               <div className='bottom-card'>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
-                  <strong>10 publicaciones al mes</strong>
+                  <strong>3 publicaciones al mes</strong>
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
-                  <strong>Chatbot</strong>
+                  <strong>1 cupo por publicación</strong>
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
-                  <strong>Cuentas de equipo ilimitadas</strong>
+                  <strong>Cuenta única</strong>
+                </div>
+                <div className='bottom-card-item'>
+                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
+                  <strong>Chat en tiempo real - proximamente</strong>
                 </div>
               </div>
               <div className='plan-estado' style={{ display: 'flex', justifyContent: 'center' }}>
@@ -129,11 +133,23 @@ export default function Suscripcion () {
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
+                  <strong>15 cupos por publicación</strong>
+                </div>
+                <div className='bottom-card-item'>
+                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
                   <strong>Base de Talentos</strong>
                 </div>
                 <div className='bottom-card-item'>
                   <CheckCircleIcon style={{ color: '#ADFC92' }} />
                   <strong>Cuentas de equipo ilimitadas</strong>
+                </div>
+                <div className='bottom-card-item'>
+                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
+                  <strong>Chat en tiempo real - proximamente</strong>
+                </div>
+                <div className='bottom-card-item'>
+                  <CheckCircleIcon style={{ color: '#ADFC92' }} />
+                  <strong>Match con postulantes - proximamente</strong>
                 </div>
               </div>
               <div className='plan-estado' style={{ display: 'flex', justifyContent: 'center' }}>

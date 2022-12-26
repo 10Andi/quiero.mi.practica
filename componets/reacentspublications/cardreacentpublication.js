@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import useTimeAgo from '../../hooks/useTimeAgo'
 import Locate from '../icons/locate'
 
@@ -7,18 +8,20 @@ export default function CardReacentPublication (props) {
 
   return (
     <>
-      <a href='/practicas?id=6' key={id} id={id}>
-        <div className='recentPublications'>
-          <div className='titleRecentPublications'>
-            <img src={logo} alt={nombre_empresa} draggable='false' />
-            <h3>{cargo}, {ejercer}</h3>
+      <Link href='login'>
+        <a key={id} id={id}>
+          <div className='recentPublications'>
+            <div className='titleRecentPublications'>
+              <img src={logo} alt={nombre_empresa} draggable='false' />
+              <h3>{cargo}, {ejercer}</h3>
+            </div>
+            <div className='locate'>
+              <Locate /><span>{comuna}, {ciudad}</span>
+            </div>
+            <span className='date'>{timeAgo}</span>
           </div>
-          <div className='locate'>
-            <Locate /><span>{comuna}, {ciudad}</span>
-          </div>
-          <span className='date'>{timeAgo}</span>
-        </div>
-      </a>
+        </a>
+      </Link>
       {/* <a href='/practicas?id=6'>
         <div className='recentPublications'>
           <div className='titleRecentPublications'>
