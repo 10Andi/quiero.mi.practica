@@ -1151,7 +1151,7 @@ export default function FinalizarPractica () {
               <Button size='small' href={`mailto:${student?.email}`} startIcon={<MailOutline />}>
                 Correo electronico
               </Button>
-              <Button size='small' href={student?.certificadoAlumnoRegular} startIcon={<OpenInNew />}>
+              <Button size='small' href={student?.certificadoAlumnoRegular} startIcon={<OpenInNew />} target='_blank'>
                 Link Certificado Alumno Regular
               </Button>
             </div>

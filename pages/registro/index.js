@@ -14,14 +14,14 @@ export default function Registro () {
             <h3>Estudiante</h3>
             <User />
             <Link href='/registro/usuario'>
-              <a>Regisrarse</a>
+              <a>Registrarse</a>
             </Link>
           </div>
           <div className='company-card'>
             <h3>Empresa</h3>
             <Company />
             <Link href='/registro/empresa'>
-              <a>Regisrarse</a>
+              <a>Registrarse</a>
             </Link>
           </div>
         </div>

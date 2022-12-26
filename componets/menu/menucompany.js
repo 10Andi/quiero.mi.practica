@@ -7,6 +7,8 @@ import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList'
 // import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import UpgradeIcon from '@mui/icons-material/Upgrade'
 // import Logo from '../icons/logo'
+import { Tooltip } from '@mui/material'
+import Link from 'next/link'
 import LogoApp from '../icons/logoApp'
 import ItemMenu from './itemmenu'
 import ItemMenuLogout from './itemmenulogout'
@@ -88,17 +90,32 @@ export default function MenuCompany () {
           })} */}
           <ItemMenuLogout />
         </ul>
-        <div className='user'>
+        {/* <div className='user'>
           <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
           <div className='text'>
             <span>{user?.displayName}</span>
             <span className='company'>de {user?.nombre_empresa}</span>
           </div>
-        </div>
+        </div> */}
+        <Link href={`/editarperfil/empresa/${user.uid}`}>
+          <Tooltip title='Editar perfil' placement='top' arrow>
+            <div className={router.asPath === `/editarperfil/empresa/${user.uid}` ? 'active' : ''}>
+              <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
+              <article className='text'>
+                <span>{user?.displayName}</span>
+                <span className='company'>de {user?.nombre_empresa}</span>
+              </article>
+            </div>
+          </Tooltip>
+        </Link>
       </aside>
 
       <style jsx>
         {`
+          .active {
+            background: rgb(239,243,244);
+            border-radius: 10px 0 0 10px;
+          }
           aside {
               max-height: 100vh;
               height: 100vh;
@@ -119,6 +136,13 @@ export default function MenuCompany () {
           div {
               display: flex;
               margin-bottom: 42px;
+              padding: 10px;
+
+          }
+          div:hover {
+            background: rgb(239,243,244);
+            border-radius: 10px 0 0 10px;
+            cursor: pointer;
           }
           div img {
               width: 73px;

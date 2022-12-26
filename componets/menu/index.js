@@ -7,6 +7,8 @@ import { useAuth } from '../../context/AuthContext'
 // import SearchIcon from '../icons/searchicon'
 import BallotIcon from '@mui/icons-material/Ballot'
 import SearchIcon from '@mui/icons-material/Search'
+import { Tooltip } from '@mui/material'
+import Link from 'next/link'
 import LogoApp from '../icons/logoApp'
 import ItemMenu from './itemmenu'
 import ItemMenuLogout from './itemmenulogout'
@@ -47,47 +49,62 @@ export default function Menu () {
           )}
           <ItemMenuLogout />
         </ul>
-        <div className='user'>
-          <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
-          <span>{user?.displayName}</span>
-        </div>
+        <Link href={`/editarperfil/estudiante/${user.uid}`}>
+          <Tooltip title='Editar perfil' placement='top' arrow>
+            <div className={router.asPath === `/editarperfil/estudiante/${user.uid}` ? 'active' : ''}>
+              <img loading='lazy' src={`https://ui-avatars.com/api/?name=${user?.names}+${user?.lastName}&size=128`} alt='' draggable='false' />
+              <span>{user?.displayName}</span>
+            </div>
+          </Tooltip>
+        </Link>
       </aside>
 
       <style jsx>{`
-                aside {
-                    max-height: 100vh;
-                    height: 100vh;
-                    display: grid;
-                    /* grid-template-rows: 15% 1fr 20%; */
-                    align-content: space-between;
-                }
-                ul {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-                div {
-                    display: flex;
-                    margin-bottom: 42px;
-                }
-                div img {
-                    width: 73px;
-                    height: 73px;
-                    margin-right: 30px;
-                    border-radius: 100px;
+          .active {
+            background: rgb(239,243,244);
+            border-radius: 10px 0 0 10px;
+          }
+          aside {
+            max-height: 100vh;
+            height: 100vh;
+            display: grid;
+            /* grid-template-rows: 15% 1fr 20%; */
+            align-content: space-between;
+          }
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          div {
+            display: flex;
+            margin-bottom: 42px;
+            padding: 10px;
 
-                }
-                div span {
-                    font-size: 18px;
-                    font-weight: bold;
-                    color: #4A0D67;
-                    margin-right: 10px;
-                    margin-top: 10px;
-                }
-            `}
+          }
+          div:hover {
+            background: rgb(239,243,244);
+            border-radius: 10px 0 0 10px;
+            cursor: pointer;
+          }
+          div img {
+            width: 73px;
+            height: 73px;
+            margin-right: 30px;
+            border-radius: 100px;
+
+          }
+          div span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4A0D67;
+            margin-right: 10px;
+            margin-top: 10px;
+          }
+        `}
       </style>
     </>
   )
